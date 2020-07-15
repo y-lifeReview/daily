@@ -1,0 +1,192 @@
+body,
+html {
+    padding: 0;
+    margin: 0;
+
+    font: 14px/1.5 Helvetica Neue, Helvetica, Arial, Microsoft Yahei, Hiragino Sans GB, Heiti SC, WenQuanYi Micro Hei, sans-serif;
+    font-style: normal;
+    font-variant-ligatures: normal;
+    font-variant-caps: normal;
+    font-variant-numeric: normal;
+    font-variant-east-asian: normal;
+    font-weight: normal;
+    font-stretch: normal;
+
+    header {
+
+        height: 40px;
+        width: 100%;
+        background-color: #333333;
+
+        .container {
+            display: flex;
+            margin: 0 61.5px 0 61.5px;
+
+            .left_nav {
+                flex: 5;
+                display: flex;
+                line-height: 40px;
+                align-items: center;
+
+                a {
+                    height: 100%;
+                    font-size: 12px;
+                    text-decoration: none;
+                    color: #B0B0B0;
+                    position: relative;
+
+                    span.app {
+                        position: absolute;
+                        top: 40px;
+                        left: 50%;
+                        width: 124px;
+                        height: 0;
+                        background: #fff;
+                        margin-left: -55px;
+                        box-shadow: 0 1px 5px #aaa;
+                        text-align: center;
+                        font-size: 14px;
+                        color: #333;
+                        line-height: 1;
+                        overflow: hidden;
+                        transition: height .3s;
+                    }
+
+                    img {
+                        display: block;
+                        margin: 18px auto 10px;
+                    }
+
+                }
+
+                a.app_hover:hover {
+                    .app {
+                        height: auto;
+                        line-height: 33px;
+                    }
+                }
+            }
+
+            span {
+                color: #424242;
+                margin: 0 3.4px 0 5px;
+            }
+
+            .a_hover:hover {
+                color: #FFFFFF;
+            }
+        }
+
+        .center_nav {
+            flex: 3;
+            line-height: 40px;
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+
+            a {
+                height: 100%;
+                font-size: 12px;
+                text-decoration: none;
+                color: #B0B0B0;
+
+            }
+
+            span {
+                color: #424242;
+                margin: 0 3.4px 0 5px;
+            }
+
+            .a_hover:hover {
+                color: #FFFFFF;
+            }
+        }
+
+        .right_nav {
+            flex: 1;
+            line-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            background-color: #424242;
+            position: relative;
+
+            a {
+                z-index: 32;
+                flex: 1;
+                height: 100%;
+                font-size: 12px;
+                text-decoration: none;
+                color: #B0B0B0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                em {
+                    margin-right: 14px;
+                    font-size: 14px;
+                }
+            }
+
+            a:hover+div.car_hover {
+                height: 100px;
+                line-height: 100px;
+                text-align: center;
+            }
+
+            a:hover {
+                background-color: #FFF;
+                color: #ff672c;
+
+                span {
+                    color: #ff672c;
+                }
+            }
+
+            div.car_hover {
+                position: absolute;
+                right: 0;
+                top: 40px;
+                z-index: 31;
+                width: 316px;
+                height: 0;
+                color: #424242;
+                background: #fff;
+                -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+                overflow: hidden;
+
+            }
+        }
+    }
+
+    .site_header {
+        height: 100px;
+        background-color: #ffffff;
+        display: flex;
+            align-items: center;
+        .container {
+            width: 1226px;
+            margin-right: auto;
+            margin-left: auto;
+            
+            .logo {
+                display: block;
+                width: 55px;
+                height: 55px;
+                overflow: hidden;
+                background-color: #ff6700;
+                position: relative;
+                i{
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%,-50%);
+                    font-size: 32px;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

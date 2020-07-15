@@ -1,0 +1,187 @@
+body,
+html {
+  padding: 0;
+  margin: 0;
+  font: 14px/1.5 Helvetica Neue, Helvetica, Arial, Microsoft Yahei, Hiragino Sans GB, Heiti SC, WenQuanYi Micro Hei, sans-serif;
+  font-style: normal;
+  font-variant-ligatures: normal;
+  font-variant-caps: normal;
+  font-variant-numeric: normal;
+  font-variant-east-asian: normal;
+  font-weight: normal;
+  font-stretch: normal;
+}
+body header,
+html header {
+  height: 40px;
+  width: 100%;
+  background-color: #333333;
+}
+body header .container,
+html header .container {
+  display: flex;
+  margin: 0 61.5px 0 61.5px;
+}
+body header .container .left_nav,
+html header .container .left_nav {
+  flex: 5;
+  display: flex;
+  line-height: 40px;
+  align-items: center;
+}
+body header .container .left_nav a,
+html header .container .left_nav a {
+  height: 100%;
+  font-size: 12px;
+  text-decoration: none;
+  color: #B0B0B0;
+  position: relative;
+}
+body header .container .left_nav a span.app,
+html header .container .left_nav a span.app {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  width: 124px;
+  height: 0;
+  background: #fff;
+  margin-left: -55px;
+  box-shadow: 0 1px 5px #aaa;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  line-height: 1;
+  overflow: hidden;
+  transition: height 0.3s;
+}
+body header .container .left_nav a img,
+html header .container .left_nav a img {
+  display: block;
+  margin: 18px auto 10px;
+}
+body header .container .left_nav a.app_hover:hover .app,
+html header .container .left_nav a.app_hover:hover .app {
+  height: auto;
+  line-height: 33px;
+}
+body header .container span,
+html header .container span {
+  color: #424242;
+  margin: 0 3.4px 0 5px;
+}
+body header .container .a_hover:hover,
+html header .container .a_hover:hover {
+  color: #FFFFFF;
+}
+body header .center_nav,
+html header .center_nav {
+  flex: 3;
+  line-height: 40px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+body header .center_nav a,
+html header .center_nav a {
+  height: 100%;
+  font-size: 12px;
+  text-decoration: none;
+  color: #B0B0B0;
+}
+body header .center_nav span,
+html header .center_nav span {
+  color: #424242;
+  margin: 0 3.4px 0 5px;
+}
+body header .center_nav .a_hover:hover,
+html header .center_nav .a_hover:hover {
+  color: #FFFFFF;
+}
+body header .right_nav,
+html header .right_nav {
+  flex: 1;
+  line-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 15px;
+  background-color: #424242;
+  position: relative;
+}
+body header .right_nav a,
+html header .right_nav a {
+  z-index: 32;
+  flex: 1;
+  height: 100%;
+  font-size: 12px;
+  text-decoration: none;
+  color: #B0B0B0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body header .right_nav a em,
+html header .right_nav a em {
+  margin-right: 14px;
+  font-size: 14px;
+}
+body header .right_nav a:hover + div.car_hover,
+html header .right_nav a:hover + div.car_hover {
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
+body header .right_nav a:hover,
+html header .right_nav a:hover {
+  background-color: #FFF;
+  color: #ff672c;
+}
+body header .right_nav a:hover span,
+html header .right_nav a:hover span {
+  color: #ff672c;
+}
+body header .right_nav div.car_hover,
+html header .right_nav div.car_hover {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  z-index: 31;
+  width: 316px;
+  height: 0;
+  color: #424242;
+  background: #fff;
+  -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+body .site_header,
+html .site_header {
+  height: 100px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+body .site_header .container,
+html .site_header .container {
+  width: 1226px;
+  margin-right: auto;
+  margin-left: auto;
+}
+body .site_header .container .logo,
+html .site_header .container .logo {
+  display: block;
+  width: 55px;
+  height: 55px;
+  overflow: hidden;
+  background-color: #ff6700;
+  position: relative;
+}
+body .site_header .container .logo i,
+html .site_header .container .logo i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  color: #fff;
+}
