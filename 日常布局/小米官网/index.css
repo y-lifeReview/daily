@@ -163,25 +163,161 @@ html .site_header {
 }
 body .site_header .container,
 html .site_header .container {
-  width: 1226px;
-  margin-right: auto;
-  margin-left: auto;
+  width: 1326px;
+  margin-right: 40px;
+  margin-left: 63px;
+  height: 100%;
+  position: relative;
 }
 body .site_header .container .logo,
 html .site_header .container .logo {
+  margin-top: 22px;
   display: block;
   width: 55px;
   height: 55px;
   overflow: hidden;
   background-color: #ff6700;
-  position: relative;
 }
-body .site_header .container .logo i,
-html .site_header .container .logo i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+body .site_header .container .logo .logo_hov,
+html .site_header .container .logo .logo_hov {
+  transition: transform 0.3s ease;
+  width: 86px;
+  height: 100%;
+  display: flex;
+}
+body .site_header .container .logo .logo_hov i,
+html .site_header .container .logo .logo_hov i {
+  flex: 1;
+  margin-left: 11px;
+  margin-top: 5px;
   font-size: 32px;
   color: #fff;
+}
+body .site_header .container .logo:hover .logo_hov,
+html .site_header .container .logo:hover .logo_hov {
+  transform: translate(-43px, 0);
+  transition: transform 0.3s ease;
+}
+body .site_header .container .header_nav,
+html .site_header .container .header_nav {
+  position: absolute;
+  top: 0;
+  left: 55px;
+  width: 850px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+body .site_header .container .header_nav ul,
+html .site_header .container .header_nav ul {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 12px;
+  margin-left: 119px;
+}
+body .site_header .container .header_nav ul li,
+html .site_header .container .header_nav ul li {
+  list-style: none;
+  cursor: pointer;
+}
+body .site_header .container .header_nav ul li a,
+html .site_header .container .header_nav ul li a {
+  display: block;
+  padding: 26px 10px 38px;
+}
+body .site_header .container .header_nav ul li a span,
+html .site_header .container .header_nav ul li a span {
+  font-size: 16px;
+  color: #333333;
+}
+body .site_header .container .header_nav ul .chilrd_container,
+html .site_header .container .header_nav ul .chilrd_container {
+  position: absolute;
+  top: 100px;
+  left: -237px;
+  width: 1366px;
+  height: 0;
+}
+body .site_header .container .header_nav ul li:hover span,
+html .site_header .container .header_nav ul li:hover span {
+  color: #ff6700;
+}
+body .site_header .container .header_nav ul li:hover ~ .chilrd_container,
+html .site_header .container .header_nav ul li:hover ~ .chilrd_container {
+  position: absolute;
+  top: 100px;
+  left: -237px;
+  width: 1366px;
+  height: 201px;
+  border: 1px solid #e0e0e0;
+  border-left: 0;
+  border-right: 0;
+  transition: height 0.3s;
+}
+body .site_header .container .header_search,
+html .site_header .container .header_search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 321px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+body .site_header .container .header_search form,
+html .site_header .container .header_search form {
+  position: relative;
+  right: 0;
+  width: auto;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+body .site_header .container .header_search form .search,
+html .site_header .container .header_search form .search {
+  right: 51px;
+  z-index: 1;
+  width: 245px;
+  height: 50px;
+  padding: 0 10px;
+  font-size: 14px;
+  line-height: 48px;
+  border: 1px solid #e0e0e0;
+}
+body .site_header .container .header_search form .search:focus,
+html .site_header .container .header_search form .search:focus {
+  outline: none ;
+  border: 1px solid #ff6700;
+}
+body .site_header .container .header_search form .search:focus + .search_do,
+html .site_header .container .header_search form .search:focus + .search_do {
+  outline: none ;
+  border: 1px solid #ff6700;
+  border-left: 0;
+}
+body .site_header .container .header_search form .search_do,
+html .site_header .container .header_search form .search_do {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 48px;
+  font-size: 24px;
+  line-height: 24px;
+  background: #fff;
+  color: #616161;
+  border: 1px solid #e0e0e0;
+  border-left: 0;
+}
+body .site_header .container .header_search form .search_do i,
+html .site_header .container .header_search form .search_do i {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  font-size: 20px;
+  font-weight: 800;
 }
