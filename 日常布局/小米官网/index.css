@@ -409,15 +409,25 @@ html .swiper_box {
   margin-left: 63px;
   margin-right: 40px;
   display: flex;
+  position: relative;
 }
-body .swiper_box .swiper_list,
-html .swiper_box .swiper_list {
+body .swiper_box .swiper,
+html .swiper_box .swiper {
+  width: 100%;
+  height: 460px;
+}
+body .swiper_box .swiper .swiper_list,
+html .swiper_box .swiper .swiper_list {
   width: 234px;
   height: 460px;
   display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
-body .swiper_box .swiper_list ul,
-html .swiper_box .swiper_list ul {
+body .swiper_box .swiper .swiper_list ul.uu,
+html .swiper_box .swiper .swiper_list ul.uu {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -427,15 +437,15 @@ html .swiper_box .swiper_list ul {
   color: #fff;
   background: rgba(105, 101, 101, 0.6);
 }
-body .swiper_box .swiper_list ul li,
-html .swiper_box .swiper_list ul li {
+body .swiper_box .swiper .swiper_list ul.uu li.ll,
+html .swiper_box .swiper .swiper_list ul.uu li.ll {
   display: flex;
   align-items: center;
   list-style: none;
   flex: 1;
 }
-body .swiper_box .swiper_list ul li a,
-html .swiper_box .swiper_list ul li a {
+body .swiper_box .swiper .swiper_list ul.uu li.ll a,
+html .swiper_box .swiper .swiper_list ul.uu li.ll a {
   width: 100%;
   height: 100%;
   padding-left: 30px;
@@ -443,19 +453,195 @@ html .swiper_box .swiper_list ul li a {
   align-items: center;
   position: relative;
 }
-body .swiper_box .swiper_list ul li a em,
-html .swiper_box .swiper_list ul li a em {
+body .swiper_box .swiper .swiper_list ul.uu li.ll a em,
+html .swiper_box .swiper .swiper_list ul.uu li.ll a em {
   position: absolute;
   top: 9px;
   right: 20px;
 }
-body .swiper_box .swiper_list ul li a:hover,
-html .swiper_box .swiper_list ul li a:hover {
+body .swiper_box .swiper .swiper_list ul.uu li.ll .list_item,
+html .swiper_box .swiper .swiper_list ul.uu li.ll .list_item {
+  position: absolute;
+  left: 234px;
+  top: 4px;
+  visibility: hidden;
+  opacity: 0;
+}
+body .swiper_box .swiper .swiper_list ul.uu li.ll .list_item ul,
+html .swiper_box .swiper .swiper_list ul.uu li.ll .list_item ul {
+  background-color: #fff;
+  padding: 0px;
+  width: 1005px;
+  border: 1px solid #e0e0e0;
+  border-left: 0;
+  background: #fff;
+  -webkit-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+  height: 455px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+body .swiper_box .swiper .swiper_list ul.uu li.ll .list_item ul li,
+html .swiper_box .swiper .swiper_list ul.uu li.ll .list_item ul li {
+  list-style: none;
+  height: 75px ;
+  width: 220px;
+}
+body .swiper_box .swiper .swiper_list ul.uu li.ll .list_item ul li a,
+html .swiper_box .swiper .swiper_list ul.uu li.ll .list_item ul li a {
+  text-decoration: none;
+  height: 75px;
+  width: 220px;
+  color: #333;
+}
+body .swiper_box .swiper .swiper_list ul.uu li.ll .list_item ul li a span,
+html .swiper_box .swiper .swiper_list ul.uu li.ll .list_item ul li a span {
+  padding: 10px;
+}
+body .swiper_box .swiper .swiper_list ul.uu li.ll .list_item ul li a span:hover,
+html .swiper_box .swiper .swiper_list ul.uu li.ll .list_item ul li a span:hover {
+  color: #ff672c;
+}
+body .swiper_box .swiper .swiper_list ul.uu li.ll:hover,
+html .swiper_box .swiper .swiper_list ul.uu li.ll:hover {
   background-color: #ff6700;
 }
-body .swiper_box .swiper,
-html .swiper_box .swiper {
-  width: 992px;
+body .swiper_box .swiper .swiper_list ul.uu li.ll:hover .list_item,
+html .swiper_box .swiper .swiper_list ul.uu li.ll:hover .list_item {
+  opacity: 1;
+  visibility: visible;
+}
+body .swiper_box .swiper .swiper_item,
+html .swiper_box .swiper .swiper_item {
+  position: relative;
   height: 460px;
-  background-color: burlywood;
+}
+body .swiper_box .swiper .swiper_item .item,
+html .swiper_box .swiper .swiper_item .item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+body .swiper_box .swiper .swiper_item .item img,
+html .swiper_box .swiper .swiper_item .item img {
+  width: 1226px;
+  height: 460px;
+}
+body .swiper_box .swiper .swiper_item .item-1,
+html .swiper_box .swiper .swiper_item .item-1 {
+  opacity: 1;
+  visibility: visible;
+  animation: item-1 20s infinite alternate;
+}
+@keyframes item-1 {
+  20% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+body .swiper_box .swiper .swiper_item .item-2,
+html .swiper_box .swiper .swiper_item .item-2 {
+  opacity: 0;
+  visibility: visible;
+  animation: item-2 20s infinite alternate;
+}
+@keyframes item-2 {
+  20% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+body .swiper_box .swiper .swiper_item .item-3,
+html .swiper_box .swiper .swiper_item .item-3 {
+  opacity: 0;
+  visibility: visible;
+  animation: item-3 20s infinite alternate;
+}
+@keyframes item-3 {
+  20% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+body .swiper_box .swiper .swiper_item .item-4,
+html .swiper_box .swiper .swiper_item .item-4 {
+  opacity: 0;
+  visibility: visible;
+  animation: item-4 20s infinite alternate;
+}
+@keyframes item-4 {
+  20% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+body .swiper_box .swiper .swiper_item .item-5,
+html .swiper_box .swiper .swiper_item .item-5 {
+  opacity: 0;
+  visibility: visible;
+  animation: item-5 20s infinite alternate;
+}
+@keyframes item-5 {
+  20% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
