@@ -758,10 +758,14 @@ html .wrap .box-wrap .top-wrap span {
   line-height: 58px;
   color: #333;
 }
+body .wrap .box-wrap .center-wrap,
+html .wrap .box-wrap .center-wrap {
+  display: flex;
+}
 body .wrap .box-wrap .center-wrap .left-wrap,
 html .wrap .box-wrap .center-wrap .left-wrap {
   text-align: center;
-  height: 329px;
+  height: 339px;
   width: 234px;
   background-color: #f1eded;
   border-top: 1px solid #e53935;
@@ -807,4 +811,95 @@ html .wrap .box-wrap .center-wrap .left-wrap .fin-time i {
   color: #605751;
   font-size: 28px;
   font-style: normal;
+}
+body .wrap .box-wrap .center-wrap .right-wrap,
+html .wrap .box-wrap .center-wrap .right-wrap {
+  width: 978px;
+  height: 340px;
+  overflow: hidden;
+  margin-left: 15px;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul,
+html .wrap .box-wrap .center-wrap .right-wrap ul {
+  width: 2973px;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  animation: ul 8s infinite;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li,
+html .wrap .box-wrap .center-wrap .right-wrap ul li {
+  list-style: none;
+  width: 234px;
+  height: 339px;
+  background-color: #fafafa;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li div.img,
+html .wrap .box-wrap .center-wrap .right-wrap ul li div.img {
+  display: flex;
+  justify-content: center;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li div.img img,
+html .wrap .box-wrap .center-wrap .right-wrap ul li div.img img {
+  width: 160px;
+  height: 160px;
+  margin-top: 35px;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li div.name,
+html .wrap .box-wrap .center-wrap .right-wrap ul li div.name {
+  text-align: center;
+  margin: 0 20px 3px;
+  font-size: 14px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  color: #212121;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 20px;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li div.dec,
+html .wrap .box-wrap .center-wrap .right-wrap ul li div.dec {
+  text-align: center;
+  height: 18px;
+  margin: 0 20px 12px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  color: #b0b0b0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li div.price,
+html .wrap .box-wrap .center-wrap .right-wrap ul li div.price {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li div.price span,
+html .wrap .box-wrap .center-wrap .right-wrap ul li div.price span {
+  color: #ff6709;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li div.price del,
+html .wrap .box-wrap .center-wrap .right-wrap ul li div.price del {
+  color: #b0b0b0;
+  text-decoration: line-through;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(n+2),
+html .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(n+2) {
+  margin-left: 15px;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+1),
+html .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+1) {
+  border-top: 1px solid #ffac13;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+2),
+html .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+2) {
+  border-top: 1px solid #83c44e;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+3),
+html .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+3) {
+  border-top: 1px solid #2196f3;
+}
+body .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+4),
+html .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+4) {
+  border-top: 1px solid #e53935;
 }

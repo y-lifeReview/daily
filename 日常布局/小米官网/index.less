@@ -815,9 +815,11 @@ html {
             }
 
             .center-wrap {
+                display: flex;
+
                 .left-wrap {
                     text-align: center;
-                    height: 329px;
+                    height: 339px;
                     width: 234px;
                     background-color: #f1eded;
                     border-top: 1px solid #e53935;
@@ -839,10 +841,12 @@ html {
                         color: rgba(0, 0, 0, .54);
                         font-size: 15px;
                     }
-                    .fin-time{
+
+                    .fin-time {
                         height: 48px;
                         margin-top: 30px;
-                        span{
+
+                        span {
                             width: 46px;
                             height: 46px;
                             font-size: 24px;
@@ -851,7 +855,8 @@ html {
                             padding: 10px;
                             background-color: #605751;
                         }
-                        i{
+
+                        i {
                             width: 15px;
                             height: 46px;
                             line-height: 46px;
@@ -860,6 +865,98 @@ html {
                             font-style: normal
                         }
                     }
+                }
+
+                .right-wrap {
+                    width: 978px;
+                    height: 340px;
+                    overflow: hidden;
+                    margin-left: 15px;
+                    ul {
+
+                        width: 2973px;
+                        display: flex;
+                        padding: 0;
+                        margin: 0;
+                        animation: ul 8s infinite;
+
+                        li {
+                            list-style: none;
+                            width: 234px;
+                            height: 339px;
+                            background-color: #fafafa;
+
+                            div.img {
+                                display: flex;
+                                justify-content: center;
+
+                                img {
+                                    width: 160px;
+                                    height: 160px;
+                                    margin-top: 35px;
+                                }
+                            }
+
+                            div.name {
+                                text-align: center;
+                                margin: 0 20px 3px;
+                                font-size: 14px;
+                                font-weight: 400;
+                                text-overflow: ellipsis;
+                                color: #212121;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                margin-top: 20px;
+                            }
+
+                            div.dec {
+                                text-align: center;
+                                height: 18px;
+                                margin: 0 20px 12px;
+                                font-size: 12px;
+                                text-overflow: ellipsis;
+                                color: #b0b0b0;
+                                overflow: hidden;
+                                white-space: nowrap;
+                            }
+
+                            div.price {
+                                display: flex;
+                                justify-content: center;
+                                margin-top: 20px;
+
+                                span {
+                                    color: #ff6709;
+                                }
+
+                                del {
+                                    color: #b0b0b0;
+                                    text-decoration: line-through;
+                                }
+                            }
+                        }
+
+                        li:nth-child(n+2) {
+                            margin-left: 15px;
+                        }
+
+                        li:nth-child(4n+1) {
+                            border-top: 1px solid #ffac13;
+                        }
+
+                        li:nth-child(4n+2) {
+                            border-top: 1px solid #83c44e;
+                        }
+
+                        li:nth-child(4n+3) {
+                            border-top: 1px solid #2196f3;
+                        }
+
+                        li:nth-child(4n+4) {
+                            border-top: 1px solid #e53935;
+                        }
+                    }
+
                 }
             }
 
