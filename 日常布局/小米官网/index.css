@@ -882,6 +882,7 @@ body .wrap .box-wrap .center-wrap .right-wrap ul li div.price del,
 html .wrap .box-wrap .center-wrap .right-wrap ul li div.price del {
   color: #b0b0b0;
   text-decoration: line-through;
+  margin-left: 0.5em;
 }
 body .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(n+2),
 html .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(n+2) {
@@ -902,4 +903,357 @@ html .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+3) {
 body .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+4),
 html .wrap .box-wrap .center-wrap .right-wrap ul li:nth-child(4n+4) {
   border-top: 1px solid #e53935;
+}
+body .wrap .box-wrap .bottom-wrap,
+html .wrap .box-wrap .bottom-wrap {
+  margin: 22px 0;
+}
+body .wrap .card,
+html .wrap .card {
+  width: 1226px;
+  margin: 0 61.5px;
+  height: auto;
+}
+body .wrap .card .top-card,
+html .wrap .card .top-card {
+  height: 58px;
+}
+body .wrap .card .top-card span,
+html .wrap .card .top-card span {
+  font-size: 22px;
+  font-weight: 200;
+  line-height: 58px;
+  color: #333;
+}
+body .wrap .card .center-card,
+html .wrap .card .center-card {
+  display: flex;
+}
+body .wrap .card .center-card .right-card,
+html .wrap .card .center-card .right-card {
+  width: 978px;
+  height: 340px;
+  margin-left: 15px;
+}
+body .wrap .card .center-card .right-card ul,
+html .wrap .card .center-card .right-card ul {
+  width: 992px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+body .wrap .card .center-card .right-card ul li,
+html .wrap .card .center-card .right-card ul li {
+  list-style: none;
+  width: 234px;
+  height: 260px;
+  padding: 20px 0;
+  background-color: #ffffff;
+  margin-bottom: 14px;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+body .wrap .card .center-card .right-card ul li div.img,
+html .wrap .card .center-card .right-card ul li div.img {
+  display: flex;
+  justify-content: center;
+}
+body .wrap .card .center-card .right-card ul li div.img img,
+html .wrap .card .center-card .right-card ul li div.img img {
+  width: 160px;
+  height: 160px;
+}
+body .wrap .card .center-card .right-card ul li div.name,
+html .wrap .card .center-card .right-card ul li div.name {
+  text-align: center;
+  margin: 0 20px 3px;
+  font-size: 14px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  color: #212121;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 20px;
+}
+body .wrap .card .center-card .right-card ul li div.dec,
+html .wrap .card .center-card .right-card ul li div.dec {
+  text-align: center;
+  height: 18px;
+  margin: 0 20px 12px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  color: #b0b0b0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+body .wrap .card .center-card .right-card ul li div.price,
+html .wrap .card .center-card .right-card ul li div.price {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+body .wrap .card .center-card .right-card ul li div.price span,
+html .wrap .card .center-card .right-card ul li div.price span {
+  color: #ff6709;
+}
+body .wrap .card .center-card .right-card ul li div.price del,
+html .wrap .card .center-card .right-card ul li div.price del {
+  color: #b0b0b0;
+  margin-left: 0.5em;
+  text-decoration: line-through;
+}
+body .wrap .card .center-card .right-card ul li:nth-child(n+2),
+html .wrap .card .center-card .right-card ul li:nth-child(n+2) {
+  margin-left: 15px;
+}
+body .wrap .card .center-card .right-card ul li:nth-child(4n+5),
+html .wrap .card .center-card .right-card ul li:nth-child(4n+5) {
+  margin-left: 0px;
+}
+body .wrap .card .center-card .right-card ul li:hover,
+html .wrap .card .center-card .right-card ul li:hover {
+  z-index: 2;
+  -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  -webkit-transform: translate3d(0, -2px, 0);
+  transform: translate3d(0, -2px, 0);
+}
+body .wrap .card .bottom-card,
+html .wrap .card .bottom-card {
+  margin: 22px 0;
+}
+body .wrap .jiadian-card,
+html .wrap .jiadian-card {
+  width: 1226px;
+  margin: 0 61.5px;
+  height: auto;
+}
+body .wrap .jiadian-card .top-card,
+html .wrap .jiadian-card .top-card {
+  height: 58px;
+}
+body .wrap .jiadian-card .top-card span,
+html .wrap .jiadian-card .top-card span {
+  font-size: 22px;
+  font-weight: 200;
+  line-height: 58px;
+  color: #333;
+}
+body .wrap .jiadian-card .center-card,
+html .wrap .jiadian-card .center-card {
+  display: flex;
+}
+body .wrap .jiadian-card .center-card .left-card,
+html .wrap .jiadian-card .center-card .left-card {
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+body .wrap .jiadian-card .center-card .left-card img,
+html .wrap .jiadian-card .center-card .left-card img {
+  height: 300px;
+  width: 234px;
+}
+body .wrap .jiadian-card .center-card .left-card img:first-child,
+html .wrap .jiadian-card .center-card .left-card img:first-child {
+  margin-bottom: 14px;
+}
+body .wrap .jiadian-card .center-card .left-card img:hover,
+html .wrap .jiadian-card .center-card .left-card img:hover {
+  z-index: 2;
+  -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  -webkit-transform: translate3d(0, -2px, 0);
+  transform: translate3d(0, -2px, 0);
+}
+body .wrap .jiadian-card .center-card .right-card,
+html .wrap .jiadian-card .center-card .right-card {
+  width: 978px;
+  height: 340px;
+  margin-left: 15px;
+}
+body .wrap .jiadian-card .center-card .right-card ul,
+html .wrap .jiadian-card .center-card .right-card ul {
+  width: 992px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+body .wrap .jiadian-card .center-card .right-card ul li,
+html .wrap .jiadian-card .center-card .right-card ul li {
+  list-style: none;
+  width: 234px;
+  height: 260px;
+  padding: 20px 0;
+  background-color: #ffffff;
+  margin-bottom: 14px;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+body .wrap .jiadian-card .center-card .right-card ul li div.img,
+html .wrap .jiadian-card .center-card .right-card ul li div.img {
+  display: flex;
+  justify-content: center;
+}
+body .wrap .jiadian-card .center-card .right-card ul li div.img img,
+html .wrap .jiadian-card .center-card .right-card ul li div.img img {
+  width: 160px;
+  height: 160px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li div.name,
+html .wrap .jiadian-card .center-card .right-card ul li div.name {
+  text-align: center;
+  margin: 0 20px 3px;
+  font-size: 14px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  color: #212121;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 20px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li div.dec,
+html .wrap .jiadian-card .center-card .right-card ul li div.dec {
+  text-align: center;
+  height: 18px;
+  margin: 0 20px 12px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  color: #b0b0b0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+body .wrap .jiadian-card .center-card .right-card ul li div.price,
+html .wrap .jiadian-card .center-card .right-card ul li div.price {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li div.price span,
+html .wrap .jiadian-card .center-card .right-card ul li div.price span {
+  color: #ff6709;
+}
+body .wrap .jiadian-card .center-card .right-card ul li div.price del,
+html .wrap .jiadian-card .center-card .right-card ul li div.price del {
+  color: #b0b0b0;
+  margin-left: 0.5em;
+  text-decoration: line-through;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin-img,
+html .wrap .jiadian-card .center-card .right-card ul li .fin-img {
+  width: 234px;
+  height: 143px;
+  margin-bottom: 14px;
+  display: flex;
+  background-color: #ffffff;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin-img .fin-name,
+html .wrap .jiadian-card .center-card .right-card ul li .fin-img .fin-name {
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+  margin-top: 40px;
+  width: 100px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin-img .fin-name span,
+html .wrap .jiadian-card .center-card .right-card ul li .fin-img .fin-name span {
+  width: 100px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin-img .fin-name .fin-price,
+html .wrap .jiadian-card .center-card .right-card ul li .fin-img .fin-name .fin-price {
+  color: #ff6709;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin-img .fin-imgs,
+html .wrap .jiadian-card .center-card .right-card ul li .fin-img .fin-imgs {
+  margin-top: 30px;
+  margin-left: 10px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin-img .fin-imgs img,
+html .wrap .jiadian-card .center-card .right-card ul li .fin-img .fin-imgs img {
+  width: 80px;
+  height: 80px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin-img:hover,
+html .wrap .jiadian-card .center-card .right-card ul li .fin-img:hover {
+  z-index: 2;
+  -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  -webkit-transform: translate3d(0, -2px, 0);
+  transform: translate3d(0, -2px, 0);
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin,
+html .wrap .jiadian-card .center-card .right-card ul li .fin {
+  width: 234px;
+  height: 143px;
+  margin-bottom: 14px;
+  display: flex;
+  background-color: #ffffff;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin .nn,
+html .wrap .jiadian-card .center-card .right-card ul li .fin .nn {
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+  margin-top: 45px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin .nn .finname,
+html .wrap .jiadian-card .center-card .right-card ul li .fin .nn .finname {
+  font-size: 18px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin .nn .findec,
+html .wrap .jiadian-card .center-card .right-card ul li .fin .nn .findec {
+  color: #757575;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin .finimg,
+html .wrap .jiadian-card .center-card .right-card ul li .fin .finimg {
+  margin-top: 30px;
+  margin-left: 35px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin .finimg i,
+html .wrap .jiadian-card .center-card .right-card ul li .fin .finimg i {
+  width: 52px;
+  height: 52px;
+  font-size: 52px;
+  color: #ff6709;
+}
+body .wrap .jiadian-card .center-card .right-card ul li .fin:hover,
+html .wrap .jiadian-card .center-card .right-card ul li .fin:hover {
+  z-index: 2;
+  -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  -webkit-transform: translate3d(0, -2px, 0);
+  transform: translate3d(0, -2px, 0);
+}
+body .wrap .jiadian-card .center-card .right-card ul li:nth-child(n+2),
+html .wrap .jiadian-card .center-card .right-card ul li:nth-child(n+2) {
+  margin-left: 15px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li:nth-child(4n+5),
+html .wrap .jiadian-card .center-card .right-card ul li:nth-child(4n+5) {
+  margin-left: 0px;
+}
+body .wrap .jiadian-card .center-card .right-card ul li.hover:hover,
+html .wrap .jiadian-card .center-card .right-card ul li.hover:hover {
+  z-index: 2;
+  -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  -webkit-transform: translate3d(0, -2px, 0);
+  transform: translate3d(0, -2px, 0);
+}
+body .wrap .jiadian-card .center-card .right-card ul li:last-child,
+html .wrap .jiadian-card .center-card .right-card ul li:last-child {
+  background-color: #f5f5f5;
+  padding: 0;
+  margin-top: 0;
+}
+body .wrap .jiadian-card .bottom-card,
+html .wrap .jiadian-card .bottom-card {
+  margin: 22px 0;
 }
