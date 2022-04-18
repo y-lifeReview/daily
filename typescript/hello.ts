@@ -285,3 +285,48 @@ let alice: Person = {
   }
   createAry(3,'dsd')
 }
+
+// 
+{
+  //## keyof 索引查询: 对应任何类型T,keyof T的结果为该类型上所有**公有属性**key的联合
+  interface Person {
+    name:string,
+    readonly age:number
+  }
+  type T1 = keyof Person // T1:name|age
+  let p1:T1 = 'age' //  
+  // let p2:T1 = 'other'// error  T1被约束为'name'和'age'
+
+  class Person2 {
+    name:string;
+    private age:number = 6;
+    protected home:string;
+    constructor (name:string,home:string){
+      this.name = name;
+      this.home = home
+    }
+  }
+  type T2 = keyof Person2; //T2:name
+  let p2:T2 = 'name'
+  // let p3:T2 = 'age' 
+  // let p4:T2 = 'home' //'age'和'home'不是公有属性 不能被keyof获取
+}
+{
+  //## T[K] 索引访问  类型[key] 如果[]中的key有不存在T中的则是any
+  interface Person {
+    name:string,
+    age:number,
+    home:boolean
+  }
+  type T1 = Person['name'] //string
+  let v1:T1 = 'string'
+  // let v2:T1 = 6 //error
+  type T2 = Person['name'|'age'] //string|number
+  let v3:T2 = 'string'
+  let v4:T2 = 78
+  // let v5:T2 = false //error
+
+  // T[keyof T]的方式，可以获取到T所有key的类型组成的联合类型
+  type T3 = Person[keyof Person] //string|number|boolean
+  // type T4 = Person['sex'] //any
+}
