@@ -330,3 +330,22 @@ let alice: Person = {
   type T3 = Person[keyof Person] //string|number|boolean
   // type T4 = Person['sex'] //any
 }
+{
+  // & 交叉类型 取多个类型的(并集)，但是如果相同key但是类型不同，则该key为never
+  interface P1 {
+    name:string,
+    age:number
+  }
+  interface P2{
+    home:boolean,
+    age:string
+  }
+  type T1 = P1 & P2 // {name: string; age: never; home: boolean}  P1、P2中age类型不同交叉后为never
+  let v1:T1 = {
+    name:'',
+    home:false,
+    age:(function(){
+      throw Error()
+    })()
+  }
+}
