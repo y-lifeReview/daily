@@ -63,7 +63,7 @@ interface Person {
 }
 let tom: Person = {
   name: "tom",
-  age: 6,
+  age: 60,
 };
 // 定义的变量比接口少了一些属性是不允许的
 let jerry: Person = {
