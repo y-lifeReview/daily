@@ -47,4 +47,7 @@
             let aryFill = [1,2,3,4];
             console.log(aryFill.fill('fill')); //[ 'fill', 'fill', 'fill', 'fill' ]
             console.log(aryFill); //[ 'fill', 'fill', 'fill', 'fill' ] 改变数组
+
+            // filter() ：filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素
+            
 }
