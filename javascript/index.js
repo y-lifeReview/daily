@@ -49,5 +49,44 @@
             console.log(aryFill); //[ 'fill', 'fill', 'fill', 'fill' ] 改变数组
 
             // filter() ：filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素
-            
+            let aryFilter = [1,2,3,4];
+            let newFilter = aryFilter.filter((item,index)=>{
+                return item < 3
+            })
+            console.log(newFilter);
+
+            // find() : find() 方法返回通过测试（函数内判断）的数组的第一个元素的值 如果没有符合条件的元素返回 undefined
+            let aryFind = [1,2,3,4];
+            let newFind = aryFind.find((item,index)=>{
+                return item < 3
+            })
+            console.log(newFind)
+
+            // forEach() : 调用数组的每个元素，并将元素传递给回调函数
+            let aryEach = [1,2,3,4];
+            let tempEach = []
+            let newEach = aryEach.forEach((item,index)=>{
+                item+=1;
+                tempEach.push(item)
+            })
+            console.log(aryEach)    //[1,2,3,4] 不改变原数组
+            console.log(newEach)   //undefined forEach没有返回值
+            console.log(tempEach)
+
+            // from(object,mapFunction,thisValue)：用于通过拥有 length 属性的对象或可迭代的对象来返回一个数组
+            // 参数：object:必需，要转换为数组的对象;mapFunction:可选，数组中每个元素要调用的函数。;thisValue:可选，映射函数(mapFunction)中的 this 对象
+            // eg：通过字符串创建一个数组：
+            let myArr = Array.from("RUNOOB");
+            console.log(myArr) // [ 'R', 'U', 'N', 'O', 'O', 'B' ]
+            let obj = {
+                '0':'a',
+                '1':'b',
+                '2':'c',
+                'length':4
+            }
+            let newFrom = Array.from(obj);
+            console.log(newFrom) //[ 'a', 'b', 'c', undefined ]
+            // eg:from 实现数组去重：
+            let arrSet = Array.from(new Set([1, 2, 1, 2]))
+            console.log(arrSet) //[1, 2]
 }
