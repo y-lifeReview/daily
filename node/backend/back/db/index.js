@@ -1,8 +1,8 @@
 let mysql =require('mysql')
 var connection = mysql.createConnection({
-    host     : '',
+    host     : 'gz-cynosdbmysql-grp-pd4ndjr1.sql.tencentcdb.com',
     user     : 'root',
-    password : '',
+    password : '19980508cX',
     port:'27251',
     database : 'test'
   });
