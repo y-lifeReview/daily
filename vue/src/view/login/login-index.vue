@@ -31,7 +31,7 @@
           </label>
         </div>
 
-        <button class="btn">Login</button>
+        <button @click="reset()" class="btn">Login</button>
 
         <p class="text">Don't have an account? <a href="#">Register</a></p>
       </form>
@@ -40,8 +40,32 @@
 </template>
 <script>
 import "@/styles/animate.css";
+import { useGet, usePost } from "@/hooks/index";
+import { urlForGetMockArticle, urlForSaveMockArticle } from "@/api/url";
 
-export default {};
+
+const post = usePost();
+const get = useGet();
+function save(obj){
+  post({url:urlForSaveMockArticle,data:obj}).then((res)=>{
+    console.log('保存结果',res)
+  })
+}
+function set() {
+  get({ url: urlForGetMockArticle }).then((res) => {
+    console.log("res", res);
+    save(res.data[0])
+  });
+}
+export default {
+  return: {},
+  methods: {
+    reset: function () {
+      set();
+    },
+  },
+  created() {},
+};
 </script>
 
 <style lang="scss" scoped>
@@ -73,14 +97,13 @@ export default {};
   background-size: 400% 100%;
   .container {
     background: linear-gradient(145deg, #8cdde6, #a7ffff);
-    box-shadow:  35px 35px 70px #85d0d9,
-             -35px -35px 70px #b3ffff;
+    box-shadow: 35px 35px 70px #85d0d9, -35px -35px 70px #b3ffff;
     padding: 20px 40px;
     border-radius: 25px;
     h1 {
       text-align: center;
       margin-bottom: 30px;
-      color:#f9f871
+      color: #f9f871;
     }
     .form-control {
       position: relative;
@@ -121,7 +144,7 @@ export default {};
     }
     .text {
       margin-top: 30px;
-      color: #FFF;
+      color: #fff;
     }
     .btn {
       cursor: pointer;

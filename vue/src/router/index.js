@@ -10,7 +10,7 @@ export const routes = [{
     component: Login,
 }, {
     path: '/',
-    redirect: '/index',
+    redirect: '/login',
     hidden: true,
 }, {
     path: '/index',
