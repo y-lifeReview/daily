@@ -9,10 +9,10 @@ function http({
     afterRequest
 }) {
     const successHandler = (res) => {
-        if (res.data.code == 200) {
+        // if (res.data.code == 200) {
             return res.data;
-        }
-        throw new Error(res.data.msg || "请求失败，未知异常");
+        // }
+        // throw new Error(res.data.msg || "请求失败，未知异常");
     };
     const failHandler = (error) => {
         afterRequest && afterRequest();

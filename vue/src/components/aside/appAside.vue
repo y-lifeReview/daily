@@ -14,5 +14,6 @@ export default ({
     float: left;
     background-color: #f9f9f9;
     height: 100%;
+    position: fixed;
 }
 </style>
