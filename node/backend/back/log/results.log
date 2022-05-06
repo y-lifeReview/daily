@@ -45,3 +45,12 @@
 2022-04-22 14:41:31 error [www]: GET undefinedNot Found
 2022-04-29 16:43:55 error [www]: POST undefinedconnection is not defined
 2022-04-29 16:49:10 error [www]: POST undefinedreq.body.values is not a function
+2022-05-06 11:21:12 error [www]: GET undefinedgetWeather is not a function
+2022-05-06 11:23:28 error [www]: GET undefinedgetWeather is not a function
+2022-05-06 11:24:22 error [www]: GET undefinedgetWeather.getWeather is not a function
+2022-05-06 13:08:23 error [www]: GET undefinedCannot access 'ip' before initialization
+2022-05-06 13:10:05 error [www]: GET undefinedip.join is not a function
+2022-05-06 13:10:37 error [www]: GET undefinedip.join is not a function
+2022-05-06 13:12:53 error [www]: GET undefinedgetClientIp is not a function
+2022-05-06 13:13:35 error [www]: GET undefinedip.join is not a function
+2022-05-06 13:14:01 error [www]: GET undefinedip.join is not a function

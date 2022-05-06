@@ -1,18 +1,35 @@
 <template>
   <header class="app-header">
-    <div class="header-left">{{city}}</div>
+    <div class="header-left">
+      <div
+        class="weather-box"
+        :style="{ background: 'url(' + weatherBg + ') 0% 0% / 100%' }"
+      >
+        <span>{{ temperature }}℃</span>
+        <img class="weather-icon" :src="'https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/'+weather+'.png'" alt="">
+        <span>{{ city }}</span>
+      </div>
+    </div>
   </header>
 </template>
 
 <script>
+import { getLStorage } from "@/hooks/storage";
 export default {
   data() {
     return {
-      city:'成都'
+      city: "成都市",
+      temperature: "25",
+      weather: "多云",
+      weatherBg:
+        "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg1.png",
     };
   },
-  setup() {
-    
+  mounted() {
+    this.city = getLStorage("city") || "成都市";
+    this.temperature = getLStorage("temperature") || "25";
+    this.weather = getLStorage("weather") || "多云";
+    this.weatherBg = "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg"+Math.ceil(Math.random() * 5)+".png" 
   },
 };
 </script>
@@ -31,9 +48,27 @@ export default {
     width: 220px;
     height: 50px;
     float: left;
-    .logo-img {
-      width: 100px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .weather-box {
+      width: 150px;
       height: 40px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      border-radius: 5px;
+      span {
+        color: #fff;
+        letter-spacing: 1px;
+      }
+      .weather-icon{
+        width: 40px;
+        height: 40px;
+      }
     }
   }
 }

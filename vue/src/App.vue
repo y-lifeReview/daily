@@ -3,7 +3,8 @@
 </template>
 <script>
 import { useGet } from "@/hooks/index";
-import { setLStorange } from "@/hooks/storage";
+import { getLStorage, setLStorage } from "@/hooks/storage";
+import { urlForGetWeather } from "@/api/url";
 const get = useGet();
 
 export default {
@@ -11,30 +12,27 @@ export default {
     return {};
   },
   methods: {
-    getWeather: function (adcode) {
+    getWeather: function () {
       get({
-        url: "https://restapi.amap.com/v3/weather/weatherInfo",
-        data: { key: "", city: adcode },
+        url: urlForGetWeather,
       }).then((res) => {
         console.log("res", res);
-        if (res.info === "ok") {
-          let data = res.lives[0]
-          setLStorange('city',data.city);
+        if(res.code === 200){
+          let data = res.data.lives[0];
+          setLStorage('city',data.city);
+          setLStorage('temperature',data.temperature);
+          setLStorage('weather',data.weather.replace('/','a').replace('-','a'));
+        }else{
+          return 
         }
-      });
-    },
-    getAdcode: function () {
-      get({
-        url: "https://restapi.amap.com/v3/ip",
-        data: { key: "" },
-      }).then((res) => {
-        this.getWeather(res.adcode);
       });
     },
   },
   mounted() {
-    console.log("mounted");
-    this.getAdcode();
+    let date = new Date()
+    if(!getLStorage('city')||date.getSeconds()%3==1){
+      this.getWeather();
+    }
   },
 };
 </script>

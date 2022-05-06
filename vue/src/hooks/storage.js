@@ -1,16 +1,24 @@
-function getLStorage(key){
-    return window.localStorage.getItem(JSON.stringify(key))
+export function getLStorage(key) {
+    
+    return JSON.parse(window.localStorage.getItem(key))
 }
-function setLStorage(key,value){
-    window.localStorage.setItem(key,JSON.parse(value))
+
+export function setLStorage(key, value) {
+    // console.log(value)
+    window.localStorage.setItem(key, JSON.stringify(value))
 }
-function removeLStorage(key){
+
+export function removeLStorage(key) {
     window.localStorage.removeItem(key)
 }
-function clearLStorage(){
+
+export function clearLStorage() {
     window.localStorage.clear()
 }
 
-export default{
-    getLStorage,setLStorage,removeLStorage,clearLStorage
-}
+// export default {
+//     getLStorage,
+//     setLStorage,
+//     removeLStorage,
+//     clearLStorage
+// }

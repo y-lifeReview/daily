@@ -6,5 +6,5 @@ var connection = mysql.createConnection({
     port:'27251',
     database : 'test'
   });
-connection.connect();
+// connection.connect();
 module.exports = connection; 
