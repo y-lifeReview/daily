@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import "@/styles/animate.css";
+import "@/styles/animates.css";
 import { useGet, usePost } from "@/hooks/index";
 import { urlForGetMockArticle, urlForSaveMockArticle } from "@/api/url";
 

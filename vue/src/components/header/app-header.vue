@@ -1,8 +1,8 @@
 <template>
   <header class="app-header">
-    <div class="header-left">
+    <div class="  header-left">
       <div
-        class="weather-box"
+        class="weather-box wow animate__fadeInDown"
         :style="{ background: 'url(' + weatherBg + ') 0% 0% / 100%' }"
       >
         <span>{{ temperature }}℃</span>
@@ -48,7 +48,7 @@ export default {
     width: 220px;
     height: 50px;
     float: left;
-    padding: 5px;
+    padding: 5px 5px 5px 0;
     display: flex;
     justify-content: center;
     align-items: center;

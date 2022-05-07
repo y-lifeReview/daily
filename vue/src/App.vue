@@ -5,6 +5,7 @@
 import { useGet } from "@/hooks/index";
 import { getLStorage, setLStorage } from "@/hooks/storage";
 import { urlForGetWeather } from "@/api/url";
+import wow from "wow.js"
 const get = useGet();
 
 export default {
@@ -29,6 +30,11 @@ export default {
     },
   },
   mounted() {
+    new wow({
+      offset:50
+    }).init()
+    console.log('mounted')
+    window.scrollTo(0,0)
     let date = new Date()
     if(!getLStorage('city')||date.getSeconds()%3==1){
       this.getWeather();

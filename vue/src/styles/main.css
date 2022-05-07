@@ -18,6 +18,88 @@ body {
 
 }
 
+::selection {
+    background: #344449;
+    color: #fff;
+    text-shadow: none;
+}
+
 * {
     box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+    word-break: break-all;
+    color: inherit;
+    display: block;
+    position: relative;
+}
+
+.nav-ul>li>a:hover {
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.nav-ul li span {
+    opacity: .9;
+    color: #777;
+}
+
+.nav-ul li i {
+    opacity: .9;
+    color: #777;
+    font-size: 20px;
+    margin-right: 15px;
+}
+
+a i {
+    opacity: .9;
+    color: #777;
+    font-size: 22px !important;
+}
+
+.aside-box .avatar-box:hover {
+    background: url(https://www.ihewro.com/usr/themes/handsome/assets/img/snow.gif);
+    background-size: cover;
+    color: #999;
+}
+
+.right-icon {
+    position: absolute;
+    right: 0;
+}
+
+.scroll-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.small-scroll-bar::-webkit-scrollbar-track-piece {
+    background: #eee;
+}
+
+.small-scroll-bar::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #cbcbcb;
+}
+
+.small-scroll-bar::-webkit-scrollbar-corner {
+    background-color: #cbcbcb;
+}
+
+.small-scroll-bar::-webkit-scrollbar {
+    width: 8px;
+    height: 6px;
+}
+
+.small-scroll-bar::-webkit-resizer {
+    background-color: #cbcbcb;
+}
+
+small {
+    font-size: 13px;
+}
+
+h1 {
+    font-size: 30px;
 }

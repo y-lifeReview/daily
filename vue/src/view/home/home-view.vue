@@ -1,16 +1,16 @@
 <template>
   <div class="main-container">
-    <Header></Header>
+    <Header ></Header>
     <Aside></Aside>
     <div class="main-content">
         <div class="article-content">
           <div class="article-box">
-            <div class="box-header">
-              <h1>YCC</h1>
+            <header  class="box-header">
+              <h1 class="">sprinkle</h1>
               <small>她说生命来来往往，哪怕来日方长。</small>
-            </div>
+            </header>
             <div class="article_list">
-              <div v-for="item in 10" :key="item" class="article_item"></div>
+              <div v-for="item in 10" :key="item" class="article_item wow animate__fadeIn"></div>
             </div>
           </div>
           <div class="article-option"></div>
@@ -21,18 +21,23 @@
 <script>
 import Header from "@/components/header/app-header.vue";
 import Aside from "@/components/aside/appAside.vue";
+
 export default {
+  
   components: {
     Header,
     Aside,
   },
+  mounted(){
+    
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .main-container {
   width: 1170px;
-  height: 100%;
+  // height: 100%;
   margin: auto;
   padding-top: 50px;
   min-height: 100%;
