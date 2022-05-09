@@ -1,15 +1,24 @@
 <template>
   <header class="app-header">
-    <div class="  header-left">
+    <div class="header-left">
       <div
         class="weather-box wow animate__fadeInDown"
         :style="{ background: 'url(' + weatherBg + ') 0% 0% / 100%' }"
       >
         <span>{{ temperature }}℃</span>
-        <img class="weather-icon" :src="'https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/'+weather+'.png'" alt="">
+        <img
+          class="weather-icon"
+          :src="
+            'https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/' +
+            weather +
+            '.png'
+          "
+          alt=""
+        />
         <span>{{ city }}</span>
       </div>
     </div>
+    
   </header>
 </template>
 
@@ -18,6 +27,12 @@ import { getLStorage } from "@/hooks/storage";
 export default {
   data() {
     return {
+      audio: {
+        title: "",
+        author: "",
+        src: "",
+        lrc: "",
+      },
       city: "成都市",
       temperature: "25",
       weather: "多云",
@@ -29,7 +44,10 @@ export default {
     this.city = getLStorage("city") || "成都市";
     this.temperature = getLStorage("temperature") || "25";
     this.weather = getLStorage("weather") || "多云";
-    this.weatherBg = "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg"+Math.ceil(Math.random() * 5)+".png" 
+    this.weatherBg =
+      "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg" +
+      Math.ceil(Math.random() * 5) +
+      ".png";
   },
 };
 </script>
@@ -65,7 +83,7 @@ export default {
         color: #fff;
         letter-spacing: 1px;
       }
-      .weather-icon{
+      .weather-icon {
         width: 40px;
         height: 40px;
       }
