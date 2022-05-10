@@ -18,21 +18,20 @@
         <span>{{ city }}</span>
       </div>
     </div>
-    
+    <aPlayer></aPlayer>
   </header>
 </template>
 
 <script>
 import { getLStorage } from "@/hooks/storage";
+import aPlayer from "@/components/aplayer/appPlayer.vue";
+
 export default {
+  components: {
+    aPlayer,
+  },
   data() {
     return {
-      audio: {
-        title: "",
-        author: "",
-        src: "",
-        lrc: "",
-      },
       city: "成都市",
       temperature: "25",
       weather: "多云",
@@ -40,6 +39,7 @@ export default {
         "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg1.png",
     };
   },
+
   mounted() {
     this.city = getLStorage("city") || "成都市";
     this.temperature = getLStorage("temperature") || "25";

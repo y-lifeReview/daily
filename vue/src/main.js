@@ -3,7 +3,7 @@ import App from './App.vue'
 import "@/styles/main.css";
 import router from "./router";
 
-import ElementPlus from 'element-plus';
+// import ElementPlus from 'element-plus';
 import vuetyped from 'vue3typed'
 
 import 'animate.css'
@@ -12,10 +12,10 @@ import 'animate.css/animate.compat.css'
 
 // createApp.prototype.$wow = wow
 
-import 'element-plus/dist/index.css'
+// import 'element-plus/dist/index.css'
 import './utils/router'
 import './mock/article/index'
 const app = createApp(App);
-app.use(router).use(ElementPlus).use(vuetyped)
+app.use(router).use(vuetyped)
 app.mount('#app')
 
