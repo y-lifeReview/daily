@@ -18,7 +18,9 @@
         <span>{{ city }}</span>
       </div>
     </div>
-    <aPlayer></aPlayer>
+    <div class="header-right">
+      <aPlayer></aPlayer>
+    </div>
   </header>
 </template>
 
@@ -62,6 +64,7 @@ export default {
   box-shadow: 0 1px 4px 1px rgb(0 0 0 / 5%);
   background-color: #f9f9f9;
   z-index: 2;
+  display: flex;
   .header-left {
     width: 220px;
     height: 50px;
@@ -88,6 +91,9 @@ export default {
         height: 40px;
       }
     }
+  }
+  .header-right{
+    width:950px
   }
 }
 </style>

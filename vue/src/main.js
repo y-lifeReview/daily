@@ -17,5 +17,6 @@ import './utils/router'
 import './mock/article/index'
 const app = createApp(App);
 app.use(router).use(vuetyped)
+// app.config.compilerOptions.isCustomElement = tag => tag === 'meting-js'
 app.mount('#app')
 
