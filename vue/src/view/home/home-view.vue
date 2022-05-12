@@ -10,6 +10,7 @@
               <small>她说生命来来往往，哪怕来日方长。</small>
             </header>
             <div class="article_list">
+              <router-view></router-view>
               <div v-for="item in 10" :key="item" class="article_item wow animate__fadeIn"></div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 <template>
-  <div id="aplayer">
+  <div id="aplayer" class="wow animate__fadeInDown">
     <meting-js
       :autoplay="false"
       :fixed="false"
@@ -13,11 +13,36 @@
   </div>
 </template>
 <script>
+import "@/styles/animates.css";
 export default {
   name: "aPlayer",
-  data() {},
-  mounted() {},
-  methods: {},
+  data() {
+    return {
+      
+    };
+  },
+  mounted() {
+    
+    let ap = null;
+    Object.defineProperty(document.querySelector("meting-js"), "aplayer", {
+      set: function (aplayer) {
+        ap = aplayer;
+        ap.on('play',function(){
+          document.getElementsByClassName('aplayer-pic')[0].classList.add('rotation')
+        })
+        ap.on('pause',function(){
+           document.getElementsByClassName('aplayer-pic')[0].classList.remove('rotation')
+        })
+        document.getElementsByClassName('aplayer-icon-lrc')[0].setAttribute('title','歌词')
+        document.getElementsByClassName('aplayer-icon-menu')[0].setAttribute('title','列表')
+        document.getElementsByClassName('aplayer-lrc')[0].classList.add('aplayer-lrc-hide')
+        document.getElementsByClassName('aplayer-icon-lrc')[0].classList.add('aplayer-icon-lrc-inactivity')
+      },
+    });
+  },
+  methods: {
+    
+  },
 };
 </script>
 <style lang="scss">
@@ -27,7 +52,7 @@ export default {
   background: 0 0;
   box-shadow: none;
   margin: 0 5px;
-  float:right;
+  float: right;
   .aplayer-pic {
     transition: 0.37s;
     -webkit-transition: 0.37s;
@@ -162,17 +187,6 @@ export default {
   }
 }
 
-@media (min-width: 767px) {
-  #aplayer .aplayer-withlist .aplayer-icon-order,
-  #aplayer
-    .aplayer-withlist
-    .aplayer-info
-    .aplayer-controller
-    .aplayer-time
-    .aplayer-icon.aplayer-icon-menu {
-    display: none !important;
-  }
-}
 @media (min-width: 767px) {
   #aplayer
     .aplayer-info

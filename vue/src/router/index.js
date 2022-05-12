@@ -10,12 +10,9 @@ export const routes = [{
     component: Login,
 }, {
     path: '/',
-    redirect: '/index',
-    hidden: true,
-}, {
-    path: '/index',
     name: 'Index',
     component: Index,
+    
 }]
 
 const router = createRouter({
