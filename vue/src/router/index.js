@@ -4,6 +4,7 @@ import {
 } from 'vue-router'
 import Login from '@/view/login/login-index.vue'
 import Index from '@/view/home/home-view.vue'
+import List from '@/components/articleList/articleList.vue'
 export const routes = [{
     path: '/login',
     name: 'Login',
@@ -12,7 +13,12 @@ export const routes = [{
     path: '/',
     name: 'Index',
     component: Index,
-    
+    children:[
+        {
+            path:'/',
+            component:List
+        }
+    ]
 }]
 
 const router = createRouter({
