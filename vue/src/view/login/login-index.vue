@@ -1,11 +1,10 @@
 <template>
   <div class="login_container">
     <div class="container">
-      <h1>Please Login</h1>
+      <h1>Please login</h1>
       <form>
         <div class="form-control">
-          <input type="text" required />
-          <!-- <label>Email</label> -->
+          <input type="text" v-model="name" required />
           <label>
             <span style="transition-delay: 0ms">N</span>
             <span style="transition-delay: 50ms">a</span>
@@ -14,10 +13,9 @@
             <!-- <span style="transition-delay: 200ms">l</span> -->
           </label>
         </div>
-
         <div class="form-control">
-          <input type="password" required />
-          <!-- <label>Password</label> -->
+          <input type="password" v-model="password" required />
+          
           <label>
             <span style="transition-delay: 0ms">P</span>
             <span style="transition-delay: 50ms">a</span>
@@ -29,10 +27,9 @@
             <span style="transition-delay: 350ms">d</span>
             <!-- <span style="transition-delay: 200ms">l</span> -->
           </label>
+          <div class="tips">{{ tips }}</div>
         </div>
-
-        <button @click="reset()" class="btn">Login</button>
-
+        <button @click.prevent="login()" class="btn">Login</button>
         <p class="text">Don't have an account? <a href="#">Register</a></p>
       </form>
     </div>
@@ -40,28 +37,58 @@
 </template>
 <script>
 import "@/styles/animates.css";
-import { useGet, usePost } from "@/hooks/index";
-import { urlForGetMockArticle, urlForSaveMockArticle } from "@/api/url";
-
+import { hamcSha } from "@/hooks/cryptoJs";
+import {urlForLogin} from "@/api/url"
+import {  usePost } from "@/hooks/index";
+// import { urlForGetMockArticle, urlForSaveMockArticle } from "@/api/url";
 
 const post = usePost();
-const get = useGet();
-function save(obj){
-  post({url:urlForSaveMockArticle,data:obj}).then((res)=>{
-    console.log('保存结果',res)
-  })
-}
-function set() {
-  get({ url: urlForGetMockArticle }).then((res) => {
-    console.log("res", res);
-    save(res.data[0])
-  });
-}
+// const get = useGet();
+// function save(obj){
+//   post({url:urlForSaveMockArticle,data:obj}).then((res)=>{
+//     console.log('保存结果',res)
+//   })
+// }
+// function set() {
+//   get({ url: urlForGetMockArticle }).then((res) => {
+//     console.log("res", res);
+//     save(res.data[0])
+//   });
+// }
 export default {
-  return: {},
+  data() {
+    return {
+      name: "",
+      password: "",
+      tips: "",
+    };
+  },
+
   methods: {
-    reset: function () {
-      set();
+    login: function () {
+      if (this.name.length === 0 || this.name.trim().length === 0) {
+        this.tips = "请输入用户名！";
+        return;
+      }
+      if (this.password.length === 0 || this.password.trim().length === 0) {
+        this.tips = "请输入密码！";
+        return;
+      }
+      this.tips = ''
+      let name = hamcSha(this.name.trim()),
+        password = hamcSha(this.password.trim());
+      // console.log(name, password);
+      post({
+        url:urlForLogin,
+        data:{
+          name,
+          password
+        }
+      }).then((result)=>{
+        console.log(result)
+      }).catch((err)=>{
+        console.log(err)
+      })
     },
   },
   created() {},
@@ -140,6 +167,14 @@ export default {
           min-width: 5px;
           transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
+      }
+      .tips{
+        color:red;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 20px;
+        height: 20px;
+        min-height: 20px;
       }
     }
     .text {

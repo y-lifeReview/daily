@@ -7,10 +7,10 @@ const logger = require('./logger')
 let connection = require('./db/index')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/user');
 var poemRouter = require('./routes/poem');
 var articleRouter = require('./routes/article');
-var musicRouter = require('./routes/music');
+// var musicRouter = require('./routes/music');
 const cors = require('cors')
 
 var app = express();
@@ -41,10 +41,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/poem', poemRouter);
 app.use('/article', articleRouter);
-app.use('/music', musicRouter);
+// app.use('/music', musicRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -26,8 +26,8 @@ router.get('/getWeather', function (req, res, next) {
     let data = getWeather(res1.data.adcode)
     data.then((res2) => {
       // console.log(res2.data)
-      // res.send(reqData(200,res2.data))
-      res.send()
+      res.send(reqData(200,res2.data))
+      // res.send()
     }).catch((err) => {
       res.send(reqData(500, err))
     })

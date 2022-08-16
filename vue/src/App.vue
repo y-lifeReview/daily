@@ -39,6 +39,7 @@ export default {
     if(!getLStorage('city')||date.getSeconds()%3==1){
       this.getWeather();
     }
+    
   },
 };
 </script>
