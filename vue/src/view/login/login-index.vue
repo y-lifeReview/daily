@@ -15,7 +15,7 @@
         </div>
         <div class="form-control">
           <input type="password" v-model="password" required />
-          
+
           <label>
             <span style="transition-delay: 0ms">P</span>
             <span style="transition-delay: 50ms">a</span>
@@ -38,23 +38,13 @@
 <script>
 import "@/styles/animates.css";
 import { hamcSha } from "@/hooks/cryptoJs";
-import {urlForLogin} from "@/api/url"
-import {  usePost } from "@/hooks/index";
+import { urlForLogin, urlForRegister } from "@/api/url";
+import { usePost } from "@/hooks/index";
+import { setSStorage } from "@/hooks/storage";
 // import { urlForGetMockArticle, urlForSaveMockArticle } from "@/api/url";
 
 const post = usePost();
-// const get = useGet();
-// function save(obj){
-//   post({url:urlForSaveMockArticle,data:obj}).then((res)=>{
-//     console.log('保存结果',res)
-//   })
-// }
-// function set() {
-//   get({ url: urlForGetMockArticle }).then((res) => {
-//     console.log("res", res);
-//     save(res.data[0])
-//   });
-// }
+
 export default {
   data() {
     return {
@@ -74,21 +64,44 @@ export default {
         this.tips = "请输入密码！";
         return;
       }
-      this.tips = ''
+      this.tips = "";
       let name = hamcSha(this.name.trim()),
         password = hamcSha(this.password.trim());
       // console.log(name, password);
       post({
-        url:urlForLogin,
-        data:{
+        url: urlForLogin,
+        data: {
           name,
-          password
-        }
-      }).then((result)=>{
-        console.log(result)
-      }).catch((err)=>{
-        console.log(err)
+          password,
+        },
       })
+        .then((result) => {
+          // console.log(result)
+          if(result.code === 200){
+            window.alert('登录成功！')
+            setSStorage('token',result.data)
+          }else{
+            window.alert(result.data)
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    register: function () {
+      post({
+        url: urlForRegister,
+        data: {
+          name: hamcSha("ycc"),
+          password: hamcSha("19980508cX"),
+        },
+      })
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   created() {},
@@ -107,15 +120,13 @@ export default {
   align-items: center;
   overflow: hidden;
   // background-image: url('@/assets/bg.jpg');
-  background-image: linear-gradient(
-    to right top,
-    #dedfe3,
-    #c7e7fc,
-    #9cf5ff,
-    #89ffe2,
-    #b2ffaa,
-    #f9f871
-  );
+  background-image: linear-gradient(120deg, #a1c4fd, #c2e9fb);
+  // #dedfe3,
+    // #c7e7fc,
+    // #9cf5ff,
+    // #89ffe2,
+    // #b2ffaa,
+    // #f9f871
   // background-image: linear-gradient(to right top, #dedfe3, #bce6fe, #7ef3fb);
   animation: bg-pan-left 5s;
   animation-direction: alternate;
@@ -123,7 +134,7 @@ export default {
   /* background-image: linear-gradient( to right top, #6d327c, #485DA6, #00a1ba, #00BF98, #36C486) */
   background-size: 400% 100%;
   .container {
-    background: linear-gradient(145deg, #8cdde6, #a7ffff);
+    background: linear-gradient(145deg, #5c7477, #4f6161);
     box-shadow: 35px 35px 70px #85d0d9, -35px -35px 70px #b3ffff;
     padding: 20px 40px;
     border-radius: 25px;
@@ -168,8 +179,8 @@ export default {
           transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
       }
-      .tips{
-        color:red;
+      .tips {
+        color: red;
         font-size: 12px;
         font-weight: bold;
         line-height: 20px;
@@ -179,7 +190,7 @@ export default {
     }
     .text {
       margin-top: 30px;
-      color: #fff;
+      color: #f9f871 ;
     }
     .btn {
       cursor: pointer;

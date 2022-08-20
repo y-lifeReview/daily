@@ -36,7 +36,7 @@ export default {
     console.log('mounted')
     window.scrollTo(0,0)
     let date = new Date()
-    if(!getLStorage('city')||date.getSeconds()%3==1){
+    if(!getLStorage('city')||date.getSeconds()%3<2){
       this.getWeather();
     }
     

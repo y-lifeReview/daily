@@ -15,6 +15,23 @@ export function removeLStorage(key) {
 export function clearLStorage() {
     window.localStorage.clear()
 }
+export function getSStorage(key) {
+    
+    return JSON.parse(window.sessionStorage.getItem(key))
+}
+
+export function setSStorage(key, value) {
+    // console.log(value)
+    window.sessionStorage.setItem(key, JSON.stringify(value))
+}
+
+export function removeSStorage(key) {
+    window.sessionStorage.removeItem(key)
+}
+
+export function clearSStorage() {
+    window.sessionStorage.clear()
+}
 
 // export default {
 //     getLStorage,
