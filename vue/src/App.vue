@@ -5,7 +5,7 @@
 import { useGet } from "@/hooks/index";
 import { getLStorage, setLStorage } from "@/hooks/storage";
 import { urlForGetWeather } from "@/api/url";
-import wow from "wow.js"
+import wow from "wow.js";
 const get = useGet();
 
 export default {
@@ -17,29 +17,33 @@ export default {
       get({
         url: urlForGetWeather,
       }).then((res) => {
-        console.log("res", res);
-        if(res.code === 200){
+        // console.log("res", res);
+        if (res.code === 200) {
           let data = res.data.lives[0];
-          setLStorage('city',data.city);
-          setLStorage('temperature',data.temperature);
-          setLStorage('weather',data.weather.replace('/','a').replace('-','a'));
-        }else{
-          return 
+          if (data.city) {
+            setLStorage("city", data.city);
+            setLStorage("temperature", data.temperature);
+            setLStorage(
+              "weather",
+              data.weather.replace("/", "a").replace("-", "a")
+            );
+          }
+        } else {
+          return;
         }
       });
     },
   },
   mounted() {
     new wow({
-      offset:50
-    }).init()
-    console.log('mounted')
-    window.scrollTo(0,0)
-    let date = new Date()
-    if(!getLStorage('city')||date.getSeconds()%3<2){
+      offset: 50,
+    }).init();
+    console.log("mounted");
+    window.scrollTo(0, 0);
+    let date = new Date();
+    if (!getLStorage("city") || date.getSeconds() % 3 < 2) {
       this.getWeather();
     }
-    
   },
 };
 </script>

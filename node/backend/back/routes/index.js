@@ -1,7 +1,7 @@
 var express = require('express');
 const fs = require("fs");
 const http = require('http')
-let connection = require('../db/index')
+let query = require('../db/index')
 const {
   getWeather,
   getAdcode
@@ -22,17 +22,17 @@ router.get('/', function (req, res, next) {
 
 router.get('/getWeather', function (req, res, next) {
   let ip = getClientIp(req)
-  connection.query('SELECT sig FROM gaode_sig WHERE id = 0', [], function (err, result) {
+  query('SELECT sig FROM gaode_sig WHERE id = 0', [], function (err, result) {
     if (err) {
       console.log('[SELECT ERROR] - ', err.message);
       res.send(reqData(500, err));
-      connection.end();
+      
       return;
     }
     let sig = result[0].sig
     let code = getAdcode(ip, sig).then((res1) => {
       // console.log('res1:',ip,res1.data)
-      let data = getWeather(res1.data.adcode,sig)
+      let data = getWeather(res1.data.infocode,sig)
       data.then((res2) => {
         // console.log(res2.data)
         res.send(reqData(200, res2.data))
