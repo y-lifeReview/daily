@@ -1,35 +1,33 @@
 <template>
   <div class="article_list">
     <div
-      v-for="item in articleList"
-      :key="item"
-      class="article_item wow animate__fadeIn"
+      style="
+        background-image: url('https://www.ihewro.com/usr/uploads/2019/01/762065921.jpg');
+      "
+      class="article_item article_top wow animate__fadeIn"
     >
-      {{ item.id }}
+      <a class="article_top_a" href="">
+        <div class="article_top_mask">
+          <h3>
+            <a href=""
+              ><span class="article_top_icon">置顶</span
+              >置顶标题置顶标题置顶标题置顶标题置顶标题</a
+            >
+          </h3>
+          <div class="article_top_des">置顶描述置顶描述置顶描述置顶描述</div>
+        </div>
+      </a>
     </div>
-
-    <template v-for="(item, index) in 10" :key="item">
-      <div
-        v-if="index == 0"
-        style="
-          background-image: url('https://www.ihewro.com/usr/uploads/2019/01/762065921.jpg');
-        "
-        class="article_item article_top wow animate__fadeIn"
-      >
-        <a class="article_top_a" href="">
-          <div class="article_top_mask">
-            <h3>
-              <a href=""
-                ><span class="article_top_icon">置顶</span
-                >置顶标题置顶标题置顶标题置顶标题置顶标题</a
-              >
-            </h3>
-            <div class="article_top_des">置顶描述置顶描述置顶描述置顶描述</div>
-          </div>
-        </a>
+    <template v-for="item in articleList" :key="item">
+      <div class="article_item wow animate__fadeIn">
+        <img :src="item.url" class="article_img" alt="" />
+        <div class="article_info">
+          <h2 class="article_title">
+            <a href="">{{ item.title }}</a>
+          </h2>
+          <p class="article_des">{{ item.summary }}</p>
+        </div>
       </div>
-
-      <div v-else class="article_item wow animate__fadeIn"></div>
     </template>
   </div>
 </template>
@@ -57,8 +55,12 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res);
-          _this.articleList = res.data || [];
+          // console.log(res);
+          let list = res.data || [];
+          list.map((item) => {
+            item.mode = item.width > item.height ? "hov" : "ver";
+          });
+          _this.articleList = list;
         })
         .catch((err) => {
           console.log(err);
@@ -75,12 +77,44 @@ export default {
   flex-direction: column;
   .article_item {
     width: 100%;
-    height: 150px;
+    height: 190px;
     margin-bottom: 20px;
     background-color: #fff;
     box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
     border-radius: 6px;
     overflow: hidden;
+    // position: relative;
+    display: flex;
+    .article_img {
+      width: 30%;
+      height: 190px;
+      object-fit: cover;
+    }
+    .article_info {
+      width: 70%;
+      height: 100%;
+      padding: 30px 50px 15px;
+      display: flex;
+      flex-direction: column;
+      .article_title {
+        font-size: 22px;
+        color: #555;
+        margin: 0;
+        margin-bottom: 10px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        font-weight: normal;
+      }
+      .article_des {
+        margin: 0;
+        height: 60px;
+        line-height: 2em;
+        overflow: hidden;
+        word-break: break-word;
+        color: #a0a0a0;
+      }
+    }
   }
   .article_top {
     height: 250px;
