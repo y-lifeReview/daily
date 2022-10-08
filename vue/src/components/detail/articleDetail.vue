@@ -1,12 +1,8 @@
 <template>
-  <header class="box-header">
-    <h1 class="">sprinkle</h1>
-    <small>她说生命来来往往，哪怕来日方长。</small>
-  </header>
   <div class="article_list">
     <div
       style="
-        background-image: url('https://www.ihewro.com/usr/uploads/2019/01/762065921.jpg');
+     background-image: url('https://www.ihewro.com/usr/uploads/2019/01/762065921.jpg');
       "
       class="article_item article_top wow animate__fadeIn"
     >
@@ -22,73 +18,75 @@
         </div>
       </a>
     </div>
-    <template v-for="item in articleList" :key="item">
-      <div class="article_item wow animate__fadeIn">
-        <img :src="item.url" class="article_img" alt="" />
-        <div class="article_info">
-          <h2 class="article_title">
-            <router-link :to="'/detail/'">
-              {{ item.title }}
-            </router-link>
-          </h2>
-          <p class="article_des">{{ item.summary }}</p>
-        </div>
-      </div>
-    </template>
+    <div v-html="md"></div>
   </div>
 </template>
 
 <script>
-import { usePost } from "@/hooks/index";
-import { urlForGetArticleList } from "@/api/url";
-const post = usePost();
+import {marked} from "marked";
+
+import { useGet } from "@/hooks/index";
+import { urlForGetArticleDetail } from "@/api/url";
+const get = useGet();
 export default {
   data() {
     return {
-      articleList: [],
+      md:''
     };
   },
   mounted() {
-    this.getArticleList();
+    this.getMdContent();
   },
   methods: {
-    getArticleList: function (page = 1) {
-      let _this = this;
-      post({
-        url: urlForGetArticleList,
-        data: {
-          page,
-        },
-      })
-        .then((res) => {
-          // console.log(res);
-          let list = res.data || [];
-          list.map((item) => {
-            item.mode = item.width > item.height ? "hov" : "ver";
-          });
-          _this.articleList = list;
+    mdRender: function () {
+        const render = new marked.Renderer()
+        marked.setOptions({
+            renderer:render,
+            gfm:true,
+            tables:true,
+            breaks:false,
+            pedantic:false,
+            sanitize:false,
+            smartLists:true,
+            smartypants:false,
         })
-        .catch((err) => {
-          console.log(err);
-        });
     },
+    getMdContent:function(){
+        let _this = this
+        get({
+            url:urlForGetArticleDetail,
+        }).then((res)=>{
+            console.log('详情：',res)
+            _this.md = marked(res.data)
+
+        }).catch((err)=>{
+            console.log('详情错误:',err)
+        })
+    },
+    // getArticleList: function (page = 1) {
+    //   let _this = this;
+    //   post({
+    //     url: urlForGetArticleList,
+    //     data: {
+    //       page,
+    //     },
+    //   })
+    //     .then((res) => {
+    //       // console.log(res);
+    //       let list = res.data || [];
+    //       list.map((item) => {
+    //         item.mode = item.width > item.height ? "hov" : "ver";
+    //       });
+    //       _this.articleList = list;
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
   },
 };
 </script>
 <style lang="scss" scoped>
-.box-header {
-  background-color: #f9f9f9;
-  padding: 20px;
-  h1 {
-    font-weight: 300;
-    color: #000;
-    margin: 0 !important;
-  }
-  small {
-    letter-spacing: 2px;
-    color: #a0a0a0;
-  }
-}
 .article_list {
   width: 100%;
   padding: 20px;

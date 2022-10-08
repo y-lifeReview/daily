@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 let query = require('../db/index')
 let reqData = require('../dataBase/response')
+const service = require('../request/axios')
 const {
   getArticle
 } = require('../func/article');
@@ -55,5 +56,14 @@ router.post('/list', function (req, res) {
   })
 
 })
-
+router.get('/detail', function (req, res) {
+  service.service({
+    url:'https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/markdown/test.md',
+    method: 'get',
+  }).then((result)=>{
+    res.send(reqData(200, result));
+  }).catch((err)=>{
+    res.send(reqData(500, err));
+  })
+})
 module.exports = router;

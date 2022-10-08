@@ -5,10 +5,6 @@
     <div class="main-content">
       <div class="article-content">
         <div class="article-box">
-          <header class="box-header">
-            <h1 class="">sprinkle</h1>
-            <small>她说生命来来往往，哪怕来日方长。</small>
-          </header>
           <router-view> </router-view>
         </div>
         <div class="article-option"></div>
@@ -55,19 +51,7 @@ export default {
         // float: left;
         padding-right: 240px;
         background-color: #f0f3f4;
-        .box-header {
-          background-color: #f9f9f9;
-          padding: 20px;
-          h1 {
-            font-weight: 300;
-            color: #000;
-            margin: 0 !important;
-          }
-          small {
-            letter-spacing: 2px;
-            color: #a0a0a0;
-          }
-        }
+        
       }
       .article-option {
         width: 240px;

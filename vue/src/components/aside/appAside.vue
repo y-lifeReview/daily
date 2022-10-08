@@ -14,7 +14,7 @@
             <strong class="name-text">明天下小雨</strong>
           </span>
           <vuetyped
-            :strings="['减少信息输入，保持理智。']"
+            :strings="['山雾漫漫，别迷了路']"
             :loop="true"
             :smart-backspace="true"
             :typeSpeed="150"

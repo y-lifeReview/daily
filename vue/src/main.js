@@ -7,7 +7,7 @@ import router from "./router";
 import vuetyped from 'vue3typed'
 
 import 'animate.css'
-// 这块一定要加,否者会有部分动画无法执行
+
 import 'animate.css/animate.compat.css'
 
 // createApp.prototype.$wow = wow
