@@ -6,7 +6,7 @@
   <div class="article_list">
     <div
       style="
-        background-image: url('https://www.ihewro.com/usr/uploads/2019/01/762065921.jpg');
+         background-image: url('https://www.ihewro.com/usr/uploads/2019/01/762065921.jpg');
       "
       class="article_item article_top wow animate__fadeIn"
     >
@@ -27,7 +27,7 @@
         <img :src="item.url" class="article_img" alt="" />
         <div class="article_info">
           <h2 class="article_title">
-            <router-link :to="'/detail/'">
+            <router-link :to="{ path: '/detail/'+item.id+'/'}">
               {{ item.title }}
             </router-link>
           </h2>
@@ -67,6 +67,7 @@ export default {
             item.mode = item.width > item.height ? "hov" : "ver";
           });
           _this.articleList = list;
+          
         })
         .catch((err) => {
           console.log(err);
@@ -91,6 +92,7 @@ export default {
 }
 .article_list {
   width: 100%;
+  min-height: 1000px;
   padding: 20px;
   display: flex;
   flex-direction: column;

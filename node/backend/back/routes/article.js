@@ -24,12 +24,24 @@ router.post('/save', function (req, res, next) {
 });
 
 router.get('/detail', function (req, res) {
-  let data = getArticle()
-  data.then((result) => {
-    res.send(reqData(200, result.data));
-  }).catch((err) => {
-    res.send(reqData(500, err));
+  let id = req.query.id
+  let sql = 'select a.md_url,a.category,a.updata_at,a.article_view,a.title,a.user_id ,url ,nickname from article as a left join article_img as b on a.id = b.article_id left join user as c on a.user_id = c.id where a.id =?'
+  query(sql, [id], function (err, result) {
+    if (err) {
+      res.send(reqData(500, err));
+      return;
+    }
+    let data = getArticle(result[0].md_url)
+    data.then((result2) => {
+      let obj = {}
+      obj = result[0]
+      obj.content = result2.data
+      res.send(reqData(200, obj));
+    }).catch((err2) => {
+      res.send(reqData(500, err2));
+    })
   })
+
 })
 router.post('/list', function (req, res) {
   let options = Object.values(req.body)

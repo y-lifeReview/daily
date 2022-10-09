@@ -9,7 +9,7 @@ import vuetyped from 'vue3typed'
 import 'animate.css'
 
 import 'animate.css/animate.compat.css'
-
+import 'github-markdown-css'
 // createApp.prototype.$wow = wow
 
 // import 'element-plus/dist/index.css'

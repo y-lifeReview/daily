@@ -32,7 +32,7 @@ router.get('/getWeather', function (req, res, next) {
     let sig = result[0].sig
     let code = getAdcode(ip, sig).then((res1) => {
       // console.log('res1:',ip,res1.data)
-      let data = getWeather(res1.data.infocode,sig)
+      let data = getWeather(res1.data.adcode,sig)
       data.then((res2) => {
         // console.log(res2.data)
         res.send(reqData(200, res2.data))

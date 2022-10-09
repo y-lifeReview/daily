@@ -25,31 +25,27 @@
 </template>
 
 <script>
-import { getLStorage } from "@/hooks/storage";
+// import { getLStorage } from "@/hooks/storage";
 import aPlayer from "@/components/aplayer/appPlayer.vue";
 
 export default {
   components: {
     aPlayer,
   },
+  props: {
+    city:String,
+    temperature:String,
+    weather:String,
+    weatherBg:String
+  },
   data() {
     return {
-      city: "成都市",
-      temperature: "25",
-      weather: "多云",
-      weatherBg:
-        "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg1.png",
+      
     };
   },
 
   mounted() {
-    this.city = getLStorage("city") || "成都市";
-    this.temperature = getLStorage("temperature") || "25";
-    this.weather = getLStorage("weather") || "多云";
-    this.weatherBg =
-      "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg" +
-      Math.ceil(Math.random() * 5) +
-      ".png";
+    
   },
 };
 </script>

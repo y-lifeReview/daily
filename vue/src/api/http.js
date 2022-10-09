@@ -1,16 +1,29 @@
 import request from "./axios.config";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+NProgress.configure({
+    showSpinner: false,
+});
 
 function http({
     url,
     data,
     method,
     headers,
-    beforeRequest,
-    afterRequest
+    beforeRequest = function(){
+        console.log('请求开始')
+        NProgress.start();
+    },
+    afterRequest = function(){
+        NProgress.done();
+        console.log('请求结束')
+    }
 }) {
     const successHandler = (res) => {
         // if (res.data.code == 200) {
+            afterRequest && afterRequest();
             return res.data;
+            
         // }
         // throw new Error(res.data.msg || "请求失败，未知异常");
     };

@@ -16,10 +16,12 @@ export const routes = [{
     component: Index,
     children: [{
             path: '/',
-            component: List
+            name:'list',
+            component: List,
+            
         },
         {
-            path: '/detail',
+            path: '/detail/:id',
             component: detail
         }
     ]
