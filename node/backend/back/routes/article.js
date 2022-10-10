@@ -46,7 +46,7 @@ router.get('/detail', function (req, res) {
 router.post('/list', function (req, res) {
   let options = Object.values(req.body)
   let totalsql = 'SELECT COUNT(id) FROM article'
-  let getsql = 'SELECT a.*,url,width,height FROM article as a left join article_img as b on a.id = b.article_id where a.id > ? order by a.id  limit 10 ';
+  let getsql = 'SELECT a.*,url,width,height,nickname FROM article as a left join article_img as b on a.id = b.article_id left join user as c on a.user_id = c.id where a.id > ? order by a.id  limit 10 ';
   query(totalsql, [], function (err, result) {
     if (err) {
       res.send(reqData(500, err));

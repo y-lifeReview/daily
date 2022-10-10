@@ -8,8 +8,7 @@ body {
     font-size: 14px;
     color: #333333;
     height: 100%;
-    font-family: "Source Sans Pro", "Hiragino Sans GB", "Microsoft Yahei", SimSun, Helvetica, Arial, Sans-serif, monospace;
-    ;
+    font-family: "Source Sans Pro","Hiragino Sans GB","Microsoft Yahei",SimSun,Helvetica,Arial,Sans-serif,monospace;
     margin: 0;
     /* overflow: hidden; */
 }
@@ -104,4 +103,7 @@ small {
 
 h1 {
     font-size: 30px;
+}
+ul{
+    list-style: none;
 }

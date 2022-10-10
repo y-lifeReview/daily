@@ -1,6 +1,19 @@
 <template>
   <articleHead :info="info" />
   <div class="article_list">
+    <ol class="breadcrumb">
+      <li>
+        <a href="">
+          <span class="bread_icon"><i class="iconfont icon-home1"></i></span
+          >首页
+        </a>
+      </li>
+      <li>正文</li>
+    </ol>
+    <div
+      :style="'background-image: url(' + info.url + ');'"
+      class="article_img"
+    ></div>
     <markDown :md="md" />
   </div>
 </template>
@@ -48,8 +61,8 @@ export default {
       })
         .then((res) => {
           // console.log('详情：',res)
-          res.data.updata_at = timeformatstande(res.data.updata_at)
-          res.data.article_view = res.data.article_view+'次浏览'
+          res.data.updata_at = timeformatstande(res.data.updata_at);
+          res.data.article_view = res.data.article_view + "次浏览";
           _this.info = res.data;
           _this.md = marked(res.data.content);
           // let titleAry = marked(res.data.content).match(/<[hH][1-6].*?>.*?<\/[hH][1-6]>/g)
@@ -74,9 +87,44 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: #f1f3f4;
+  .breadcrumb {
+    background-color: #fff;
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    margin-top: 0;
+    list-style: none;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #777;
+    li {
+      display: inline-block;
+    }
+    li + li:before {
+      padding: 0 5px;
+      color: #ccc;
+      content: "/\00a0";
+    }
+    .bread_icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 5px;
+      i {
+        font-size: 14px !important;
+      }
+    }
+  }
+  .article_img {
+    min-height: 250px;
+    position: relative;
+    display: block;
+    background-position: 50% 50%;
+    background-size: cover;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
 }
 a {
   text-decoration: none;
 }
 </style>
-<style  scoped></style>
+<style scoped></style>

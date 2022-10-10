@@ -6,7 +6,7 @@
   <div class="article_list">
     <div
       style="
-         background-image: url('https://www.ihewro.com/usr/uploads/2019/01/762065921.jpg');
+        background-image: url('https://www.ihewro.com/usr/uploads/2019/01/762065921.jpg');
       "
       class="article_item article_top wow animate__fadeIn"
     >
@@ -27,11 +27,28 @@
         <img :src="item.url" class="article_img" alt="" />
         <div class="article_info">
           <h2 class="article_title">
-            <router-link :to="{ path: '/detail/'+item.id+'/'}">
+            <router-link :to="{ path: '/detail/' + item.id + '/' }">
               {{ item.title }}
             </router-link>
           </h2>
           <p class="article_des">{{ item.summary }}</p>
+          <div class="line"></div>
+          <div class="other_info">
+            <li>
+              <span class="icon_sapn"><i class="iconfont icon-user"></i></span>
+              <span>{{ item.nickname }}</span>
+            </li>
+            <li>
+              <span class="icon_sapn"
+                ><i class="iconfont icon-time-circle"></i
+              ></span>
+              <span>{{ item.updata_at }}</span>
+            </li>
+            <li>
+              <span class="icon_sapn"><i class="iconfont icon-eye"></i></span>
+              <span>{{ item.article_view }}</span>
+            </li>
+          </div>
         </div>
       </div>
     </template>
@@ -41,8 +58,10 @@
 <script>
 import { usePost } from "@/hooks/index";
 import { urlForGetArticleList } from "@/api/url";
+import { timeformatstande } from "@/hooks/timeformat";
 const post = usePost();
 export default {
+  name: "articleList",
   data() {
     return {
       articleList: [],
@@ -65,9 +84,10 @@ export default {
           let list = res.data || [];
           list.map((item) => {
             item.mode = item.width > item.height ? "hov" : "ver";
+            item.updata_at = timeformatstande(item.updata_at);
+            item.article_view = item.article_view + "次浏览";
           });
           _this.articleList = list;
-          
         })
         .catch((err) => {
           console.log(err);
@@ -131,9 +151,38 @@ export default {
         margin: 0;
         height: 60px;
         line-height: 2em;
+        display: -webkit-box;
         overflow: hidden;
-        word-break: break-word;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        white-space: normal !important;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
         color: #a0a0a0;
+      }
+      .line {
+        border-color: rgba(237, 241, 242, 0.6);
+        border-bottom: 1px solid rgba(222, 229, 231, 0.45);
+        width: 100%;
+        height: 2px;
+        margin: 15px 0;
+        overflow: hidden;
+        font-size: 0;
+      }
+      .other_info {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 13px;
+        color: #a0a0a0;
+        li {
+          display: inline-block;
+          padding: 0 5px;
+          .icon_sapn {
+            margin-right: 5px;
+          }
+        }
       }
     }
   }

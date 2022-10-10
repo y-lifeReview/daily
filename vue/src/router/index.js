@@ -16,13 +16,18 @@ export const routes = [{
     component: Index,
     children: [{
             path: '/',
-            name:'list',
+            name: 'list',
             component: List,
-            
+            meta: {
+                keepAlive: true
+            }
         },
         {
             path: '/detail/:id',
-            component: detail
+            component: detail,
+            meta: {
+                keepAlive: false
+            }
         }
     ]
 }]
@@ -31,11 +36,15 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes,
 
-    scrollBehavior() {
-        return {
-            x: 0,
-            y: 0
+    scrollBehavior(to, from, savedPosition) {
+        // console.log(to,savedPosition)
+        if (savedPosition && to.meta.keepAlive) {
+            return savedPosition;
         }
+        return {
+            left: 0,
+            top: 0
+        };
     }
 })
 
