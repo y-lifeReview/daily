@@ -6,7 +6,7 @@ const service = require('../request/axios')
 const {
   getArticle
 } = require('../func/article');
-const res = require('express/lib/response');
+// const res = require('express/lib/response');
 
 router.post('/save', function (req, res, next) {
 
@@ -43,10 +43,52 @@ router.get('/detail', function (req, res) {
   })
 
 })
+router.get('/ispassword', function (req, res) {
+  //  console.log('get参数',req.query.id)
+  let id = req.query.id
+  let sql = 'select is_password,ques from article where id=?'
+  query(sql, [id], function (err, result) {
+    if (err) {
+      res.send(reqData(500, err));
+      return;
+    }
+    res.send(reqData(200, result[0]))
+  })
+})
+router.post('/checkpassword', function (req, res) {
+  //  console.log('get参数',req.query.id)
+  let id = req.body.id,
+    content = req.body.content;
+  console.log(id, content)
+  let sql = 'select password from article where id=?'
+  query(sql, [id], function (err, result) {
+    if (err) {
+      res.send(reqData(500, err));
+      return;
+    }
+    console.log(result[0].password)
+    if (content === result[0].password) {
+      res.send(reqData(200, [true]))
+    } else {
+      res.send(reqData(200, [false]))
+    }
+
+  })
+})
+router.post('/top', function (req, res) {
+  let spl = 'select a.summary,a.id,a.title,url,width,height from article as a left join article_img as b on a.id=b.article_id where a.order=1'
+  query(spl, [], function (err, result) {
+    if (err) {
+      res.send(reqData(500, err));
+      return;
+    }
+    res.send(reqData(200, result))
+  })
+})
 router.post('/list', function (req, res) {
   let options = Object.values(req.body)
   let totalsql = 'SELECT COUNT(id) FROM article'
-  let getsql = 'SELECT a.*,url,width,height,nickname FROM article as a left join article_img as b on a.id = b.article_id left join user as c on a.user_id = c.id where a.id > ? order by a.id  limit 10 ';
+  let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,url,width,height,nickname FROM article as a left join article_img as b on a.id = b.article_id left join user as c on a.user_id = c.id where a.id > ? and a.order=0 order by a.id desc limit 10 ';
   query(totalsql, [], function (err, result) {
     if (err) {
       res.send(reqData(500, err));
@@ -56,7 +98,6 @@ router.post('/list', function (req, res) {
       if (err2) {
         console.log('[SELECT ERROR] - ', err2.message);
         res.send(reqData(500, err2));
-
         return;
       }
       let data = reqData(200, result2)

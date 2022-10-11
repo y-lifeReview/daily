@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user');
 var poemRouter = require('./routes/poem');
 var articleRouter = require('./routes/article');
+var sign = require('./routes/sign');
 // var musicRouter = require('./routes/music');
 const cors = require('cors')
 
@@ -44,6 +45,7 @@ app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/poem', poemRouter);
 app.use('/article', articleRouter);
+app.use('/sign', sign);
 // app.use('/music', musicRouter);
 
 // catch 404 and forward to error handler

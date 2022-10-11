@@ -12,10 +12,10 @@ function http({
     headers,
     beforeRequest = function(){
         // console.log('请求开始')
-        NProgress.start();
+       
     },
     afterRequest = function(){
-        NProgress.done();
+        
         // console.log('请求结束')
     }
 }) {

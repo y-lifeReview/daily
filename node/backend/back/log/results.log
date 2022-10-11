@@ -66,3 +66,7 @@
 2022-08-16 14:50:01 error [www]: POST undefinedNot Found
 2022-08-16 14:50:47 error [www]: POST undefinedNot Found
 2022-09-26 11:34:36 error [www]: POST undefinedUnexpected token 1 in JSON at position 0
+2022-10-11 14:39:45 error [www]: GET undefinedNot Found
+2022-10-11 14:40:03 error [www]: GET undefinedNot Found
+2022-10-11 16:06:34 error [www]: GET undefinedspl is not defined
+2022-10-11 16:21:47 error [www]: POST undefinedis is not defined

@@ -1,26 +1,24 @@
 <template>
   <header class="box-header">
     <h1 class="">sprinkle</h1>
-    <small>她说生命来来往往，哪怕来日方长。</small>
+    <small>{{ longsign }}</small>
   </header>
   <div class="article_list">
     <div
-      style="
-        background-image: url('https://www.ihewro.com/usr/uploads/2019/01/762065921.jpg');
-      "
+      :style="'background-image: url(' + articleTop.url + ');'"
       class="article_item article_top wow animate__fadeIn"
     >
-      <a class="article_top_a" href="">
+      <router-link
+        class="article_top_a"
+        :to="{ path: '/detail/' + articleTop.id + '/' }"
+      >
         <div class="article_top_mask">
           <h3>
-            <a href=""
-              ><span class="article_top_icon">置顶</span
-              >置顶标题置顶标题置顶标题置顶标题置顶标题</a
-            >
+            <span class="article_top_icon">置顶</span>{{ articleTop.title }}
           </h3>
-          <div class="article_top_des">置顶描述置顶描述置顶描述置顶描述</div>
+          <div class="article_top_des">{{ articleTop.summary }}</div>
         </div>
-      </a>
+      </router-link>
     </div>
     <template v-for="item in articleList" :key="item">
       <div class="article_item wow animate__fadeIn">
@@ -56,21 +54,54 @@
 </template>
 
 <script>
-import { usePost } from "@/hooks/index";
-import { urlForGetArticleList } from "@/api/url";
+let timer = null;
+import { usePost, useGet } from "@/hooks/index";
+import {
+  urlForGetArticleList,
+  urlForGetArticleTop,
+  urlForGetLongSign,
+} from "@/api/url";
 import { timeformatstande } from "@/hooks/timeformat";
-const post = usePost();
+const post = usePost(),
+  get = useGet();
 export default {
   name: "articleList",
   data() {
     return {
+      articleTop: {},
       articleList: [],
+      longsign: "",
     };
   },
   mounted() {
+    this.getArticleTop();
     this.getArticleList();
+    this.getSign();
+    let _this = this;
+    timer = setInterval(() => {
+      _this.getSign();
+    }, 15000);
+  },
+  unmounted() {
+    clearInterval(timer);
   },
   methods: {
+    getArticleTop: function () {
+      let _this = this;
+      post({
+        url: urlForGetArticleTop,
+        data: {},
+      })
+        .then((res) => {
+          // console.log(res);
+          let list = res.data[0];
+
+          _this.articleTop = list;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     getArticleList: function (page = 1) {
       let _this = this;
       post({
@@ -92,6 +123,24 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    getSign: function () {
+      get({
+        url: urlForGetLongSign,
+        data: "",
+        method: "GET",
+        beforeRequest: () => {},
+        afterRequest: () => {},
+      }).then((res) => {
+        // console.log("res", res);
+        if (res.code === 200) {
+          // console.log(res)
+          this.longsign = res.data[0].content;
+        } else {
+          this.longsign = "欲买桂花同载酒，只可惜故人...";
+          return;
+        }
+      });
     },
   },
 };

@@ -19,22 +19,34 @@
         <div class="article_option">
           <div class="right_nav">
             <ul>
-              <li @click="changeactive(0)" data-index="0" :class="active==0?'active':''">
-                <a >
+              <li
+                @click="changeactive(0)"
+                data-index="0"
+                :class="active == 0 ? 'active' : ''"
+              >
+                <a>
                   <div class="nav_item">
                     <i class="iconfont icon-like"></i>
                   </div>
                 </a>
               </li>
-              <li @click="changeactive(1)" data-index="1" :class="active==1?'active':''">
-                <a >
+              <li
+                @click="changeactive(1)"
+                data-index="1"
+                :class="active == 1 ? 'active' : ''"
+              >
+                <a>
                   <div class="nav_item">
                     <i class="iconfont icon-message"></i>
                   </div>
                 </a>
               </li>
-              <li @click="changeactive(2)" data-index="2" :class="active==2?'active':''">
-                <a >
+              <li
+                @click="changeactive(2)"
+                data-index="2"
+                :class="active == 2 ? 'active' : ''"
+              >
+                <a>
                   <div class="nav_item">
                     <i class="iconfont icon-gift"></i>
                   </div>
@@ -72,12 +84,13 @@ export default {
   },
   data() {
     return {
-      active:0,
+      active: 0,
       city: "成都市",
       temperature: "25",
       weather: "多云",
       weatherBg:
         "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg1.png",
+      
     };
   },
   methods: {
@@ -101,10 +114,11 @@ export default {
         }
       });
     },
-    changeactive:function (e) {
-      if(e === this.active) return;
-      this.active = e
-    }
+    
+    changeactive: function (e) {
+      if (e === this.active) return;
+      this.active = e;
+    },
   },
   mounted() {
     let date = new Date();
@@ -118,6 +132,7 @@ export default {
     if (!getLStorage("city") || date.getSeconds() % 3 < 2) {
       this.getWeather();
     }
+    
   },
 };
 </script>
@@ -172,12 +187,13 @@ export default {
               }
             }
           }
-          li[data-index="0"].active~.active_bar{
+          li[data-index="0"].active ~ .active_bar {
             transform: translateX(55%);
           }
-          li[data-index="1"].active~.active_bar{
+          li[data-index="1"].active ~ .active_bar {
             transform: translateX(255%);
-          }li[data-index="2"].active~.active_bar{
+          }
+          li[data-index="2"].active ~ .active_bar {
             transform: translateX(460%);
           }
           .active_bar {
@@ -192,10 +208,10 @@ export default {
             transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
           }
         }
-        .ri_atc_li{
+        .ri_atc_li {
           opacity: 1;
           padding: 20px;
-          h5{
+          h5 {
             font-size: 16px;
             margin-top: 0;
             margin-bottom: 10px;
