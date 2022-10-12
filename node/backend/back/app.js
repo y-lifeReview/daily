@@ -4,13 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 const logger = require('./logger')
-let connection = require('./db/index')
+// let connection = require('./db/index')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user');
 var poemRouter = require('./routes/poem');
 var articleRouter = require('./routes/article');
 var sign = require('./routes/sign');
+var back = require('./routes/backend');
 // var musicRouter = require('./routes/music');
 const cors = require('cors')
 
@@ -46,6 +47,7 @@ app.use('/user', usersRouter);
 app.use('/poem', poemRouter);
 app.use('/article', articleRouter);
 app.use('/sign', sign);
+app.use('/back', back);
 // app.use('/music', musicRouter);
 
 // catch 404 and forward to error handler

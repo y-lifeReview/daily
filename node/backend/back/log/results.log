@@ -70,3 +70,48 @@
 2022-10-11 14:40:03 error [www]: GET undefinedNot Found
 2022-10-11 16:06:34 error [www]: GET undefinedspl is not defined
 2022-10-11 16:21:47 error [www]: POST undefinedis is not defined
+2022-10-12 11:26:47 error [www]: POST undefinedNot Found
+2022-10-12 11:29:21 error [www]: POST undefinedconnection.query is not a function
+2022-10-12 11:38:20 error [www]: GET undefinedNot Found
+2022-10-12 12:34:49 error [www]: GET undefinedNot Found
+2022-10-12 12:37:00 error [www]: GET undefinedNot Found
+2022-10-12 13:05:02 error [www]: GET undefinedNot Found
+2022-10-12 13:14:41 error [www]: GET undefinedNot Found
+2022-10-12 13:17:55 error [www]: GET undefinedNot Found
+2022-10-12 13:24:58 error [www]: GET undefinedNot Found
+2022-10-12 13:25:01 error [www]: GET undefinedNot Found
+2022-10-12 13:35:35 error [www]: GET undefinedNot Found
+2022-10-12 13:39:34 error [www]: GET undefinedNot Found
+2022-10-12 13:39:39 error [www]: GET undefinedNot Found
+2022-10-12 13:46:53 error [www]: GET undefinedNot Found
+2022-10-12 13:50:12 error [www]: GET undefinedNot Found
+2022-10-12 13:50:15 error [www]: GET undefinedreq.query is not a function
+2022-10-12 13:50:57 error [www]: GET undefinedNot Found
+2022-10-12 13:56:56 error [www]: GET undefinedNot Found
+2022-10-12 14:00:02 error [www]: GET undefinedNot Found
+2022-10-12 14:30:04 error [www]: GET undefinedNot Found
+2022-10-12 14:34:59 error [www]: GET undefinedNot Found
+2022-10-12 14:58:06 error [www]: GET undefinedNot Found
+2022-10-12 14:58:39 error [www]: GET undefinedNot Found
+2022-10-12 15:01:24 error [www]: GET undefinedNot Found
+2022-10-12 15:05:39 error [www]: GET undefinedNot Found
+2022-10-12 15:07:55 error [www]: GET undefinedNot Found
+2022-10-12 15:09:20 error [www]: GET undefinedNot Found
+2022-10-12 15:17:17 error [www]: GET undefinedNot Found
+2022-10-12 15:17:53 error [www]: GET undefinedNot Found
+2022-10-12 15:26:56 error [www]: GET undefinedNot Found
+2022-10-12 15:27:38 error [www]: GET undefinedNot Found
+2022-10-12 15:28:48 error [www]: GET undefinedNot Found
+2022-10-12 15:29:58 error [www]: GET undefinedNot Found
+2022-10-12 15:30:56 error [www]: GET undefinedNot Found
+2022-10-12 15:36:05 error [www]: GET undefinedNot Found
+2022-10-12 15:38:30 error [www]: GET undefinedNot Found
+2022-10-12 16:04:44 error [www]: GET undefinedNot Found
+2022-10-12 16:06:49 error [www]: GET undefinedNot Found
+2022-10-12 16:12:38 error [www]: GET undefinedNot Found
+2022-10-12 16:31:50 error [www]: GET undefinedNot Found
+2022-10-12 16:39:43 error [www]: GET undefinedNot Found
+2022-10-12 17:04:09 error [www]: GET undefinedNot Found
+2022-10-12 17:20:08 error [www]: GET undefinedNot Found
+2022-10-12 17:56:18 error [www]: GET undefinedNot Found
+2022-10-12 17:56:48 error [www]: GET undefinedNot Found
