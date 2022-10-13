@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-let query = require('../db/index')
+let {query} = require('../db/index')
 const reqData = require('../dataBase/response')
 const {
   getToken

@@ -1,52 +1,58 @@
 var express = require('express');
-let query = require('../db/index')
+let {
+    query,
+    transction
+} = require('../db/index')
 let reqData = require('../dataBase/response');
-const {
-    route
-} = require('.');
+// const {
+//     route
+// } = require('.');
 const {
     getToken
 } = require('../func/token')
+const {
+    timeStand
+} = require('../func/timeformat')
 var router = express.Router();
 //文章列表
 router.get('/articleList', function (req, res) {
     // console.log(req.query)
     let params = req.query
     let sql = 'select a.*,b.nickname as author ,c.url from article as a left join user as b on a.id = b.id left join article_img as c on a.id=c.article_id order by a.id desc '
-    query(sql,[],function(err,result){
-        if(err){
+    query(sql, [], function (err, result) {
+        if (err) {
             res.send(reqData(500, err));
             return;
         }
-        res.send(reqData(200,result))
+        res.send(reqData(200, result))
     })
 })
 //搜索作者
-router.get('/search/author', function (req,res){
+router.get('/search/author', function (req, res) {
     let content = req.query.name
-    let sql = "select nickname,id from user where nickname like '%"+ content+"%'"
-    if(!content){
+    let sql = "select nickname,id from user where nickname like '%" + content + "%'"
+    if (!content) {
         sql = "select DISTINCT nickname,id from user"
     }
-    
-    query(sql,[],function(err,result){
-        if(err){
-            res.send(reqData(500,err))
+
+    query(sql, [], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err))
             return;
         }
-        res.send(reqData(200,result))
+        res.send(reqData(200, result))
     })
 })
 //搜索已有分类
-router.get('/search/category', function (req,res){
+router.get('/search/category', function (req, res) {
     // let content = req.query.name
     let sql = "select DISTINCT category from article "
-    query(sql,[],function(err,result){
-        if(err){
-            res.send(reqData(500,err))
+    query(sql, [], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err))
             return;
         }
-        res.send(reqData(200,result))
+        res.send(reqData(200, result))
     })
 })
 /* GET users listing. */
@@ -107,7 +113,7 @@ router.post('/user/login', function (req, res, next) {
             res.send(reqData(500, err));
             return;
         }
-        console.log(result)
+        // console.log(result)
         if (result.length == 0) {
             res.send(reqData(500, '账号不存在!'));
 
@@ -180,5 +186,48 @@ router.get('/user/info', function (req, res) {
         res.send(reqData(200, [obj]))
     })
 })
+router.post('/article/pub', function (res, req) {
+    let {
+        isOrder,
+        anwser,
+        isPassword,
+        ques,
+        title,
+        category,
+        content,
+        content_short,
+        uid,
+        image_uri
+    } = res.body
+    let sqls = [],
+        sqlParams = [];
 
+    if (isOrder) {
+        //重置置顶的文章
+        let sql2 = 'updata articel set order=0 where order=1'
+        sqls.push(sql2)
+        sqlParams.push([])
+    }
+    if (!isPassword) {
+        anwser = ques = 0
+    }
+    isOrder = isOrder ? 1 : 0
+    isPassword = isPassword ? 1 : 0
+    let time = timeStand(new Date())
+    let value1 = [content,category,time,time,title,content_short,uid,isOrder,isPassword,anwser,ques]
+    // 1、article表操作
+    let sql1 = 'insert into article(md_url,category,create_at,updata_at,title,summary,user_id,order,is_password,password,ques) ' +
+        ' values(?,?,?,?,?,?,?,?,?,?,?)'
+    sqls.push(sql1)
+    sqlParams.push(value1)
+    //2、
+    
+
+    // transction(sqls,sqlParams).then((all)=>{
+
+    // }).catch((err)=>{
+
+    // })
+    // let sql = 'insert '
+})
 module.exports = router;

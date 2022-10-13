@@ -7,6 +7,7 @@ const resType = {
         code: 500,
         message: 'err'
     },
+    
 }
 const response = function (code, data) {
     let obj = resType[code]
