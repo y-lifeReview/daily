@@ -75,6 +75,7 @@ export default {
         this.checkpass()
       }
     },
+    //加密文章验证
     checkpass: function () {
       let _this = this;
       let awser = this.proptValue;
@@ -109,6 +110,7 @@ export default {
           return;
         });
     },
+    //md解析
     mdRender: function () {
       const render = new marked.Renderer();
       marked.setOptions({
@@ -122,8 +124,10 @@ export default {
         smartypants: false,
       });
     },
+    //获取文章内容
     getMdContent: function (id) {
       let _this = this;
+      
       articleispasswprd(id)
         .then((data) => {
           if (data.data.is_password === 1) {

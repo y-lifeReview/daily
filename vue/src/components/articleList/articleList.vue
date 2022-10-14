@@ -85,6 +85,7 @@ export default {
     clearInterval(timer);
   },
   methods: {
+    // 置顶文章
     getArticleTop: function () {
       let _this = this;
       post({
@@ -100,6 +101,7 @@ export default {
           console.log(err);
         });
     },
+    //文章列表
     getArticleList: function (page = 1) {
       let _this = this;
       post({
@@ -124,6 +126,7 @@ export default {
           _this.getSign();
         });
     },
+    //签名获取
     getSign: function () {
       get({
         url: urlForGetLongSign,
