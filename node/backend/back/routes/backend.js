@@ -18,7 +18,7 @@ var router = express.Router();
 router.get('/articleList', function (req, res) {
     // console.log(req.query)
     let params = req.query
-    let sql = 'select a.*,b.nickname as author ,c.url from article as a left join user as b on a.id = b.id left join article_img as c on a.id=c.article_id order by a.id desc '
+    let sql = 'select a.*,b.nickname as author  from article as a left join user as b on a.id = b.id order by a.id desc '
     query(sql, [], function (err, result) {
         if (err) {
             res.send(reqData(500, err));
@@ -186,7 +186,7 @@ router.get('/user/info', function (req, res) {
         res.send(reqData(200, [obj]))
     })
 })
-router.post('/article/pub', function (res, req) {
+router.post('/article/pub', function (req, res) {
     let {
         isOrder,
         anwser,
@@ -198,7 +198,7 @@ router.post('/article/pub', function (res, req) {
         content_short,
         uid,
         image_uri
-    } = res.body
+    } = req.body
     let sqls = [],
         sqlParams = [];
 
@@ -209,25 +209,23 @@ router.post('/article/pub', function (res, req) {
         sqlParams.push([])
     }
     if (!isPassword) {
-        anwser = ques = 0
+        anwser = ques = '0'
     }
-    isOrder = isOrder ? 1 : 0
-    isPassword = isPassword ? 1 : 0
+    isOrder = isOrder ? '1' : '0'
+    isPassword = isPassword ? '1' : '0'
     let time = timeStand(new Date())
-    let value1 = [content,category,time,time,title,content_short,uid,isOrder,isPassword,anwser,ques]
+    let value1 = [content,category,time,time,title,content_short,uid,isOrder,isPassword,anwser,ques,image_uri]
     // 1、article表操作
-    let sql1 = 'insert into article(md_url,category,create_at,updata_at,title,summary,user_id,order,is_password,password,ques) ' +
-        ' values(?,?,?,?,?,?,?,?,?,?,?)'
+    let sql1 = 'insert into article (md_url,category,create_at,updata_at,title,summary,user_id,isorder,is_password,anwser,ques,img) values(?,?,?,?,?,?,?,?,?,?,?,?)'
     sqls.push(sql1)
     sqlParams.push(value1)
-    //2、
-    
 
-    // transction(sqls,sqlParams).then((all)=>{
-
-    // }).catch((err)=>{
-
-    // })
+    transction(sqls,sqlParams).then((all)=>{
+        console.log('all:',all)
+        res.send(reqData(200,'发布成功'))
+    }).catch((err)=>{
+        res.send(reqData(500,err))
+    })
     // let sql = 'insert '
 })
 module.exports = router;

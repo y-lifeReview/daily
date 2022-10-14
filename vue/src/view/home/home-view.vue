@@ -57,11 +57,22 @@
             <div class="ri_atc_li">
               <h5>热门文章</h5>
               <ul>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+                <li v-for="(item) in hotList" :key="item.id">
+                  <a class="hot_icon">
+                    <img
+                      class="hot_icon"
+                      :src="'https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/hot ('+(item.id%11+1)+').png'"
+                      alt=""
+                    />
+                  </a>
+                  <div class="hot_title">
+                    <h4>{{item.title}}</h4>
+                    <small>
+                      <i class="iconfont icon-eye"></i>
+                      <span>{{item.article_view}}</span>
+                    </small>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -75,7 +86,8 @@ import Header from "@/components/header/app-header.vue";
 import Aside from "@/components/aside/appAside.vue";
 import { useGet } from "@/hooks/index";
 import { getLStorage, setLStorage } from "@/hooks/storage";
-import { urlForGetWeather } from "@/api/url";
+import { urlForGetWeather,
+  urlForGetHot } from "@/api/url";
 const get = useGet();
 export default {
   components: {
@@ -84,13 +96,13 @@ export default {
   },
   data() {
     return {
+      hotList:[],
       active: 0,
       city: "成都市",
       temperature: "25",
       weather: "多云",
       weatherBg:
         "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg1.png",
-      
     };
   },
   methods: {
@@ -114,11 +126,20 @@ export default {
         }
       });
     },
-    
+
     changeactive: function (e) {
       if (e === this.active) return;
       this.active = e;
-    },
+    },getHot: function () {
+      get({
+        url:urlForGetHot
+      }).then((data)=>{
+          console.log(data)
+          this.hotList = data.data||[]
+      }).catch((err)=>{
+        console.log(err)
+      })
+    }
   },
   mounted() {
     let date = new Date();
@@ -132,7 +153,7 @@ export default {
     if (!getLStorage("city") || date.getSeconds() % 3 < 2) {
       this.getWeather();
     }
-    
+    this.getHot()
   },
 };
 </script>
@@ -217,6 +238,49 @@ export default {
             margin-bottom: 10px;
             color: #777;
             font-weight: 400;
+          }
+          ul {
+            flex-direction: column;
+            box-shadow: none;
+          }
+          li {
+            justify-content: start;
+            padding: 10px 0;
+            a {
+              padding: 0;
+            }
+          }
+          .hot_icon {
+            display: inline-block;
+            width: 40px;
+            margin-right: 15px;
+            border-radius: 20%;
+          }
+          .hot_title {
+            display: block;
+            overflow: hidden;
+            h4 {
+              font-size: 14px;
+              opacity: 0.8;
+              font-weight: 400;
+              margin: 0;
+              color: #777;
+              display: -webkit-box;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              word-wrap: break-word;
+              white-space: normal !important;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+            }
+            small {
+              color: #a0a0a0;
+              margin-top: 10px;
+              font-size: 12px;
+              i {
+                margin-right: 5px;
+              }
+            }
           }
         }
       }

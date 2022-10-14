@@ -5,7 +5,7 @@
   </header>
   <div class="article_list">
     <div
-      :style="'background-image: url(' + articleTop.url + ');'"
+      :style="'background-image: url(' + articleTop.img + ');'"
       class="article_item article_top wow animate__fadeIn"
     >
       <router-link
@@ -22,7 +22,7 @@
     </div>
     <template v-for="item in articleList" :key="item">
       <div class="article_item wow animate__fadeIn">
-        <img :src="item.url" class="article_img" alt="" />
+        <img :src="item.img" class="article_img" alt="" />
         <div class="article_info">
           <h2 class="article_title">
             <router-link :to="{ path: '/detail/' + item.id + '/' }">
@@ -59,7 +59,7 @@ import { usePost, useGet } from "@/hooks/index";
 import {
   urlForGetArticleList,
   urlForGetArticleTop,
-  urlForGetLongSign,
+  urlForGetLongSign
 } from "@/api/url";
 import { timeformatstande } from "@/hooks/timeformat";
 const post = usePost(),
@@ -76,11 +76,10 @@ export default {
   mounted() {
     this.getArticleTop();
     this.getArticleList();
-    this.getSign();
-    let _this = this;
-    timer = setInterval(() => {
-      _this.getSign();
-    }, 15000);
+    // let _this = this;
+    // timer = setInterval(() => {
+    //   _this.getSign();
+    // }, 15000);
   },
   unmounted() {
     clearInterval(timer);
@@ -95,7 +94,6 @@ export default {
         .then((res) => {
           // console.log(res);
           let list = res.data[0];
-
           _this.articleTop = list;
         })
         .catch((err) => {
@@ -119,9 +117,11 @@ export default {
             item.article_view = item.article_view + "次浏览";
           });
           _this.articleList = list;
+          _this.getSign();
         })
         .catch((err) => {
           console.log(err);
+          _this.getSign();
         });
     },
     getSign: function () {
@@ -142,6 +142,7 @@ export default {
         }
       });
     },
+    
   },
 };
 </script>

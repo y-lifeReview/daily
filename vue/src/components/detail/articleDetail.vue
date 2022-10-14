@@ -10,8 +10,8 @@
       </li>
       <li>正文</li>
     </ol>
-    <div v-if="info.url"
-      :style="'background-image: url(' + info.url + ');'"
+    <div v-if="info.img"
+      :style="'background-image: url(' + info.img + ');'"
       class="article_img"
     ></div>
     <markDown :md="md" />

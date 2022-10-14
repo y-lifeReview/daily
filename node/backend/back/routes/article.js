@@ -25,21 +25,21 @@ router.post('/save', function (req, res, next) {
 
 router.get('/detail', function (req, res) {
   let id = req.query.id
-  let sql = 'select a.md_url,a.category,a.updata_at,a.article_view,a.title,a.user_id ,url ,nickname from article as a left join article_img as b on a.id = b.article_id left join user as c on a.user_id = c.id where a.id =?'
+  let sql = 'select a.md_url,a.category,a.img,a.updata_at,a.article_view,a.title,a.user_id  ,nickname from article as a  left join user as c on a.user_id = c.id where a.id =?'
   query(sql, [id], function (err, result) {
     if (err) {
       res.send(reqData(500, err));
       return;
     }
-    let data = getArticle(result[0].md_url)
-    data.then((result2) => {
+    // let data = getArticle(result[0].md_url)
+    // data.then((result2) => {
       let obj = {}
       obj = result[0]
-      obj.content = result2.data
+      obj.content = result[0].md_url
       res.send(reqData(200, obj));
-    }).catch((err2) => {
-      res.send(reqData(500, err2));
-    })
+    // }).catch((err2) => {
+    //   res.send(reqData(500, err2));
+    // })
   })
 
 })
@@ -60,14 +60,14 @@ router.post('/checkpassword', function (req, res) {
   let id = req.body.id,
     content = req.body.content;
   console.log(id, content)
-  let sql = 'select password from article where id=?'
+  let sql = 'select anwser from article where id=?'
   query(sql, [id], function (err, result) {
     if (err) {
       res.send(reqData(500, err));
       return;
     }
-    console.log(result[0].password)
-    if (content === result[0].password) {
+    console.log(result[0].anwser)
+    if (content === result[0].anwser) {
       res.send(reqData(200, [true]))
     } else {
       res.send(reqData(200, [false]))
@@ -76,7 +76,7 @@ router.post('/checkpassword', function (req, res) {
   })
 })
 router.post('/top', function (req, res) {
-  let spl = 'select a.summary,a.id,a.title,url,width,height from article as a left join article_img as b on a.id=b.article_id where a.order=1'
+  let spl = 'select a.summary,a.id,a.title ,a.img from article as a  where a.isorder=1'
   query(spl, [], function (err, result) {
     if (err) {
       res.send(reqData(500, err));
@@ -88,7 +88,7 @@ router.post('/top', function (req, res) {
 router.post('/list', function (req, res) {
   let options = Object.values(req.body)
   let totalsql = 'SELECT COUNT(id) FROM article'
-  let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,url,width,height,nickname FROM article as a left join article_img as b on a.id = b.article_id left join user as c on a.user_id = c.id where a.id > ? and a.order=0 order by a.id desc limit 10 ';
+  let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname FROM article as a  left join user as c on a.user_id = c.id where a.id > ? and a.isorder=0 order by a.id desc limit 10 ';
   query(totalsql, [], function (err, result) {
     if (err) {
       res.send(reqData(500, err));
@@ -108,6 +108,16 @@ router.post('/list', function (req, res) {
     })
   })
 
+})
+router.get('/hot',function(req,res){
+  let sql = 'select title,id,article_view from article order by article_view desc limit 5'
+  query(sql,function(err,result){
+    if(err){
+      res.send(reqData(500,err))
+      return;
+    }
+    res.send(reqData(200,result))
+  })
 })
 
 module.exports = router;

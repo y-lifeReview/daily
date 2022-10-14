@@ -45,10 +45,11 @@ let transction = function (sqls, params) {
           return new Promise((sqlResolve, sqlReject) => {
             const data = params[index];
             connection.query(sql, data, (sqlErr, result) => {
+              console.log(sqlErr,result)
               if (sqlErr) {
-                return sqlResolve(sqlErr);
+                return sqlReject(sqlErr);
               }
-              sqlReject(result);
+              sqlResolve(result);
             });
           });
         });

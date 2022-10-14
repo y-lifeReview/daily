@@ -59,7 +59,7 @@ export default {
   max-width: 1170px;
   box-shadow: 0 1px 4px 1px rgb(0 0 0 / 5%);
   background-color: #f9f9f9;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   .header-left {
     width: 220px;
