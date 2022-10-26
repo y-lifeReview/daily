@@ -57,22 +57,32 @@
             <div class="ri_atc_li">
               <h5>热门文章</h5>
               <ul>
-                <li v-for="(item) in hotList" :key="item.id">
-                  <a class="hot_icon">
-                    <img
-                      class="hot_icon"
-                      :src="'https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/hot ('+(item.id%11+1)+').png'"
-                      alt=""
-                    />
-                  </a>
-                  <div class="hot_title">
-                    <h4>{{item.title}}</h4>
-                    <small>
-                      <i class="iconfont icon-eye"></i>
-                      <span>{{item.article_view}}</span>
-                    </small>
-                  </div>
-                </li>
+                <el-skeleton :loading="hotloading" animated :count="5">
+                  <template v-for="item in hotList" :key="item.id">
+                    <router-link :to="{ path: '/detail/' + item.id + '/' }">
+                      <li>
+                        <a class="hot_icon">
+                          <img
+                            class="hot_icon"
+                            :src="
+                              'https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/hot (' +
+                              ((item.id % 11) + 1) +
+                              ').png'
+                            "
+                            alt=""
+                          />
+                        </a>
+                        <div class="hot_title">
+                          <h4>{{ item.title }}</h4>
+                          <small>
+                            <i class="iconfont icon-eye"></i>
+                            <span>{{ item.article_view }}</span>
+                          </small>
+                        </div>
+                      </li>
+                    </router-link>
+                  </template>
+                </el-skeleton>
               </ul>
             </div>
           </div>
@@ -86,8 +96,7 @@ import Header from "@/components/header/app-header.vue";
 import Aside from "@/components/aside/appAside.vue";
 import { useGet } from "@/hooks/index";
 import { getLStorage, setLStorage } from "@/hooks/storage";
-import { urlForGetWeather,
-  urlForGetHot } from "@/api/url";
+import { urlForGetWeather, urlForGetHot } from "@/api/url";
 const get = useGet();
 export default {
   components: {
@@ -96,13 +105,14 @@ export default {
   },
   data() {
     return {
-      hotList:[],
+      hotList: [],
       active: 0,
       city: "成都市",
       temperature: "25",
       weather: "多云",
       weatherBg:
         "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg1.png",
+      hotloading: true,
     };
   },
   methods: {
@@ -130,16 +140,20 @@ export default {
     changeactive: function (e) {
       if (e === this.active) return;
       this.active = e;
-    },getHot: function () {
+    },
+    getHot: function () {
       get({
-        url:urlForGetHot
-      }).then((data)=>{
-          console.log(data)
-          this.hotList = data.data||[]
-      }).catch((err)=>{
-        console.log(err)
+        url: urlForGetHot,
       })
-    }
+        .then((data) => {
+          // console.log(data)
+          this.hotList = data.data || [];
+          this.hotloading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   mounted() {
     let date = new Date();
@@ -153,7 +167,7 @@ export default {
     if (!getLStorage("city") || date.getSeconds() % 3 < 2) {
       this.getWeather();
     }
-    this.getHot()
+    this.getHot();
   },
 };
 </script>

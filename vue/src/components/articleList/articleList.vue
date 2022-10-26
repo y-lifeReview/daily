@@ -3,23 +3,27 @@
     <h1 class="">sprinkle</h1>
     <small>{{ longsign }}</small>
   </header>
+
   <div class="article_list">
-    <div
-      :style="'background-image: url(' + articleTop.img + ');'"
-      class="article_item article_top wow animate__fadeIn"
-    >
-      <router-link
-        class="article_top_a"
-        :to="{ path: '/detail/' + articleTop.id + '/' }"
+    <el-skeleton :loading="toploading" animated>
+      <div
+        :style="'background-image: url(' + articleTop.img + ');'"
+        class="article_item article_top wow animate__fadeIn"
       >
-        <div class="article_top_mask">
-          <h3>
-            <span class="article_top_icon">置顶</span>{{ articleTop.title }}
-          </h3>
-          <div class="article_top_des">{{ articleTop.summary }}</div>
-        </div>
-      </router-link>
-    </div>
+        <router-link
+          class="article_top_a"
+          :to="{ path: '/detail/' + articleTop.id + '/' }"
+        >
+          <div class="article_top_mask">
+            <h3>
+              <span class="article_top_icon">置顶</span>{{ articleTop.title }}
+            </h3>
+            <div class="article_top_des">{{ articleTop.summary }}</div>
+          </div>
+        </router-link>
+      </div>
+    </el-skeleton>
+    <el-skeleton :loading="listloading" :count="5" animated>
     <template v-for="item in articleList" :key="item">
       <div class="article_item wow animate__fadeIn">
         <img :src="item.img" class="article_img" alt="" />
@@ -50,6 +54,7 @@
         </div>
       </div>
     </template>
+    </el-skeleton>
   </div>
 </template>
 
@@ -59,7 +64,7 @@ import { usePost, useGet } from "@/hooks/index";
 import {
   urlForGetArticleList,
   urlForGetArticleTop,
-  urlForGetLongSign
+  urlForGetLongSign,
 } from "@/api/url";
 import { timeformatstande } from "@/hooks/timeformat";
 const post = usePost(),
@@ -71,8 +76,11 @@ export default {
       articleTop: {},
       articleList: [],
       longsign: "",
+      toploading:true,
+      listloading:true
     };
   },
+
   mounted() {
     this.getArticleTop();
     this.getArticleList();
@@ -96,6 +104,7 @@ export default {
           // console.log(res);
           let list = res.data[0];
           _this.articleTop = list;
+          _this.toploading = false;
         })
         .catch((err) => {
           console.log(err);
@@ -119,6 +128,7 @@ export default {
             item.article_view = item.article_view + "次浏览";
           });
           _this.articleList = list;
+          _this.listloading = false;
           _this.getSign();
         })
         .catch((err) => {
@@ -145,7 +155,6 @@ export default {
         }
       });
     },
-    
   },
 };
 </script>

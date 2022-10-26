@@ -115,6 +115,13 @@ export default {
   .aplayer-icon {
     opacity: 1;
   }
+  .aplayer{
+    .aplayer-list{
+      ol{
+        background: #f9f9f9 !important;
+      }
+    }
+  }
 }
 @media (min-width: 767px) {
   #aplayer .aplayer-info .aplayer-music {
