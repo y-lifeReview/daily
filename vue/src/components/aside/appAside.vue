@@ -103,10 +103,12 @@
       </nav>
       <div class="nav-footer wow animate__fadeInUp">
         <div>
-          <a class="foot-item" href=""
-            ><i class="aside-foot-icon iconfont icon-set"></i>
-            <small>管理</small></a
-          >
+          <!-- <a class="foot-item" href="" -->
+          <router-link class="foot-item" to="/login">
+            <i class="aside-foot-icon iconfont icon-set"></i>
+            <small>管理</small>
+          </router-link>
+          <!-- </a> -->
         </div>
         <div>
           <a class="foot-item" href=""

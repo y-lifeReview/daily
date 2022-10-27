@@ -108,7 +108,7 @@ export default {
       hotList: [],
       active: 0,
       city: "成都市",
-      temperature: "25",
+      temperature: "20",
       weather: "多云",
       weatherBg:
         "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg1.png",

@@ -14,7 +14,6 @@ import 'github-markdown-css'
 // import 'element-plus/dist/index.css'
 import './utils/router'
 import './mock/article/index'
-import 'element-ui/lib/theme-chalk/index.css';
 const app = createApp(App);
 app.use(router).use(vuetyped).use(ElementPlus)
 // app.config.compilerOptions.isCustomElement = tag => tag === 'meting-js'

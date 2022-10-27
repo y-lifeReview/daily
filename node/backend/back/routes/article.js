@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
-let {query} = require('../db/index')
+let {
+  query
+} = require('../db/index')
 let reqData = require('../dataBase/response')
 const service = require('../request/axios')
 const {
@@ -13,7 +15,6 @@ router.post('/save', function (req, res, next) {
   let options = Object.values(req.body)
   let addSql = 'INSERT INTO article(md_url,category,create_at,updata_at,article_view) VALUES(?,?,?,?,?)';
   let addSqlParams = options;
-
   query(addSql, addSqlParams, function (err, result) {
     if (err) {
       res.send('respond with a resource');
@@ -31,15 +32,13 @@ router.get('/detail', function (req, res) {
       res.send(reqData(500, err));
       return;
     }
-    // let data = getArticle(result[0].md_url)
-    // data.then((result2) => {
-      let obj = {}
-      obj = result[0]
-      obj.content = result[0].md_url
-      res.send(reqData(200, obj));
-    // }).catch((err2) => {
-    //   res.send(reqData(500, err2));
-    // })
+    let obj = {}
+    obj = result[0]
+    obj.content = result[0].md_url
+    res.send(reqData(200, obj));
+    //浏览量增加
+    let sql2 = 'update article set article_view = article_view + 1 where id = ? '
+    query(sql2,[id],function(err2,result2){})
   })
 
 })
@@ -109,14 +108,14 @@ router.post('/list', function (req, res) {
   })
 
 })
-router.get('/hot',function(req,res){
+router.get('/hot', function (req, res) {
   let sql = 'select title,id,article_view from article order by article_view desc limit 5'
-  query(sql,function(err,result){
-    if(err){
-      res.send(reqData(500,err))
+  query(sql, function (err, result) {
+    if (err) {
+      res.send(reqData(500, err))
       return;
     }
-    res.send(reqData(200,result))
+    res.send(reqData(200, result))
   })
 })
 

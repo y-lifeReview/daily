@@ -39,13 +39,13 @@ let transction = function (sqls, params) {
           connection.release();
           return reject(beginErr);
         }
-        console.log("开始执行事务，共执行" + sqls.length + "条语句");
+        // console.log("开始执行事务，共执行" + sqls.length + "条语句");
         // 返回一个promise 数组
         let funcAry = sqls.map((sql, index) => {
           return new Promise((sqlResolve, sqlReject) => {
             const data = params[index];
             connection.query(sql, data, (sqlErr, result) => {
-              console.log(sqlErr,result)
+              // console.log(sqlErr,result)
               if (sqlErr) {
                 return sqlReject(sqlErr);
               }
@@ -61,7 +61,7 @@ let transction = function (sqls, params) {
             connection.commit(function (commitErr, info) {
               if (commitErr) {
                 // 提交事务失败了
-                console.log("提交事务失败:" + commitErr);
+                // console.log("提交事务失败:" + commitErr);
                 // 事务回滚，之前运行的sql语句不生效
                 connection.rollback(function (err) {
                   if (err) console.log("回滚失败：" + err);
@@ -79,7 +79,7 @@ let transction = function (sqls, params) {
           .catch((error) => {
             // 多条sql语句执行中 其中有一条报错 直接回滚
             connection.rollback(function () {
-              console.log("sql运行失败： " + error);
+              // console.log("sql运行失败： " + error);
               connection.release();
               reject(error);
             });
