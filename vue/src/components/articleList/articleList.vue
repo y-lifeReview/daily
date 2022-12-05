@@ -23,38 +23,53 @@
         </router-link>
       </div>
     </el-skeleton>
-    <el-skeleton :loading="listloading" :count="5" animated>
-    <template v-for="item in articleList" :key="item">
-      <div class="article_item wow animate__fadeIn">
-        <img :src="item.img" class="article_img" alt="" />
-        <div class="article_info">
-          <h2 class="article_title">
-            <router-link :to="{ path: '/detail/' + item.id + '/' }">
-              {{ item.title }}
-            </router-link>
-          </h2>
-          <p class="article_des">{{ item.summary }}</p>
-          <div class="line"></div>
-          <div class="other_info">
-            <li>
-              <span class="icon_sapn"><i class="iconfont icon-user"></i></span>
-              <span>{{ item.nickname }}</span>
-            </li>
-            <li>
-              <span class="icon_sapn"
-                ><i class="iconfont icon-time-circle"></i
-              ></span>
-              <span>{{ item.updata_at }}</span>
-            </li>
-            <li>
-              <span class="icon_sapn"><i class="iconfont icon-eye"></i></span>
-              <span>{{ item.article_view }}</span>
-            </li>
+    <el-skeleton :loading="listloading" :count="6" animated>
+      <template v-for="item in articleList" :key="item">
+        <div class="article_item wow animate__fadeIn">
+          <img :src="item.img" class="article_img" alt="" />
+          <div class="article_info">
+            <h2 class="article_title">
+              <router-link :to="{ path: '/detail/' + item.id + '/' }">
+                {{ item.title }}
+              </router-link>
+            </h2>
+            <p class="article_des">{{ item.summary }}</p>
+            <div class="line"></div>
+            <div class="other_info">
+              <li>
+                <span class="icon_sapn"
+                  ><i class="iconfont icon-user"></i
+                ></span>
+                <span>{{ item.nickname }}</span>
+              </li>
+              <li>
+                <span class="icon_sapn"
+                  ><i class="iconfont icon-time-circle"></i
+                ></span>
+                <span>{{ item.updata_at }}</span>
+              </li>
+              <li>
+                <span class="icon_sapn"><i class="iconfont icon-eye"></i></span>
+                <span>{{ item.article_view }}</span>
+              </li>
+            </div>
           </div>
         </div>
-      </div>
-    </template>
+      </template>
     </el-skeleton>
+  </div>
+  <div class="pagenation_lox">
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :page-size="6"
+      :pager-count="5"
+      :total="articleTotal"
+      @prev-click="currentChange"
+      @next-click="currentChange"
+      @current-change="currentChange"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -76,8 +91,9 @@ export default {
       articleTop: {},
       articleList: [],
       longsign: "",
-      toploading:true,
-      listloading:true
+      toploading: true,
+      listloading: true,
+      articleTotal: 0,
     };
   },
 
@@ -118,6 +134,7 @@ export default {
         data: {
           page,
         },
+        isProgress:true
       })
         .then((res) => {
           // console.log(res);
@@ -129,7 +146,12 @@ export default {
           });
           _this.articleList = list;
           _this.listloading = false;
+          _this.articleTotal = res.total;
           _this.getSign();
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -154,6 +176,9 @@ export default {
           return;
         }
       });
+    },
+    currentChange: function (e) {
+      this.getArticleList(e);
     },
   },
 };
@@ -285,6 +310,14 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 2;
+  }
+}
+.pagenation_lox {
+  width: 100%;
+  padding: 10px 0 50px;
+  .el-pagination {
+    width: fit-content;
+    margin: auto;
   }
 }
 a {

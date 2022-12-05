@@ -10,3 +10,4 @@ export const urlForLogin = 'user/login';
 export const urlForRegister = 'user/register';
 export const urlForGetLongSign = 'sign';
 export const urlForGetHot = 'article/hot';
+export const urlForGetTags = 'article/tags';

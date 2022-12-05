@@ -3,6 +3,7 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 NProgress.configure({
     showSpinner: false,
+    parent: '#progress_content'
 });
 
 function http({
@@ -12,12 +13,14 @@ function http({
     headers,
     beforeRequest = function(){
         // console.log('请求开始')
-       
+        
     },
     afterRequest = function(){
         
-        // console.log('请求结束')
-    }
+        console.log('请求结束',isProgress)
+        if(NProgress&&isProgress) NProgress.done(); 
+    },
+    isProgress=false,
 }) {
     const successHandler = (res) => {
         // if (res.data.code == 200) {
@@ -31,6 +34,7 @@ function http({
         afterRequest && afterRequest();
         throw new Error(error.msg || "请求失败，未知异常");
     };
+    if(isProgress) NProgress.start(); 
     beforeRequest && beforeRequest();
     method = method || "GET";
     const params = Object.assign(typeof data === 'function' ? data() : data || {}, {})
@@ -49,6 +53,7 @@ export function get({
     method = "GET",
     beforeRequest,
     afterRequest,
+    isProgress
 }) {
     return http({
         url,
@@ -56,6 +61,7 @@ export function get({
         data,
         beforeRequest,
         afterRequest,
+        isProgress
     });
 }
 
@@ -66,6 +72,7 @@ export function post({
     headers,
     beforeRequest,
     afterRequest,
+    isProgress
 }) {
     return http({
         url,
@@ -74,6 +81,7 @@ export function post({
         headers,
         beforeRequest,
         afterRequest,
+        isProgress
     });
 }
 export default {

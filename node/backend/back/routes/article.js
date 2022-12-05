@@ -85,15 +85,19 @@ router.post('/top', function (req, res) {
   })
 })
 router.post('/list', function (req, res) {
+  // console.log('list start')
   let options = Object.values(req.body)
   let totalsql = 'SELECT COUNT(id) FROM article'
-  let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname FROM article as a  left join user as c on a.user_id = c.id where a.id > ? and a.isorder=0 order by a.id desc limit 10 ';
+  let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname FROM article as a  left join user as c on a.user_id = c.id where a.id <= ? and a.isorder=0 order by a.id desc limit 6 ';
   query(totalsql, [], function (err, result) {
+    // console.log('list 1')
     if (err) {
+      console.log('err1',err)
       res.send(reqData(500, err));
       return;
     }
-    query(getsql, [(options[0] - 1) * 10], function (err2, result2) {
+    query(getsql, [result[0]['COUNT(id)']-(options[0] - 1) * 6], function (err2, result2) {
+      // console.log('list 2')
       if (err2) {
         console.log('[SELECT ERROR] - ', err2.message);
         res.send(reqData(500, err2));
@@ -101,7 +105,8 @@ router.post('/list', function (req, res) {
       }
       let data = reqData(200, result2)
       data.page = options[0]
-      data.total = Math.ceil(result[0]['COUNT(id)'] / 10)
+      data.total = result[0]['COUNT(id)']
+      // console.log('list 3')
       res.send(data);
 
     })
@@ -110,6 +115,16 @@ router.post('/list', function (req, res) {
 })
 router.get('/hot', function (req, res) {
   let sql = 'select title,id,article_view from article order by article_view desc limit 5'
+  query(sql, function (err, result) {
+    if (err) {
+      res.send(reqData(500, err))
+      return;
+    }
+    res.send(reqData(200, result))
+  })
+})
+router.get('/tags', function (req, res) {
+  let sql = 'select distinct category from article'
   query(sql, function (err, result) {
     if (err) {
       res.send(reqData(500, err))

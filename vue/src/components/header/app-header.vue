@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header">
+  <header class="app-header" id="progress_content">
     <div class="header-left">
       <div
         class="weather-box wow animate__fadeInDown"

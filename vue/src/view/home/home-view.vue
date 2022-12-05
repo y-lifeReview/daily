@@ -86,6 +86,39 @@
               </ul>
             </div>
           </div>
+          <!-- 博客信息 -->
+          <div class="ri_atc_li blog_info">
+            <h5>博客信息</h5>
+            <ul>
+              <li>
+                <i class="iconfont icon-suggest"></i>
+                <span>文章数目</span>
+                <div class="blog_info_view badge">257</div>
+              </li>
+              <li>
+                <i class="iconfont icon-comments"></i>
+                <span>评论数目</span>
+                <div class="blog_info_view badge">257</div>
+              </li>
+              <li>
+                <i class="iconfont icon-calendar"></i>
+                <span>运行天数</span>
+                <div class="blog_info_view badge">257</div>
+              </li>
+              <li>
+                <i class="iconfont icon-history"></i>
+                <span>最后活跃</span>
+                <div class="blog_info_view badge">257</div>
+              </li>
+            </ul>
+          </div>
+          <!-- 博客信息 -->
+          <div class="ri_atc_li blog_info">
+            <h5>标签云</h5>
+            <div>
+              <a v-for="item in tagList" :key="item.category" class="badge tags">{{item.category}}</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -96,7 +129,7 @@ import Header from "@/components/header/app-header.vue";
 import Aside from "@/components/aside/appAside.vue";
 import { useGet } from "@/hooks/index";
 import { getLStorage, setLStorage } from "@/hooks/storage";
-import { urlForGetWeather, urlForGetHot } from "@/api/url";
+import { urlForGetWeather, urlForGetHot ,urlForGetTags} from "@/api/url";
 const get = useGet();
 export default {
   components: {
@@ -106,6 +139,7 @@ export default {
   data() {
     return {
       hotList: [],
+      tagList:[],
       active: 0,
       city: "成都市",
       temperature: "20",
@@ -154,6 +188,18 @@ export default {
           console.log(err);
         });
     },
+    getTags: function () {
+      get({
+        url: urlForGetTags,
+      })
+        .then((data) => {
+          // console.log(data)
+          this.tagList = data.data || [];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   mounted() {
     let date = new Date();
@@ -168,6 +214,7 @@ export default {
       this.getWeather();
     }
     this.getHot();
+    this.getTags();
   },
 };
 </script>
@@ -185,6 +232,8 @@ export default {
     // height: 100%;
     // min-height: 100%;
     margin-left: 220px;
+    position: relative;
+
     .article_content {
       width: auto;
       // min-height: 100%;
@@ -291,10 +340,55 @@ export default {
               color: #a0a0a0;
               margin-top: 10px;
               font-size: 12px;
+              display: flex;
+              align-items: center;
               i {
                 margin-right: 5px;
               }
             }
+          }
+        }
+        .blog_info {
+          opacity: 0.8;
+          color: #777;
+          ul {
+            box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
+            li {
+              display: block;
+              background-color: #fff;
+              padding: 15px;
+              i {
+                float: left;
+                margin-right: 5px;
+              }
+              .blog_info_view {
+                float: right;
+              }
+            }
+            li:first-child {
+              border-top-left-radius: 4px;
+              border-top-right-radius: 4px;
+            }
+            li:last-child {
+              border-bottom-right-radius: 4px;
+              border-bottom-left-radius: 4px;
+            }
+          }
+          .badge {
+            font-size: 12px;
+            background-color: #cfdadd;
+            text-shadow: 0 1px 0 rgb(0 0 0 / 20%);
+            padding: 3px 7px;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            border-radius: 10px;
+          }
+          .tags{
+            display: inline-block;
+            margin:0 4px 8px 0;
           }
         }
       }

@@ -5,6 +5,7 @@ import router from "./router";
 
 // import ElementUI from 'element-ui'
 import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css'
 import vuetyped from 'vue3typed'
 import 'animate.css'
 

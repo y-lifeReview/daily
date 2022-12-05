@@ -5,17 +5,22 @@ let pool = mysql.createPool({
   password: '',
   port: '27251',
   database: 'test',
+  multipleStatements: true
 });
 let query = function (sql, data, callback) {
+  // console.log('data',data)
   pool.getConnection(function (err, conn) {
     if (err) {
+      console.log('sql connect err',err)
       callback(err, null, null);
     } else {
       conn.query(sql, data, function (qerr, vals, fields) {
         //释放连接
+        // console.log('释放连接',data)
         conn.release();
         //事件驱动回调
         callback(qerr, vals, fields);
+        // console.log('回调',data)
       });
     }
   });
