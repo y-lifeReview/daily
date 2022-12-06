@@ -56,7 +56,7 @@ router.post('/register', function (req, res, next) {
 // 登录
 router.post('/login', function (req, res, next) {
   let Sql = 'SELECT * FROM user WHERE nickname = ?';
-  let SqlParams = [req.body.username];
+  let SqlParams = [req.body.name];
   query(Sql, SqlParams, function (err, result) {
     if (err) {
       console.log('[SELECT ERROR] - ', err.message);
@@ -68,7 +68,7 @@ router.post('/login', function (req, res, next) {
       res.send(reqData(500, '账号不存在!'));
 
     } else {
-      query('SELECT password FROM user WHERE nickname = ?', [req.body.username], function (err, result) {
+      query('SELECT password FROM user WHERE nickname = ?', [req.body.name], function (err, result) {
         if (err) {
           console.log('[SELECT ERROR] - ', err.message);
           res.send(reqData(500, err));
@@ -86,7 +86,7 @@ router.post('/login', function (req, res, next) {
             }
             let key = tokenkey[0].tokenKey
             new Promise((resolve, reject) => {
-              getToken(req.body.username, key, resolve)
+              getToken(req.body.name, key, resolve)
             }).then((token) => {
               // console.log('token', token)
               let update_at = (new Date().getTime() / 1000).toFixed(0) - 0

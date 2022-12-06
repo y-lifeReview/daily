@@ -1,7 +1,10 @@
 var express = require('express');
 const fs = require("fs");
 const http = require('http')
-let {query} = require('../db/index')
+let {
+  query,
+  transction
+} = require('../db/index')
 
 var COS = require('cos-nodejs-sdk-v5');
 
@@ -130,5 +133,26 @@ router.post('/img/upload', upload.single('file'), function (req, res) {
 
   })
 })
+router.post('/bloginfo', function (req, res) {
+  let sqls = [],
+    sqlParams = [];
+
+  let sql1 = 'SELECT COUNT(id) as count FROM article',
+      sql2 = 'select MAX(updata_at) as time from article'
+  sqls.push(sql1,sql2)
+  sqlParams.push([],[])
+  transction(sqls, sqlParams).then((all) => {
+    let data = {}
+    data.count = all[0][0].count;
+    data.time = all[1][0].time.substring(0,10);
+    let temp = Math.ceil(((new Date()).getTime()/1000 - 1667371358)/24/3600)
+    data.day = temp
+    res.send(reqData(200, data))
+  }).catch((err) => {
+    // console.log('err:', err)
+    res.send(reqData(500, err))
+  })
+})
+
 
 module.exports = router;
