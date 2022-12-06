@@ -65,7 +65,7 @@ export default {
         return;
       }
       this.tips = "";
-      let name = hamcSha(this.name.trim()),
+      let name = this.name.trim(),
         password = hamcSha(this.password.trim());
       // console.log(name, password);
       post({

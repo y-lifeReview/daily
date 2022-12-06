@@ -1,7 +1,7 @@
 <template>
   <header class="box-header">
     <h1 class="">sprinkle</h1>
-    <small>{{ longsign }}</small>
+      <small>{{ longsign }}</small>
   </header>
 
   <div class="article_list">
@@ -12,7 +12,7 @@
       >
         <router-link
           class="article_top_a"
-          :to="{ path: '/detail/' + articleTop.id + '/' }"
+          :to="{ path: '/detail/' + articleTop.id  }"
         >
           <div class="article_top_mask">
             <h3>
@@ -23,13 +23,13 @@
         </router-link>
       </div>
     </el-skeleton>
-    <el-skeleton :loading="listloading" :count="6" animated>
+    <el-skeleton :loading="listloading" :count="7" animated>
       <template v-for="item in articleList" :key="item">
         <div class="article_item wow animate__fadeIn">
           <img :src="item.img" class="article_img" alt="" />
           <div class="article_info">
             <h2 class="article_title">
-              <router-link :to="{ path: '/detail/' + item.id + '/' }">
+              <router-link :to="{ path: '/detail/' + item.id  }">
                 {{ item.title }}
               </router-link>
             </h2>

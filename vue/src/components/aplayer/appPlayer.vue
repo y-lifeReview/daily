@@ -3,13 +3,14 @@
     <meting-js
       :autoplay="false"
       :fixed="false"
-      :id="1574204418"
+      :id="7795530626"
       :mini="false"
       :list-folded="true"
       :volume="0.4"
-      server="tencent"
+      server="netease"
       type="playlist"
     />
+    <!-- //neteasy 968351601  tencent 1574204418 -->
   </div>
 </template>
 <script>
@@ -29,9 +30,14 @@ export default {
         ap = aplayer;
         ap.on('play',function(){
           document.getElementsByClassName('aplayer-pic')[0].classList.add('rotation')
+          document.getElementsByClassName('aplayer-lrc')[0].classList.remove('aplayer-lrc-hide')
+          document.getElementsByClassName('aplayer-icon-lrc')[0].classList.remove('aplayer-icon-lrc-inactivity')
+          // aplayer-icon-lrc-inactivity
         })
         ap.on('pause',function(){
            document.getElementsByClassName('aplayer-pic')[0].classList.remove('rotation')
+           document.getElementsByClassName('aplayer-lrc')[0].classList.add('aplayer-lrc-hide')
+           document.getElementsByClassName('aplayer-icon-lrc')[0].classList.add('aplayer-icon-lrc-inactivity')
         })
         document.getElementsByClassName('aplayer-icon-lrc')[0].setAttribute('title','歌词')
         document.getElementsByClassName('aplayer-icon-menu')[0].setAttribute('title','列表')

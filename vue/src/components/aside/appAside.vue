@@ -38,19 +38,19 @@
             </a>
           </li>
           <li>
-            <a href="">
+            <a target="_blank" href="https://github.com/y-lifeReview">
               <i class="iconfont icon-icon_github"></i>
               <span>仓库</span>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="">
               <i class="iconfont icon-favorites"></i>
               <span>朋友</span>
             </a>
-          </li>
+          </li> -->
           <li>
-            <a href="">
+            <a target="_self" href="/#/images">
               <i class="iconfont icon-pic"></i>
               <span>相册</span>
             </a>

@@ -212,10 +212,7 @@ export default {
     }
   }
 }
-#article_md {
-  background-color: #fff;
-  padding: 30px;
-}
+
 .article_list {
   width: 100%;
   padding: 20px;
@@ -256,6 +253,7 @@ export default {
     background-size: cover;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.05);
   }
 }
 a {

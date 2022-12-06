@@ -28,6 +28,13 @@ export const routes = [{
             meta: {
                 keepAlive: false
             }
+        },
+        {
+            path: '/images',
+            component: detail,
+            meta: {
+                keepAlive: false
+            }
         }
     ]
 }]

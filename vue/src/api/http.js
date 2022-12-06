@@ -17,7 +17,7 @@ function http({
     },
     afterRequest = function(){
         
-        console.log('请求结束',isProgress)
+        // console.log('请求结束',isProgress)
         if(NProgress&&isProgress) NProgress.done(); 
     },
     isProgress=false,

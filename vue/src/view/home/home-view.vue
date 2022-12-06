@@ -57,7 +57,7 @@
             <div class="ri_atc_li">
               <h5>热门文章</h5>
               <ul>
-                <el-skeleton :loading="hotloading" animated :count="5">
+                <el-skeleton :loading="hotloading" animated :count="2">
                   <template v-for="item in hotList" :key="item.id">
                     <router-link :to="{ path: '/detail/' + item.id + '/' }">
                       <li>
@@ -90,36 +90,47 @@
           <div class="ri_atc_li blog_info">
             <h5>博客信息</h5>
             <ul>
-              <li>
-                <i class="iconfont icon-suggest"></i>
-                <span>文章数目</span>
-                <div class="blog_info_view badge">257</div>
-              </li>
-              <li>
-                <i class="iconfont icon-comments"></i>
-                <span>评论数目</span>
-                <div class="blog_info_view badge">257</div>
-              </li>
-              <li>
-                <i class="iconfont icon-calendar"></i>
-                <span>运行天数</span>
-                <div class="blog_info_view badge">257</div>
-              </li>
-              <li>
-                <i class="iconfont icon-history"></i>
-                <span>最后活跃</span>
-                <div class="blog_info_view badge">257</div>
-              </li>
+              <el-skeleton :loading="infoloading" animated :count="2">
+                <li>
+                  <i class="iconfont icon-suggest"></i>
+                  <span>文章数目</span>
+                  <div class="blog_info_view badge">{{ blogInfo.count }}</div>
+                </li>
+                <li>
+                  <i class="iconfont icon-comments"></i>
+                  <span>评论数目</span>
+                  <div class="blog_info_view badge">257</div>
+                </li>
+                <li>
+                  <i class="iconfont icon-calendar"></i>
+                  <span>运行天数</span>
+                  <div class="blog_info_view badge">{{ blogInfo.day }}</div>
+                </li>
+                <li>
+                  <i class="iconfont icon-history"></i>
+                  <span>最后活跃</span>
+                  <div class="blog_info_view badge">{{ blogInfo.time }}</div>
+                </li>
+              </el-skeleton>
             </ul>
           </div>
-          <!-- 博客信息 -->
+          <!-- 标签 -->
           <div class="ri_atc_li blog_info">
             <h5>标签云</h5>
             <div>
-              <a v-for="item in tagList" :key="item.category" class="badge tags">{{item.category}}</a>
+              <el-skeleton :loading="tagloading" animated :count="2">
+                <a
+                v-for="item in tagList"
+                :key="item.category"
+                class="badge tags"
+                >{{ item.category }}</a
+              >
+              </el-skeleton>
+              
             </div>
           </div>
         </div>
+        <div class="clearfix"></div>
       </div>
     </div>
   </div>
@@ -127,10 +138,16 @@
 <script>
 import Header from "@/components/header/app-header.vue";
 import Aside from "@/components/aside/appAside.vue";
-import { useGet } from "@/hooks/index";
+import { useGet, usePost } from "@/hooks/index";
 import { getLStorage, setLStorage } from "@/hooks/storage";
-import { urlForGetWeather, urlForGetHot ,urlForGetTags} from "@/api/url";
-const get = useGet();
+import {
+  urlForGetWeather,
+  urlForGetHot,
+  urlForGetTags,
+  urlForGetBlogInfo,
+} from "@/api/url";
+const get = useGet(),
+  post = usePost();
 export default {
   components: {
     Header,
@@ -138,8 +155,9 @@ export default {
   },
   data() {
     return {
+      blogInfo: {},
       hotList: [],
-      tagList:[],
+      tagList: [],
       active: 0,
       city: "成都市",
       temperature: "20",
@@ -147,6 +165,8 @@ export default {
       weatherBg:
         "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg1.png",
       hotloading: true,
+      infoloading:true,
+      tagloading:true,
     };
   },
   methods: {
@@ -195,6 +215,20 @@ export default {
         .then((data) => {
           // console.log(data)
           this.tagList = data.data || [];
+          this.tagloading = false
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getBlogInfo: function () {
+      post({
+        url: urlForGetBlogInfo,
+      })
+        .then((data) => {
+          // console.log('bloginfo',data)
+          this.blogInfo = data.data;
+          this.infoloading = false
         })
         .catch((err) => {
           console.log(err);
@@ -215,6 +249,7 @@ export default {
     }
     this.getHot();
     this.getTags();
+    this.getBlogInfo();
   },
 };
 </script>
@@ -238,20 +273,22 @@ export default {
       width: auto;
       // min-height: 100%;
       position: relative;
-      // height: 100%;
+      height: fit-content;
+      background-color: #f9f9f9;
       .article_box {
-        width: 100%;
-        // height: 100%;
-        // float: left;
-        padding-right: 240px;
+        width: 710px;
+        height: 100%;
+        float: left;
+        // padding-right: 240px;
         background-color: #f0f3f4;
       }
       .article_option {
         width: 240px;
-        height: 100%;
-        position: absolute;
-        right: 0;
-        top: 0;
+        float: right;
+        // height: 100%;
+        // position: absolute;
+        // right: 0;
+        // top: 0;
         background-color: #f9f9f9;
         ul {
           display: flex;
@@ -386,11 +423,14 @@ export default {
             vertical-align: middle;
             border-radius: 10px;
           }
-          .tags{
+          .tags {
             display: inline-block;
-            margin:0 4px 8px 0;
+            margin: 0 4px 8px 0;
           }
         }
+      }
+      .clearfix {
+        clear: both;
       }
     }
   }
