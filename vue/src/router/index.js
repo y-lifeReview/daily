@@ -1,7 +1,9 @@
 import {
     createRouter,
-    createWebHashHistory
+    createWebHashHistory,
+    createWebHistory
 } from 'vue-router'
+import store from '../store'
 import Login from '@/view/login/login-index.vue'
 import Index from '@/view/home/home-view.vue'
 import List from '@/components/articleList/articleList.vue'
@@ -15,7 +17,7 @@ export const routes = [{
     name: 'Index',
     component: Index,
     children: [{
-            path: '/',
+            path: '',
             name: 'list',
             component: List,
             meta: {
@@ -23,14 +25,21 @@ export const routes = [{
             }
         },
         {
-            path: '/detail/:id',
+            path: 'detail/:id',
             component: detail,
             meta: {
                 keepAlive: false
             }
         },
         {
-            path: '/images',
+            path: 'images',
+            component: detail,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
+            path: 'about',
             component: detail,
             meta: {
                 keepAlive: false
@@ -40,7 +49,7 @@ export const routes = [{
 }]
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes,
 
     scrollBehavior(to, from, savedPosition) {
@@ -54,5 +63,10 @@ const router = createRouter({
         };
     }
 })
-
+// router.afterEach((to, from) => {
+//     // console.log('路由守卫',to,from)
+//     //控制左侧导航栏选中
+//     let path = to.path||'/'
+//     store.commit('changeNowRouter',path)
+//   })
 export default router

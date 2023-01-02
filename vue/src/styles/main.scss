@@ -1,4 +1,4 @@
-
+$hoverColor:rgba(0, 0, 0, .05);
 html {
     height: 100%;
     background-color: #EFEFEF;
@@ -38,7 +38,7 @@ a {
 }
 
 .nav-ul>li>a:hover {
-    background-color: rgba(0, 0, 0, .05);
+    background-color: $hoverColor;
 }
 
 .nav-ul li span {

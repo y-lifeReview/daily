@@ -1,5 +1,5 @@
 <template>
-  <div id="aplayer" class="wow animate__fadeInDown">
+  <div id="aplayer" class="">
     <meting-js
       :autoplay="false"
       :fixed="false"
@@ -23,7 +23,6 @@ export default {
     };
   },
   mounted() {
-    
     let ap = null;
     Object.defineProperty(document.querySelector("meting-js"), "aplayer", {
       set: function (aplayer) {
@@ -59,6 +58,9 @@ export default {
   box-shadow: none;
   margin: 0 5px;
   float: right;
+  .aplayer{
+    width:100%;
+  }
   .aplayer-pic {
     transition: 0.37s;
     -webkit-transition: 0.37s;

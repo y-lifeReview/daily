@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import "@/styles/main.css";
+import "@/styles/main.scss";
 import router from "./router";
+import store from "./store"
 
 // import ElementUI from 'element-ui'
 import ElementPlus from 'element-plus';
@@ -16,7 +17,7 @@ import 'github-markdown-css'
 import './utils/router'
 import './mock/article/index'
 const app = createApp(App);
-app.use(router).use(vuetyped).use(ElementPlus)
+app.use(store).use(router).use(vuetyped).use(ElementPlus)
 // app.config.compilerOptions.isCustomElement = tag => tag === 'meting-js'
 app.mount('#app')
 

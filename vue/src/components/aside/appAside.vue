@@ -1,8 +1,8 @@
 <template>
   <aside class="app-aside">
     <div class="aside-box scroll-hide">
-      <div class="avatar-box wow animate__fadeIn">
-        <a href="">
+      <div class="avatar-box ">
+        <a href="/about">
           <img
             class="aside-avatar"
             src="https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/blog-avatar.png"
@@ -31,11 +31,11 @@
           <li class="text-guide">
             <span>导航</span>
           </li>
-          <li>
-            <a href="">
+          <li >
+            <router-link to="/" exact-active-class="router-target">
               <i class="iconfont icon-home"></i>
               <span>首页</span>
-            </a>
+            </router-link>
           </li>
           <li>
             <a target="_blank" href="https://github.com/y-lifeReview">
@@ -50,10 +50,10 @@
             </a>
           </li> -->
           <li>
-            <a target="_self" href="/#/images">
+            <router-link to="/about" exact-active-class="router-target">
               <i class="iconfont icon-pic"></i>
               <span>相册</span>
-            </a>
+            </router-link>
           </li>
           <li>
             <a href="">
@@ -101,7 +101,7 @@
           </li>
         </ul>
       </nav>
-      <div class="nav-footer wow animate__fadeInUp">
+      <div class="nav-footer ">
         <div>
           <!-- <a class="foot-item" href="" -->
           <router-link class="foot-item" to="/login">
@@ -128,7 +128,13 @@
 </template>
 <script>
 export default {
-  setup() {},
+  name:"appAside",
+  data(){
+    return {
+      
+    }
+  },
+  
 };
 </script>
 <style lang="scss" scoped>
@@ -199,9 +205,16 @@ export default {
           margin: 15px 0 10px;
         }
         li > a {
-          padding: 10px 20px;
+          padding: 6px 10px;
           display: flex;
           align-items: center;
+          width: 90%;
+          margin: 5px auto;
+          border-radius: 5px;
+        }
+        .router-target{
+          background-color: rgba(0, 0, 0, .05);
+
         }
       }
     }

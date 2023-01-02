@@ -10,7 +10,7 @@
     <div class="main_content">
       <div class="article_content">
         <div class="article_box">
-          <router-view v-slot="{ Component }">
+          <router-view  v-slot="{ Component }">
             <keep-alive include="articleList">
               <component :is="Component" />
             </keep-alive>
@@ -120,13 +120,12 @@
             <div>
               <el-skeleton :loading="tagloading" animated :count="2">
                 <a
-                v-for="item in tagList"
-                :key="item.category"
-                class="badge tags"
-                >{{ item.category }}</a
-              >
+                  v-for="item in tagList"
+                  :key="item.category"
+                  class="badge tags"
+                  >{{ item.category }}</a
+                >
               </el-skeleton>
-              
             </div>
           </div>
         </div>
@@ -165,8 +164,8 @@ export default {
       weatherBg:
         "https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/weatherbg1.png",
       hotloading: true,
-      infoloading:true,
-      tagloading:true,
+      infoloading: true,
+      tagloading: true,
     };
   },
   methods: {
@@ -215,7 +214,7 @@ export default {
         .then((data) => {
           // console.log(data)
           this.tagList = data.data || [];
-          this.tagloading = false
+          this.tagloading = false;
         })
         .catch((err) => {
           console.log(err);
@@ -228,7 +227,7 @@ export default {
         .then((data) => {
           // console.log('bloginfo',data)
           this.blogInfo = data.data;
-          this.infoloading = false
+          this.infoloading = false;
         })
         .catch((err) => {
           console.log(err);
@@ -236,6 +235,7 @@ export default {
     },
   },
   mounted() {
+    console.log("加载");
     let date = new Date();
     this.city = getLStorage("city") || "成都市";
     this.temperature = getLStorage("temperature") || "25";

@@ -2,7 +2,7 @@
   <header class="app-header" id="progress_content">
     <div class="header-left">
       <div
-        class="weather-box wow animate__fadeInDown"
+        class="weather-box "
         :style="{ background: 'url(' + weatherBg + ') 0% 0% / 100%' }"
       >
         <span>{{ temperature }}℃</span>
@@ -44,9 +44,7 @@ export default {
     };
   },
 
-  mounted() {
-    
-  },
+ 
 };
 </script>
 
