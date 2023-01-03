@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
+const history = require('connect-history-api-fallback')
 const logger = require('./logger')
 // let connection = require('./db/index')
 
@@ -16,6 +17,9 @@ var back = require('./routes/backend');
 const cors = require('cors')
 
 var app = express();
+//vue路由history模式
+app.use(history())
+
 app.use(cors())
 //设置跨域访问
 app.all("*", function (req, res, next) {

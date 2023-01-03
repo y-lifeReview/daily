@@ -6,7 +6,7 @@ let pool = mysql.createPool({
   port: '27251',
   database: 'test',
   multipleStatements: true,
-  connectionLimit:30,
+  connectionLimit:50,
 });
 let query = function (sql, data, callback) {
   // console.log('data',data)
