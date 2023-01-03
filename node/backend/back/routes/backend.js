@@ -17,15 +17,35 @@ var router = express.Router();
 //文章列表
 router.get('/articleList', function (req, res) {
     // console.log(req.query)
-    let params = req.query
-    let sql = 'select a.*,b.nickname as author  from article as a left join user as b on a.id = b.id order by a.id desc '
-    query(sql, [], function (err, result) {
+    let {
+        page,
+        limit,
+        sort
+    } = req.query
+    sort = sort === '-id' ? 0 : 1
+    let countsql = 'select count(id) from article'
+    let sql = 'select a.*,b.nickname as author from article as a left join user as b on a.user_id = b.id where a.id<=? order by a.id desc limit ?'
+    if (sort) {
+        sql = 'select a.*,b.nickname as author from article as a left join user as b on a.user_id = b.id where a.id<=? order by a.id limit ?'
+    }
+    query(countsql, [], function (err, result) {
         if (err) {
             res.send(reqData(500, err));
             return;
         }
-        res.send(reqData(200, result))
+        query(sql, [result[0]['count(id)'] - (page - 1) * limit, limit - 0], function (err2, result2) {
+            if (err2) {
+                res.send(reqData(500, err2));
+                return;
+            }
+            let data = reqData(200, result2)
+            data.page = page;
+            data.total = result[0]['count(id)']
+            res.send(data)
+        })
+
     })
+
 })
 //搜索作者
 router.get('/search/author', function (req, res) {
@@ -168,7 +188,7 @@ router.post('/user/login', function (req, res, next) {
     });
 
 });
-
+//用户信息
 router.get('/user/info', function (req, res) {
     let token = req.query.token
     // console.log(token)
@@ -186,6 +206,7 @@ router.get('/user/info', function (req, res) {
         res.send(reqData(200, [obj]))
     })
 })
+//文章发布
 router.post('/article/pub', function (req, res) {
     let {
         isOrder,
@@ -197,14 +218,15 @@ router.post('/article/pub', function (req, res) {
         content,
         content_short,
         uid,
-        image_uri
+        image_uri,
+        ispublish
     } = req.body
     let sqls = [],
         sqlParams = [];
 
-    if (isOrder) {
+    if (isOrder && ispublish) {
         //重置置顶的文章
-        let sql2 = 'updata articel set order=0 where order=1'
+        let sql2 = 'update articel set order=0 where order=1'
         sqls.push(sql2)
         sqlParams.push([])
     }
@@ -214,18 +236,164 @@ router.post('/article/pub', function (req, res) {
     isOrder = isOrder ? '1' : '0'
     isPassword = isPassword ? '1' : '0'
     let time = timeStand(new Date())
-    let value1 = [content,category,time,time,title,content_short,uid,isOrder,isPassword,anwser,ques,image_uri]
+    let value1 = [content, category, time, time, title, content_short, uid, isOrder, isPassword, anwser, ques, image_uri, ispublish?0:1]
     // 1、article表操作
-    let sql1 = 'insert into article (md_url,category,create_at,updata_at,title,summary,user_id,isorder,is_password,anwser,ques,img) values(?,?,?,?,?,?,?,?,?,?,?,?)'
+    let sql1 = 'insert into article (md_url,category,create_at,updata_at,title,summary,user_id,isorder,is_password,anwser,ques,img,is_draft) values(?,?,?,?,?,?,?,?,?,?,?,?,?)'
     sqls.push(sql1)
     sqlParams.push(value1)
 
-    transction(sqls,sqlParams).then((all)=>{
-        console.log('all:',all)
-        res.send(reqData(200,'发布成功'))
-    }).catch((err)=>{
-        res.send(reqData(500,err))
+    transction(sqls, sqlParams).then((all) => {
+        console.log('all:', all)
+        res.send(reqData(200, '发布成功'))
+    }).catch((err) => {
+        res.send(reqData(500, err))
     })
     // let sql = 'insert '
+})
+//文章删除
+router.post('/article/delete', function (req, res) {
+    let {
+        id
+    } = req.body;
+    //删除数据后重建主键以保证id连续
+    let sql = 'delete from article where id=?'
+    let sql2 = 'alter table article drop id'
+    let sql3 = 'alter table article add id int not null first'
+    let sql4 = 'alter table article modify column id int not null auto_increment,add primary key(id)'
+    let sqls = [sql, sql2, sql3, sql4]
+    transction(sqls, [id, '', '', '']).then((all) => {
+        console.log('all:', all)
+        res.send(reqData(200, '删除成功'))
+    }).catch((err) => {
+        res.send(reqData(500, err))
+    })
+})
+//草稿保存
+router.post('/article/save', function (req, res) {
+    let {
+        isOrder,
+        anwser,
+        isPassword,
+        ques,
+        title,
+        category,
+        content,
+        content_short,
+        uid,
+        image_uri,
+        aid,
+        ispublish
+    } = req.body
+    let sqls = [],
+        sqlParams = [];
+    if (!isPassword) {
+        anwser = ques = null
+    }
+    isOrder = isOrder ? '1' : null
+    isPassword = isPassword ? '1' : null
+    let time = timeStand(new Date())
+    let value1 = [content, category, time, title, content_short, uid, isOrder, isPassword, anwser, ques, image_uri, ispublish?0:1, aid]
+    // 1、article表操作
+    let sql1 = 'update article  set md_url=?,category=?,updata_at=?,title=?,summary=?,user_id=?,isorder=?,is_password=?,anwser=?,ques=?,img=?,is_draft=? where id = ?'
+    sqls.push(sql1)
+    sqlParams.push(value1)
+
+    transction(sqls, sqlParams).then((all) => {
+        console.log('all:', all)
+        res.send(reqData(200, '草稿保存成功'))
+    }).catch((err) => {
+        res.send(reqData(500, err))
+    })
+})
+//签名列表获取
+router.get('/signlist', function (req, res) {
+    let {
+        page,
+        limit,
+        sort
+    } = req.query
+    sort = sort === '-id' ? 0 : 1
+    let countsql = 'select count(id) from longsign'
+    let sql = 'select * from longsign  where id<=? order by id desc limit ? '
+    if (sort) {
+        sql = 'select * from longsign  where id<=? order by id  limit ? '
+    }
+    query(countsql, [], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        query(sql, [result[0]['count(id)'] - (page - 1) * limit, limit - 0], function (err2, result2) {
+            if (err2) {
+                res.send(reqData(500, err2));
+                return;
+            }
+            let data = reqData(200, result2)
+            data.page = page
+            data.total = result[0]['count(id)']
+            res.send(data)
+        })
+    })
+})
+//签名修改
+router.post('/changesign', function (req, res) {
+    let {
+        id,
+        content
+    } = req.body;
+    // console.log('id,content',id,content)
+    let sql = 'update longsign set content=? where id=?'
+    query(sql, [content, id], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, result))
+    })
+})
+//签名新增
+router.post('/addsign', function (req, res) {
+    let {
+        content
+    } = req.body;
+    let sql = 'insert into longsign (content) value(?)'
+    query(sql, [content], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, result))
+    })
+})
+//签名删除
+router.post('/delsign', function (req, res) {
+    let {
+        id
+    } = req.body;
+    //删除数据后重建主键以保证id连续
+    let sql = 'delete from longsign where id=?'
+    let sql2 = 'alter table longsign drop id'
+    let sql3 = 'alter table longsign add id int not null first'
+    let sql4 = 'alter table longsign modify column id int not null auto_increment,add primary key(id)'
+    let sqls = [sql, sql2, sql3, sql4]
+    transction(sqls, [id, '', '', '']).then((all) => {
+        console.log('all:', all)
+        res.send(reqData(200, '删除成功'))
+    }).catch((err) => {
+        res.send(reqData(500, err))
+    })
+})
+//草稿数据获取
+router.get('/draft/info', function (req, res) {
+    let {
+        id
+    } = req.query
+    query('select * from article where id=?', [id], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, result))
+    })
 })
 module.exports = router;

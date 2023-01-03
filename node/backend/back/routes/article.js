@@ -96,22 +96,17 @@ router.post('/list', function (req, res) {
       res.send(reqData(500, err));
       return;
     }
-    
     query(getsql, [result[0]['COUNT(id)']-(options[0] - 1) * 6], function (err2, result2) {
       // console.log('list 2')
       if (err2) {
         console.log('[SELECT ERROR] - ', err2.message);
         res.send(reqData(500, err2));
-        
         return;
       }
       let data = reqData(200, result2)
       data.page = options[0]
       data.total = result[0]['COUNT(id)']
-      // console.log('list 3')
-      
       res.send(data);
-      
     })
   })
 
