@@ -164,3 +164,6 @@
 2023-01-04 01:34:50 error [www]: GET undefinedNot Found
 2023-01-04 01:39:27 error [www]: GET undefinedNot Found
 2023-01-04 01:53:47 error [www]: GET undefinedNot Found
+2023-01-07 00:51:45 error [www]: GET undefinedNot Found
+2023-01-07 02:25:56 error [www]: POST undefinedshow is not defined
+2023-01-07 03:33:48 error [www]: POST undefinedCannot destructure property 'icon_string' of 'res.body' as it is undefined.

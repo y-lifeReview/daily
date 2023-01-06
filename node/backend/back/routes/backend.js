@@ -236,7 +236,7 @@ router.post('/article/pub', function (req, res) {
     isOrder = isOrder ? '1' : '0'
     isPassword = isPassword ? '1' : '0'
     let time = timeStand(new Date())
-    let value1 = [content, category, time, time, title, content_short, uid, isOrder, isPassword, anwser, ques, image_uri, ispublish?0:1]
+    let value1 = [content, category, time, time, title, content_short, uid, isOrder, isPassword, anwser, ques, image_uri, ispublish ? 0 : 1]
     // 1、article表操作
     let sql1 = 'insert into article (md_url,category,create_at,updata_at,title,summary,user_id,isorder,is_password,anwser,ques,img,is_draft) values(?,?,?,?,?,?,?,?,?,?,?,?,?)'
     sqls.push(sql1)
@@ -292,7 +292,7 @@ router.post('/article/save', function (req, res) {
     isOrder = isOrder ? '1' : null
     isPassword = isPassword ? '1' : null
     let time = timeStand(new Date())
-    let value1 = [content, category, time, title, content_short, uid, isOrder, isPassword, anwser, ques, image_uri, ispublish?0:1, aid]
+    let value1 = [content, category, time, title, content_short, uid, isOrder, isPassword, anwser, ques, image_uri, ispublish ? 0 : 1, aid]
     // 1、article表操作
     let sql1 = 'update article  set md_url=?,category=?,updata_at=?,title=?,summary=?,user_id=?,isorder=?,is_password=?,anwser=?,ques=?,img=?,is_draft=? where id = ?'
     sqls.push(sql1)
@@ -394,6 +394,99 @@ router.get('/draft/info', function (req, res) {
             return;
         }
         res.send(reqData(200, result))
+    })
+})
+
+//侧边导航数据
+router.get('/aside/info', function (req, res) {
+    //获取一级导航数据
+    let sql = 'select * from asideRoute'
+    query(sql, [], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        // console.log('导航数据',result)
+        let data = result.filter((item) => {
+            return item.zindex == 1
+        })
+        // console.log('一级导航数据：',data)
+        for (var i = 0; i < data.length; i++) {
+            // console.log('子数据：',data[i])
+            for (var j = 0; j < result.length; j++) {
+                if (result[j].zindex == 2) {
+                    if (data[i].id === result[j].father_id) {
+                        data[i].children = data[i].children || [];
+                        data[i].children.push(result[j])
+                    }
+                }
+            }
+        }
+        res.send(reqData(200, data))
+    })
+
+})
+//侧边导航显示
+router.post('/aside/show', function (req, res) {
+    let {
+        is_show,
+        id
+    } = req.body;
+    // console.log(is_show)
+    is_show = is_show == 0 ? 1 : 0
+    let sql = 'update asideRoute set is_show=? where id=?';
+    query(sql, [is_show, id], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, '修改成功'))
+    })
+})
+//新增侧边导航
+router.post('/aside/add', function (req, res) {
+    let {
+        icon_string,
+        title,
+        father_id,
+        zindex,
+        is_outweb,
+        path,
+        is_show
+    } = req.body;
+    father_id = father_id ? father_id : 0
+    let sql = 'insert into asideRoute (icon_string,title,father_id,zindex,is_outweb,path,is_show) values(?,?,?,?,?,?,1)'
+    query(sql, [icon_string,
+        title,
+        father_id,
+        zindex,
+        is_outweb,
+        path,
+        is_show
+    ], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, '新增成功'))
+    })
+})
+//侧边导航修改
+router.post('/aside/change', function (req, res) {
+    let {
+        id,
+        title,
+        is_outweb,
+        path,
+        icon_string
+    } = req.body
+    let sql = 'update asideRoute set title=?,is_outweb=?,path=?,icon_string=?  where id=?'
+    query(sql, [title, is_outweb, path, icon_string, id],function(err,result){
+        if(err){
+            res.send(reqData(500,err))
+            return;
+        }
+        res.send(reqData(200,'修改成功'))
     })
 })
 module.exports = router;
