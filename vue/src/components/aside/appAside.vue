@@ -1,7 +1,7 @@
 <template>
   <aside class="app-aside">
     <div class="aside-box scroll-hide">
-      <div class="avatar-box ">
+      <div class="avatar-box">
         <a href="/about">
           <img
             class="aside-avatar"
@@ -31,77 +31,71 @@
           <li class="text-guide">
             <span>导航</span>
           </li>
-          <li >
-            <router-link to="/" exact-active-class="router-target">
-              <i class="iconfont icon-home"></i>
-              <span>首页</span>
-            </router-link>
-          </li>
-          <li>
-            <a target="_blank" href="https://github.com/y-lifeReview">
-              <i class="iconfont icon-icon_github"></i>
-              <span>仓库</span>
-            </a>
-          </li>
-          <!-- <li>
-            <a href="">
-              <i class="iconfont icon-favorites"></i>
-              <span>朋友</span>
-            </a>
-          </li> -->
-          <li>
-            <router-link to="/about" exact-active-class="router-target">
-              <i class="iconfont icon-pic"></i>
-              <span>相册</span>
-            </router-link>
-          </li>
-          <li>
-            <a href="">
-              <i class="iconfont icon-password"></i>
-              <span>日记</span>
-            </a>
-          </li>
-          <li>
-            <a href="">
-              <i class="iconfont icon-feeds"></i>
-              <span>归档</span>
-            </a>
-          </li>
-          <li>
-            <a href="">
-              <i class="iconfont icon-xinxibar_zhanghu"></i>
-              <span>关于</span>
-              <i class="iconfont icon-arrow-right right-icon"></i>
-            </a>
-          </li>
-          <div class="nav-line"></div>
-          <li class="text-guide">
-            <span>组成</span>
-          </li>
-          <li>
-            <a href="">
-              <i class="iconfont icon-viewlist"></i>
-              <span>分类</span>
-              <i class="iconfont icon-arrow-right right-icon"></i>
-            </a>
-          </li>
-          <li>
-            <a href="">
-              <i class="iconfont icon-image-text"></i>
-              <span>页面</span>
-              <i class="iconfont icon-arrow-right right-icon"></i>
-            </a>
-          </li>
-          <li>
-            <a href="">
-              <i class="iconfont icon-account"></i>
-              <span>友链</span>
-              <i class="iconfont icon-arrow-right right-icon"></i>
-            </a>
-          </li>
+          <el-skeleton
+            :rows="8"
+            style="width: 90%; margin: auto"
+            :loading="asideloading"
+            animated
+          >
+            <li v-for="(item, index) in asideList" :key="item.title">
+              <!-- 有二级导航 -->
+              <template v-if="item.children">
+                <div class="second-box" @click="asideExtend(index)">
+                  <i :class="['iconfont', 'icon-' + item.icon_string]"></i>
+                  <span>{{ item.title }}</span>
+                  <i
+                    :class="[
+                      'iconfont',
+                      asideExIndex === index
+                        ? 'icon-arrow-down'
+                        : 'icon-arrow-right',
+                      'right-icon',
+                    ]"
+                  ></i>
+                </div>
+                <!-- 二级子项 -->
+                <ul
+                  v-show="asideExIndex === index"
+                  class="animate__animated slideInLeft ul-second nav-ul"
+                >
+                  <li v-for="itemchild in item.children" :key="itemchild.title">
+                    <a
+                      v-if="itemchild.is_outweb"
+                      target="_blank"
+                      :href="itemchild.path"
+                    >
+                      <span>{{ itemchild.title }}</span>
+                    </a>
+                    <router-link
+                      v-else
+                      :to="itemchild.path"
+                      exact-active-class="router-target"
+                    >
+                      <span>{{ itemchild.title }}</span>
+                    </router-link>
+                  </li>
+                </ul>
+              </template>
+              <!-- 无二级导航 -->
+              <template v-else>
+                <a v-if="item.is_outweb" target="_blank" :href="item.path">
+                  <i :class="['iconfont', 'icon-' + item.icon_string]"></i>
+                  <span>{{ item.title }}</span>
+                </a>
+                <router-link
+                  v-else
+                  :to="item.path"
+                  exact-active-class="router-target"
+                >
+                  <i :class="['iconfont', 'icon-' + item.icon_string]"></i>
+                  <span>{{ item.title }}</span>
+                </router-link>
+              </template>
+            </li>
+          </el-skeleton>
         </ul>
       </nav>
-      <div class="nav-footer ">
+      <div class="nav-footer">
         <div>
           <!-- <a class="foot-item" href="" -->
           <router-link class="foot-item" to="/login">
@@ -127,14 +121,46 @@
   </aside>
 </template>
 <script>
+import { useGet } from "@/hooks/index";
+import { urlForGetAsideIinfo } from "@/api/url";
+const get = useGet();
 export default {
-  name:"appAside",
-  data(){
+  name: "appAside",
+  data() {
     return {
-      
-    }
+      asideloading: true,
+      asideList: [],
+      asideExIndex: null,
+    };
   },
-  
+  mounted() {
+    this.getAsideInfo();
+  },
+  methods: {
+    getAsideInfo() {
+      get({
+        url: urlForGetAsideIinfo,
+      })
+        .then((res) => {
+          console.log("导航数据", res);
+          this.asideList = res.data;
+          this.asideloading = false;
+        })
+        .catch((err) => {
+          //
+          this.asideList = [];
+          this.asideloading = false;
+        });
+    },
+    asideExtend(index) {
+      // console.log('index',index)
+      if (index === this.asideExIndex) {
+        this.asideExIndex = null;
+        return;
+      }
+      this.asideExIndex = index;
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -212,9 +238,35 @@ export default {
           margin: 5px auto;
           border-radius: 5px;
         }
-        .router-target{
-          background-color: rgba(0, 0, 0, .05);
+        .second-box {
+          position: relative;
+          padding: 6px 10px;
+          display: flex;
+          align-items: center;
+          width: 90%;
+          margin: 5px auto;
+          border-radius: 5px;
+          cursor: pointer;
+        }
 
+        .ul-second {
+          padding: 6px 0;
+          margin: 0 10px 5px;
+          background-color: #fff;
+          border-radius: 5px;
+          -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+          a {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 90%;
+            margin: auto;
+            cursor: pointer;
+          }
+        }
+        .router-target {
+          background-color: rgba(0, 0, 0, 0.05);
         }
       }
     }

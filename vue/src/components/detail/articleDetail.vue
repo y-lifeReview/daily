@@ -10,7 +10,8 @@
       </li>
       <li>正文</li>
     </ol>
-    <div v-if="info.img"
+    <div
+      v-if="info.img"
       :style="'background-image: url(' + info.img + ');'"
       class="article_img"
     ></div>
@@ -35,6 +36,8 @@
 <script>
 // import { ref } from "vue";
 import { marked } from "marked";
+import hljs from "highlight.js";
+import "highlight.js/styles/monokai-sublime.css";
 import articleHead from "@/components/articleHead/articleHead.vue";
 import markDown from "@/components/markDown/markDown.vue";
 import { useGet } from "@/hooks/index";
@@ -55,7 +58,7 @@ export default {
   data() {
     return {
       proptValue: "",
-      ques:'',
+      ques: "",
       showPropt: false,
       md: "",
       info: {},
@@ -66,13 +69,12 @@ export default {
   },
   methods: {
     input: function () {
-
       let value = this.$refs.input.value;
       this.proptValue = value;
     },
-    enterconfirm:function(e){
-      if(e.keyCode == 13){
-        this.checkpass()
+    enterconfirm: function (e) {
+      if (e.keyCode == 13) {
+        this.checkpass();
       }
     },
     //加密文章验证
@@ -83,12 +85,11 @@ export default {
       // console.log(awser);
       articlecheckpasswprd(id, awser)
         .then((result) => {
-
           if (!result.data[0]) {
             window.alert("密码错误");
             return;
           } else {
-            this.showPropt = false
+            this.showPropt = false;
             get({
               url: urlForGetArticleDetail + "?id=" + id,
             })
@@ -115,6 +116,9 @@ export default {
       const render = new marked.Renderer();
       marked.setOptions({
         renderer: render,
+        highlight: function (code) {
+          return hljs.highlightAuto(code).value;
+        },
         gfm: true,
         tables: true,
         breaks: false,
@@ -127,11 +131,11 @@ export default {
     //获取文章内容
     getMdContent: function (id) {
       let _this = this;
-      
+      this.mdRender()
       articleispasswprd(id)
         .then((data) => {
           if (data.data.is_password === 1) {
-            this.ques = data.data.ques
+            this.ques = data.data.ques;
             this.showPropt = true;
             return;
           } else {
@@ -253,7 +257,7 @@ export default {
     background-size: cover;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
   }
 }
 a {

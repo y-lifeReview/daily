@@ -12,3 +12,5 @@ export const urlForGetLongSign = 'sign';
 export const urlForGetHot = 'article/hot';
 export const urlForGetTags = 'article/tags';
 export const urlForGetBlogInfo = 'bloginfo';
+
+export const urlForGetAsideIinfo = 'aside/info';
