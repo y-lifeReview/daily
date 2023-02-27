@@ -138,19 +138,45 @@ router.post('/bloginfo', function (req, res) {
     sqlParams = [];
 
   let sql1 = 'SELECT COUNT(id) as count FROM article',
-      sql2 = 'select MAX(updata_at) as time from article'
-  sqls.push(sql1,sql2)
-  sqlParams.push([],[])
+    sql2 = 'select MAX(updata_at) as time from article'
+  sqls.push(sql1, sql2)
+  sqlParams.push([], [])
   transction(sqls, sqlParams).then((all) => {
     let data = {}
     data.count = all[0][0].count;
-    data.time = all[1][0].time.substring(0,10);
-    let temp = Math.ceil(((new Date()).getTime()/1000 - 1667371358)/24/3600)
+    data.time = all[1][0].time.substring(0, 10);
+    let temp = Math.ceil(((new Date()).getTime() / 1000 - 1667371358) / 24 / 3600)
     data.day = temp
     res.send(reqData(200, data))
   }).catch((err) => {
     // console.log('err:', err)
     res.send(reqData(500, err))
+  })
+})
+router.get('/aside/info', function (req, res) {
+  //获取一级导航数据
+  let sql = 'select * from firstAside where is_show=1 order  by sort'
+  query(sql, [], function (err, result) {
+    if (err) {
+      res.send(reqData(500, err));
+      return;
+    }
+    let sql2 = 'select * from secondAside where is_show=1 order by sort'
+    query(sql2, [], function (err2, result2) {
+      if (err2) {
+        res.send(reqData(500, err2))
+        return;
+      }
+      for (var i = 0; i < result.length; i++) {
+        for (var j = 0; j < result2.length; j++) {
+          if (result[i].id === result2[j].father_id) {
+            result[i].children = result[i].children || [];
+            result[i].children.push(result2[j])
+          }
+        }
+      }
+      res.send(reqData(200, result))
+    })
   })
 })
 

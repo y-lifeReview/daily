@@ -88,7 +88,7 @@ router.post('/list', function (req, res) {
   // console.log('list start')
   let options = Object.values(req.body)
   let totalsql = 'SELECT COUNT(id) FROM article'
-  let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname FROM article as a  left join user as c on a.user_id = c.id where a.id <= ? and a.isorder=0 order by a.id desc limit 6 ';
+  let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname FROM article as a  left join user as c on a.user_id = c.id where a.id <= ? and a.isorder!=1 and a.is_draft!=1 order by a.id desc limit 6 ';
   query(totalsql, [], function (err, result) {
     // console.log('list 1')
     if (err) {

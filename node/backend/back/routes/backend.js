@@ -287,10 +287,10 @@ router.post('/article/save', function (req, res) {
     let sqls = [],
         sqlParams = [];
     if (!isPassword) {
-        anwser = ques = null
+        anwser = ques = 0
     }
-    isOrder = isOrder ? '1' : null
-    isPassword = isPassword ? '1' : null
+    isOrder = isOrder ? 0 : 0
+    isPassword = isPassword ? 0 : 0
     let time = timeStand(new Date())
     let value1 = [content, category, time, title, content_short, uid, isOrder, isPassword, anwser, ques, image_uri, ispublish ? 0 : 1, aid]
     // 1、article表操作
@@ -400,29 +400,28 @@ router.get('/draft/info', function (req, res) {
 //侧边导航数据
 router.get('/aside/info', function (req, res) {
     //获取一级导航数据
-    let sql = 'select * from asideRoute'
+    let sql = 'select * from firstAside order by sort'
     query(sql, [], function (err, result) {
         if (err) {
             res.send(reqData(500, err));
             return;
         }
-        // console.log('导航数据',result)
-        let data = result.filter((item) => {
-            return item.zindex == 1
-        })
-        // console.log('一级导航数据：',data)
-        for (var i = 0; i < data.length; i++) {
-            // console.log('子数据：',data[i])
-            for (var j = 0; j < result.length; j++) {
-                if (result[j].zindex == 2) {
-                    if (data[i].id === result[j].father_id) {
-                        data[i].children = data[i].children || [];
-                        data[i].children.push(result[j])
+        let sql2 = 'select * from secondAside order by sort'
+        query(sql2, [], function (err2, result2) {
+            if (err2) {
+                res.send(reqData(500, err2))
+                return;
+            }
+            for (var i = 0; i < result.length; i++) {
+                for (var j = 0; j < result2.length; j++) {
+                    if (result[i].id === result2[j].father_id) {
+                        result[i].children = result[i].children || [];
+                        result[i].children.push(result2[j])
                     }
                 }
             }
-        }
-        res.send(reqData(200, data))
+            res.send(reqData(200, result))
+        })
     })
 
 })
@@ -430,11 +429,15 @@ router.get('/aside/info', function (req, res) {
 router.post('/aside/show', function (req, res) {
     let {
         is_show,
-        id
+        id,
+        father_id
     } = req.body;
     // console.log(is_show)
     is_show = is_show == 0 ? 1 : 0
-    let sql = 'update asideRoute set is_show=? where id=?';
+    let sql = 'update firstAside set is_show=? where id=?';
+    if (father_id) {
+        sql = 'update secondAside set is_show=? where id=?';
+    }
     query(sql, [is_show, id], function (err, result) {
         if (err) {
             res.send(reqData(500, err));
@@ -455,38 +458,74 @@ router.post('/aside/add', function (req, res) {
         is_show
     } = req.body;
     father_id = father_id ? father_id : 0
-    let sql = 'insert into asideRoute (icon_string,title,father_id,zindex,is_outweb,path,is_show) values(?,?,?,?,?,?,1)'
-    query(sql, [icon_string,
-        title,
-        father_id,
-        zindex,
-        is_outweb,
-        path,
-        is_show
-    ], function (err, result) {
-        if (err) {
-            res.send(reqData(500, err));
-            return;
-        }
-        res.send(reqData(200, '新增成功'))
-    })
+    if (father_id) { //新增二级导航
+        let sortsql = 'select count(*) as maxsort from secondAside where father_id = ? '
+        query(sortsql,[father_id],function(err,result){
+            if(err){
+                res.send(reqData(500,err))
+                return;
+            }
+            console.log('最大',result)
+            let max = result[0].maxsort+1
+            let sql = 'insert into secondAside (father_id,icon_string,title,is_outweb,path,sort,is_show) values(?,?,?,?,?,?,1)'
+            query(sql,[father_id,icon_string,title,is_outweb,path,max],function(err2,result2){
+                if(err2){
+                    res.send(reqData(500,err2))
+                    return;
+                }
+                res.send(reqData(200, '新增成功'))
+            })
+        })
+    } else { //新增一级导航
+        let maxsql = 'select MAX(sort) as max from firstAside'
+        query(maxsql, [], function (err, result) {
+            if (err) {
+                res.send(reqData(500, err))
+                return;
+            }
+            console.log('最大值', result[0].max + 1)
+            let maxsort = result[0].max + 1
+            // return;
+            let sql = 'insert into firstAside (icon_string,title,is_outweb,path,sort,is_show) values(?,?,?,?,?,1)'
+            query(sql, [icon_string,
+                title,
+                is_outweb,
+                path,
+                maxsort,
+                is_show
+
+            ], function (err2, result2) {
+                if (err2) {
+                    res.send(reqData(500, err2));
+                    return;
+                }
+                res.send(reqData(200, '新增成功'))
+            })
+        })
+    }
+
+
 })
 //侧边导航修改
 router.post('/aside/change', function (req, res) {
     let {
+        zindex,
         id,
         title,
         is_outweb,
         path,
         icon_string
     } = req.body
-    let sql = 'update asideRoute set title=?,is_outweb=?,path=?,icon_string=?  where id=?'
-    query(sql, [title, is_outweb, path, icon_string, id],function(err,result){
-        if(err){
-            res.send(reqData(500,err))
+    let sql = 'update firstAside set title=?,is_outweb=?,path=?,icon_string=?  where id=?'
+    if (zindex === 2) {
+        sql = 'update secondAside set title=?,is_outweb=?,path=?,icon_string=?  where id=?'
+    }
+    query(sql, [title, is_outweb, path, icon_string, id], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err))
             return;
         }
-        res.send(reqData(200,'修改成功'))
+        res.send(reqData(200, '修改成功'))
     })
 })
 module.exports = router;

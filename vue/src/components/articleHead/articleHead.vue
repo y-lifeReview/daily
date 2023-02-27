@@ -1,7 +1,7 @@
 <template>
   <header class="article_head">
     <h1>{{ info.title }}</h1>
-    <ul>
+    <ul v-if="isArticle">
       <li>
         <span class="icon_sapn"><i class="iconfont icon-user"></i></span>
         <span>{{ info.nickname }}</span>
@@ -26,6 +26,10 @@
 export default {
   props: {
     info: Object,
+    isArticle:{
+      type:Boolean,
+      default:true
+    }
   },
 };
 </script>

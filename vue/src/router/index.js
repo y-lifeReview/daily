@@ -8,6 +8,7 @@ import Login from '@/view/login/login-index.vue'
 import Index from '@/view/home/home-view.vue'
 import List from '@/components/articleList/articleList.vue'
 import detail from '@/components/detail/articleDetail.vue'
+import images from '@/components/images/appImages.vue'
 export const routes = [{
     path: '/login',
     name: 'Login',
@@ -33,7 +34,7 @@ export const routes = [{
         },
         {
             path: 'images',
-            component: detail,
+            component: images,
             meta: {
                 keepAlive: false
             }
