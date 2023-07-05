@@ -7,7 +7,7 @@ const {
 } = require('../func/token')
 /* GET users listing. */
 // 注册
-router.post('/register', function (req, res, next) {
+router.post('/user/register', function (req, res, next) {
   if (!req.body.name) {
     res.send(reqData(500, "用户名非法!"));
     return;
@@ -54,7 +54,7 @@ router.post('/register', function (req, res, next) {
 });
 
 // 登录
-router.post('/login', function (req, res, next) {
+router.post('/user/login', function (req, res, next) {
   let Sql = 'SELECT * FROM user WHERE nickname = ?';
   let SqlParams = [req.body.name];
   query(Sql, SqlParams, function (err, result) {
@@ -119,20 +119,21 @@ router.post('/login', function (req, res, next) {
 
 });
 
-router.get('/info',function(req,res){
+router.get('/user/info',function(req,res){
   let token = req.query.token
   // console.log(token)
-  let sql = 'select nickname,avatar from user where token = ?'
+  let sql = 'select nickname,avatar,admin from user where token = ?'
   query(sql, [token], function (err, result){
     if (err) {
       res.send(reqData(500, err));
       return;
     }
     let obj = {}
-    obj.roles = ['admin']
+    obj.roles = [result[0].role]
     obj.introduction = 'just'
     obj.avatar = result[0].avatar
     obj.name = result[0].nickname
+    console.log(obj)
     res.send(reqData(200,[obj]))
   })
 })

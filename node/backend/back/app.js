@@ -5,6 +5,19 @@ var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 const history = require('connect-history-api-fallback')
 const logger = require('./logger')
+//ip限制
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({
+	windowMs: 60 * 60 * 1000, // 1个小时内
+	max: 300, // 限制最多5次
+	message: '刷新太快啦！歇会儿吧', //提示消息
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: true, // Disable the `X-RateLimit-*` headers
+});
+// let {
+// 	query,
+// 	transction
+//   } = require('../db/index')
 // let connection = require('./db/index')
 
 var indexRouter = require('./routes/index');
@@ -13,51 +26,61 @@ var poemRouter = require('./routes/poem');
 var articleRouter = require('./routes/article');
 var sign = require('./routes/sign');
 var back = require('./routes/backend');
+var images = require('./routes/images');
 // var musicRouter = require('./routes/music');
 const cors = require('cors')
 
 var app = express();
 //vue路由history模式
-app.use(history())
+// app.use(history())
 
 app.use(cors())
 //设置跨域访问
 app.all("*", function (req, res, next) {
-	
+
 	//设置允许跨域的域名，*代表允许任意域名跨域
 	res.header("Access-Control-Allow-Origin", "*");
 	//允许的header类型
 	res.header("Access-Control-Allow-Headers", "content-type");
 	//跨域允许的请求方式 
 	res.header("Access-Control-Allow-Methods", "DELETE,PUT,POST,GET,OPTIONS");
-	res.header("X-Powered-By",' 3.2.1')
+	res.header("X-Powered-By", ' 3.2.1')
 	// if (req.method == 'OPTIONS')
 	// 	res.sendStatus(200); //让options尝试请求快速结束
 	// else
-		next();
+	next();
 });
+app.use(limiter);
+// 
+
+
+
+// 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+	extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/user', usersRouter);
-app.use('/poem', poemRouter);
-app.use('/article', articleRouter);
-app.use('/sign', sign);
-app.use('/back', back);
+app.use('/v1', indexRouter);
+app.use('/v1', usersRouter);
+// app.use('/v1', poemRouter);
+app.use('/v1', articleRouter);
+app.use('/v1', sign);
+app.use('/v1', back);
+app.use('/v1', images);
 // app.use('/music', musicRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function (req, res, next) {
+// 	next(createError(404));
+// });
 
 // error handler
 // app.use(function(err, req, res, next) {
@@ -70,15 +93,15 @@ app.use(function(req, res, next) {
 //   res.render('error');
 // });
 
-const _errorHandel = (err,req,res,next)=>{
-  logger.error(`${req.method} ${req.originaUrl}` + err.message);
-  const errMsg = err.message;
-  res.status(err.status || 500).json({
-    code:-1,
-    success:false,
-    message:errMsg,
-    data:{}
-  })
+const _errorHandel = (err, req, res, next) => {
+	logger.error(`${req.method} ${req.originaUrl}` + err.message);
+	const errMsg = err.message;
+	res.status(err.status || 500).json({
+		code: -1,
+		success: false,
+		message: errMsg,
+		data: {}
+	})
 }
 app.use(_errorHandel)
 

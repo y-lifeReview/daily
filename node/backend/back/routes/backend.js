@@ -4,6 +4,8 @@ let {
     transction
 } = require('../db/index')
 let reqData = require('../dataBase/response');
+// var moment = require('moment');
+// moment().format('x');
 // const {
 //     route
 // } = require('.');
@@ -11,11 +13,14 @@ const {
     getToken
 } = require('../func/token')
 const {
+    getAdcode
+} = require('../func/weather')
+const {
     timeStand
 } = require('../func/timeformat')
 var router = express.Router();
 //文章列表
-router.get('/articleList', function (req, res) {
+router.get('/back/articleList', function (req, res) {
     // console.log(req.query)
     let {
         page,
@@ -48,7 +53,7 @@ router.get('/articleList', function (req, res) {
 
 })
 //搜索作者
-router.get('/search/author', function (req, res) {
+router.get('/back/search/author', function (req, res) {
     let content = req.query.name
     let sql = "select nickname,id from user where nickname like '%" + content + "%'"
     if (!content) {
@@ -64,7 +69,7 @@ router.get('/search/author', function (req, res) {
     })
 })
 //搜索已有分类
-router.get('/search/category', function (req, res) {
+router.get('/back/search/category', function (req, res) {
     // let content = req.query.name
     let sql = "select DISTINCT category from article "
     query(sql, [], function (err, result) {
@@ -77,7 +82,7 @@ router.get('/search/category', function (req, res) {
 })
 /* GET users listing. */
 // 注册
-router.post('/register', function (req, res, next) {
+router.post('/back/register', function (req, res, next) {
     if (!req.body.name) {
         res.send(reqData(500, "用户名非法!"));
         return;
@@ -124,7 +129,7 @@ router.post('/register', function (req, res, next) {
 });
 
 // 登录
-router.post('/user/login', function (req, res, next) {
+router.post('/back/user/login', function (req, res, next) {
     let Sql = 'SELECT * FROM user WHERE nickname = ?';
     let SqlParams = [req.body.username];
     query(Sql, SqlParams, function (err, result) {
@@ -145,7 +150,7 @@ router.post('/user/login', function (req, res, next) {
 
                     return;
                 }
-                // console.log(result)
+                console.log(result)
                 if (result[0].password === req.body.password) {
                     query('SELECT tokenKey FROM tokenKey WHERE id = 0', function (err, tokenkey) {
                         if (err) {
@@ -160,8 +165,8 @@ router.post('/user/login', function (req, res, next) {
                         }).then((token) => {
                             // console.log('token', token)
                             let update_at = (new Date().getTime() / 1000).toFixed(0) - 0
-                            let addSql2 = 'UPDATE user SET token=? ,update_at = ?';
-                            let addSqlParams2 = [token, update_at];
+                            let addSql2 = 'UPDATE user SET token=? ,update_at = ? where nickname=?';
+                            let addSqlParams2 = [token, update_at,req.body.username];
                             query(addSql2, addSqlParams2, function (err, result) {
                                 if (err) {
                                     res.send(reqData(500, err));
@@ -189,25 +194,38 @@ router.post('/user/login', function (req, res, next) {
 
 });
 //用户信息
-router.get('/user/info', function (req, res) {
+router.get('/back/user/info', function (req, res) {
     let token = req.query.token
     // console.log(token)
-    let sql = 'select nickname,avatar from user where token = ?'
+    let sql = 'select nickname,avatar ,role from user where token = ?'
     query(sql, [token], function (err, result) {
         if (err) {
             res.send(reqData(500, err));
             return;
         }
         let obj = {}
-        obj.roles = ['admin']
+        obj.roles = [result[0].role]
         obj.introduction = 'just'
         obj.avatar = result[0].avatar
         obj.name = result[0].nickname
         res.send(reqData(200, [obj]))
     })
 })
+//用户退出
+router.post('/back/user/logout', function (req, res) {
+    let token = req.body.token
+    // console.log(token)
+    let sql = 'update user set token=0 where token = ?'
+    query(sql, [token], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, 'ok'))
+    })
+})
 //文章发布
-router.post('/article/pub', function (req, res) {
+router.post('/back/article/pub', function (req, res) {
     let {
         isOrder,
         anwser,
@@ -251,7 +269,7 @@ router.post('/article/pub', function (req, res) {
     // let sql = 'insert '
 })
 //文章删除
-router.post('/article/delete', function (req, res) {
+router.post('/back/article/delete', function (req, res) {
     let {
         id
     } = req.body;
@@ -269,7 +287,7 @@ router.post('/article/delete', function (req, res) {
     })
 })
 //草稿保存
-router.post('/article/save', function (req, res) {
+router.post('/back/article/save', function (req, res) {
     let {
         isOrder,
         anwser,
@@ -306,7 +324,7 @@ router.post('/article/save', function (req, res) {
     })
 })
 //签名列表获取
-router.get('/signlist', function (req, res) {
+router.get('/back/signlist', function (req, res) {
     let {
         page,
         limit,
@@ -336,7 +354,7 @@ router.get('/signlist', function (req, res) {
     })
 })
 //签名修改
-router.post('/changesign', function (req, res) {
+router.post('/back/changesign', function (req, res) {
     let {
         id,
         content
@@ -352,7 +370,7 @@ router.post('/changesign', function (req, res) {
     })
 })
 //签名新增
-router.post('/addsign', function (req, res) {
+router.post('/back/addsign', function (req, res) {
     let {
         content
     } = req.body;
@@ -366,7 +384,7 @@ router.post('/addsign', function (req, res) {
     })
 })
 //签名删除
-router.post('/delsign', function (req, res) {
+router.post('/back/delsign', function (req, res) {
     let {
         id
     } = req.body;
@@ -384,7 +402,7 @@ router.post('/delsign', function (req, res) {
     })
 })
 //草稿数据获取
-router.get('/draft/info', function (req, res) {
+router.get('/back/draft/info', function (req, res) {
     let {
         id
     } = req.query
@@ -398,7 +416,7 @@ router.get('/draft/info', function (req, res) {
 })
 
 //侧边导航数据
-router.get('/aside/info', function (req, res) {
+router.get('/back/aside/info', function (req, res) {
     //获取一级导航数据
     let sql = 'select * from firstAside order by sort'
     query(sql, [], function (err, result) {
@@ -426,7 +444,7 @@ router.get('/aside/info', function (req, res) {
 
 })
 //侧边导航显示
-router.post('/aside/show', function (req, res) {
+router.post('/back/aside/show', function (req, res) {
     let {
         is_show,
         id,
@@ -447,7 +465,7 @@ router.post('/aside/show', function (req, res) {
     })
 })
 //新增侧边导航
-router.post('/aside/add', function (req, res) {
+router.post('/back/aside/add', function (req, res) {
     let {
         icon_string,
         title,
@@ -460,17 +478,17 @@ router.post('/aside/add', function (req, res) {
     father_id = father_id ? father_id : 0
     if (father_id) { //新增二级导航
         let sortsql = 'select count(*) as maxsort from secondAside where father_id = ? '
-        query(sortsql,[father_id],function(err,result){
-            if(err){
-                res.send(reqData(500,err))
+        query(sortsql, [father_id], function (err, result) {
+            if (err) {
+                res.send(reqData(500, err))
                 return;
             }
-            console.log('最大',result)
-            let max = result[0].maxsort+1
+            console.log('最大', result)
+            let max = result[0].maxsort + 1
             let sql = 'insert into secondAside (father_id,icon_string,title,is_outweb,path,sort,is_show) values(?,?,?,?,?,?,1)'
-            query(sql,[father_id,icon_string,title,is_outweb,path,max],function(err2,result2){
-                if(err2){
-                    res.send(reqData(500,err2))
+            query(sql, [father_id, icon_string, title, is_outweb, path, max], function (err2, result2) {
+                if (err2) {
+                    res.send(reqData(500, err2))
                     return;
                 }
                 res.send(reqData(200, '新增成功'))
@@ -507,7 +525,7 @@ router.post('/aside/add', function (req, res) {
 
 })
 //侧边导航修改
-router.post('/aside/change', function (req, res) {
+router.post('/back/aside/change', function (req, res) {
     let {
         zindex,
         id,
@@ -528,4 +546,180 @@ router.post('/aside/change', function (req, res) {
         res.send(reqData(200, '修改成功'))
     })
 })
+
+//create array
+
+
+
+//相册分类新增
+router.post('/back/addImageCate', function (req, res) {
+    let {
+        title,
+        imgs
+    } = req.body;
+    //title重复检查
+    let sqlTitleCheck = 'select title from img_category where img_category.title = ? '
+
+    query(sqlTitleCheck, [title], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        if (result.length < 1) {
+            let sqlInsertCate = 'insert into img_category (title) values(?)';
+            query(sqlInsertCate, [title], function (err1, data1) {
+                if (err1) {
+                    res.send(reqData(500, err1));
+                    return;
+                }
+                // console.log('data1', data1)
+                let time = timeStand(new Date())
+                let values = []
+                imgs.forEach(item => {
+                    values.push([item.replace('http://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/', ''), data1.insertId, item, time])
+                });
+                query('insert into images (title,box_id,src,create_at) values ?', [values], function (err2, data2) {
+                    if (err2) {
+                        res.send(reqData(500, err2));
+                        return;
+                    }
+                    res.send(reqData(200, '新增成功'))
+                })
+            })
+        } else {
+            res.send(reqData(500, '相册名称重复'));
+            return;
+        }
+        // res.send(reqData(200, result))
+    })
+})
+//获取所有相册
+router.get('/back/getImageCate', function (req, res) {
+    query('select a.*,b.id as cid,b.src,b.create_at from img_category as a left join images as b  on a.id = b.box_id where b.id in (select max(c.id) from images as c left join img_category as d on c.box_id = d.id group by d.id)  order by a.id  ', '', function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, result))
+    })
+})
+router.get('/back/getImageDetail', function (req, res) {
+    let {
+        id
+    } = req.query
+    query('select * from images where box_id = ? ', [id], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, result))
+    })
+})
+
+//删除相册图片
+router.post('/back/delImage', function (req, res) {
+    let {
+        id,
+        islast
+    } = req.body
+    query('delete from images where id=?', [id], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        if (islast) {
+            query('delete from img_category where id =?', [islast], function (err2, result) {
+                if (err2) {
+                    res.send(reqData(500, err));
+                    return;
+                }
+                res.send(reqData(200, '删除成功'))
+            })
+        } else {
+            res.send(reqData(200, '删除成功'))
+        }
+
+    })
+})
+
+//新增相册图片
+router.post('/back/addImage', function (req, res) {
+    let {
+        id,
+        src
+    } = req.body
+    let time = timeStand(new Date())
+    let title = src.replace('http://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/', '')
+    query('insert into images (title,box_id,src,create_at) values(?,?,?,?)', [title, id, src, time], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, '上传成功'))
+    })
+})
+
+//统计数据
+router.get('/back/visitorCount', function (req, res) {
+    let time = new Date(new Date().toLocaleDateString()).getTime();
+    query('select count(*) as allCount from iplist', function (err, data) {
+        query('select count(*) as dayCount from iplist where updata_at>=?', [time], function (err, data1) {
+            query('select SUM(times) as allTimes from iplist', function (err, data2) {
+                query('SELECT COUNT(id) as allArt FROM article where is_draft!=1', function (err, data3) {
+                    console.log(data, data1, data2, data3)
+                    res.send(reqData(200, {
+                        allCount: data[0].allCount,
+                        dayCount: data1[0].dayCount,
+                        allTimes: data2[0].allTimes,
+                        allArt: data3[0].allArt
+                    }))
+                })
+            })
+        })
+    })
+})
+//最近访问ip
+router.get('/back/lastView', function (req, res) {
+    query('select * from iplist order by updata_at desc limit 10', function (err, data) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, data))
+    })
+})
+//分类统计
+router.get('/back/cateInfo', function (req, res) {
+    query('select category as name,COUNT(*) as value from article GROUP BY category', function (err, data) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, data))
+    })
+})
+// 最近访问
+// router.get('/back/ipLast', function (req, res) {
+//     query('select * from iplist order by id desc limit 10', function (err, data) {
+//         if (err) {
+//             res.send(reqData(500, err));
+//             return;
+//         }
+//         new Promise((resolve, reject) => {
+//             data.forEach((item) => {
+                 
+//             })
+           
+//         }).then((redata)=>{
+//             res.send(reqData(200, redata))
+//         }).catch((rejerr)=>{
+//             res.send(reqData(500, rejerr));
+//         })
+
+        
+        
+//     })
+// })
+
+
 module.exports = router;

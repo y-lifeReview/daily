@@ -1,9 +1,9 @@
 let mysql = require('mysql')
 let pool = mysql.createPool({
-  host: 'gz-cynosdbmysql-grp-pd4ndjr1.sql.tencentcdb.com',
+  host: '',
   user: 'root',
   password: '',
-  port: '27251',
+  port: '',
   database: 'test',
   multipleStatements: true,
   connectionLimit:50,
@@ -17,7 +17,7 @@ let query = function (sql, data, callback) {
     } else {
       conn.query(sql, data, function (qerr, vals, fields) {
         //释放连接
-        // console.log('释放连接',data)
+        console.log('释放连接',data)
         conn.release();
         //事件驱动回调
         callback(qerr, vals, fields);
@@ -31,6 +31,7 @@ let transction = function (sqls, params) {
     pool.getConnection(function (err, connection) {
       // 连接失败 promise直接返回失败
       if (err) {
+        console.log('链接失败')
         return reject(err);
       }
       // 如果 语句和参数数量不匹配 promise直接返回失败
@@ -67,7 +68,7 @@ let transction = function (sqls, params) {
             connection.commit(function (commitErr, info) {
               if (commitErr) {
                 // 提交事务失败了
-                // console.log("提交事务失败:" + commitErr);
+                console.log("提交事务失败:" + commitErr);
                 // 事务回滚，之前运行的sql语句不生效
                 connection.rollback(function (err) {
                   if (err) console.log("回滚失败：" + err);
@@ -85,7 +86,7 @@ let transction = function (sqls, params) {
           .catch((error) => {
             // 多条sql语句执行中 其中有一条报错 直接回滚
             connection.rollback(function () {
-              // console.log("sql运行失败： " + error);
+              console.log("sql运行失败： " + error);
               connection.release();
               reject(error);
             });

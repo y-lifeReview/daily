@@ -10,7 +10,7 @@ const {
 } = require('../func/article');
 // const res = require('express/lib/response');
 
-router.post('/save', function (req, res, next) {
+router.post('/article/save', function (req, res, next) {
 
   let options = Object.values(req.body)
   let addSql = 'INSERT INTO article(md_url,category,create_at,updata_at,article_view) VALUES(?,?,?,?,?)';
@@ -24,7 +24,7 @@ router.post('/save', function (req, res, next) {
   });
 });
 
-router.get('/detail', function (req, res) {
+router.get('/article/detail', function (req, res) {
   let id = req.query.id
   let sql = 'select a.md_url,a.category,a.img,a.updata_at,a.article_view,a.title,a.user_id  ,nickname from article as a  left join user as c on a.user_id = c.id where a.id =?'
   query(sql, [id], function (err, result) {
@@ -38,11 +38,11 @@ router.get('/detail', function (req, res) {
     res.send(reqData(200, obj));
     //浏览量增加
     let sql2 = 'update article set article_view = article_view + 1 where id = ? '
-    query(sql2,[id],function(err2,result2){})
+    query(sql2, [id], function (err2, result2) {})
   })
 
 })
-router.get('/ispassword', function (req, res) {
+router.get('/article/ispassword', function (req, res) {
   //  console.log('get参数',req.query.id)
   let id = req.query.id
   let sql = 'select is_password,ques from article where id=?'
@@ -54,7 +54,7 @@ router.get('/ispassword', function (req, res) {
     res.send(reqData(200, result[0]))
   })
 })
-router.post('/checkpassword', function (req, res) {
+router.post('/article/checkpassword', function (req, res) {
   //  console.log('get参数',req.query.id)
   let id = req.body.id,
     content = req.body.content;
@@ -74,7 +74,7 @@ router.post('/checkpassword', function (req, res) {
 
   })
 })
-router.post('/top', function (req, res) {
+router.post('/article/top', function (req, res) {
   let spl = 'select a.summary,a.id,a.title ,a.img from article as a  where a.isorder=1'
   query(spl, [], function (err, result) {
     if (err) {
@@ -84,20 +84,30 @@ router.post('/top', function (req, res) {
     res.send(reqData(200, result))
   })
 })
-router.post('/list', function (req, res) {
+router.post('/article/list', function (req, res) {
   // console.log('list start')
   let options = Object.values(req.body)
-  let totalsql = 'SELECT COUNT(id) FROM article'
-  let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname FROM article as a  left join user as c on a.user_id = c.id where a.id <= ? and a.isorder!=1 and a.is_draft!=1 order by a.id desc limit 6 ';
+  let totalsql = 'SELECT COUNT(id) FROM article where is_draft!=1 and isorder!=1'
+  // let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname FROM article as a  left join user as c on a.user_id = c.id where a.id <= ? and a.isorder!=1 and a.is_draft!=1 order by a.id desc limit 6 ';
+  // let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname FROM article as a  left join user as c on a.user_id = c.id and a.isorder!=1 and a.is_draft!=1 order by a.id desc limit 6 ';
+
+  //  17 2 6
+  let getsql = 'select a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname from (select * from article where is_draft!=1 and isorder!=1) as a left join user as c on a.user_id = c.id order by a.id desc limit  ?,6'
+
+  // total-page*6
+  
+  
+
   query(totalsql, [], function (err, result) {
     // console.log('list 1')
     if (err) {
-      console.log('err1',err)
+      console.log('err1', err)
       res.send(reqData(500, err));
       return;
     }
-    query(getsql, [result[0]['COUNT(id)']-(options[0] - 1) * 6], function (err2, result2) {
-      // console.log('list 2')
+    query(getsql, [(options[0]-1) * 6], function (err2, result2) {
+      // console.log('分页',result[0]['COUNT(id)'],options[0],result[0]['COUNT(id)'] - options[0] * 6)
+      // result[0]['COUNT(id)'] - (options[0] - 1) * 6
       if (err2) {
         console.log('[SELECT ERROR] - ', err2.message);
         res.send(reqData(500, err2));
@@ -111,8 +121,40 @@ router.post('/list', function (req, res) {
   })
 
 })
-router.get('/hot', function (req, res) {
-  let sql = 'select title,id,article_view from article order by article_view desc limit 5'
+//获取分类下文章
+router.post('/article/category', function (req, res) {
+  let {
+    cate,
+    page
+  } = req.body;
+  let totalsql = 'SELECT COUNT(id) FROM article where is_draft!=1 and category=?'
+  // let getsql = 'SELECT a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname FROM article as a  left join user as c on a.user_id = c.id where a.id <= ? and  a.is_draft!=1 and a.category=? order by a.id desc limit 6 ';
+  let getsql = 'select a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname from (select * from article where is_draft!=1  and category=?) as a left join user as c on a.user_id = c.id order by a.id desc limit  ?,6';
+  query(totalsql, [cate], function (err, result) {
+    // console.log('list 1')
+    if (err) {
+      console.log('err1', err)
+      res.send(reqData(500, err));
+      return;
+    }
+    query(getsql, [cate,(page - 1) * 6], function (err2, result2) {
+      // console.log('list 2')
+      if (err2) {
+        console.log('[SELECT ERROR] - ', err2.message);
+        res.send(reqData(500, err2));
+        return;
+      }
+      let data = reqData(200, result2)
+      data.page = page
+      data.total = result[0]['COUNT(id)']
+      res.send(data);
+    })
+  })
+})
+
+
+router.get('/article/hot', function (req, res) {
+  let sql = 'select title,id,article_view from article where is_draft!=1 order by article_view desc limit 5'
   query(sql, function (err, result) {
     if (err) {
       res.send(reqData(500, err))
@@ -121,11 +163,23 @@ router.get('/hot', function (req, res) {
     res.send(reqData(200, result))
   })
 })
-router.get('/tags', function (req, res) {
-  let sql = 'select distinct category from article'
+router.get('/article/tags', function (req, res) {
+  let sql = 'select distinct category from article where is_draft!=1'
   query(sql, function (err, result) {
     if (err) {
       res.send(reqData(500, err))
+      return;
+    }
+    res.send(reqData(200, result))
+  })
+})
+
+//文章归档数据
+router.post('/article/archives',function(req,res){
+  let sql = 'select a.id,a.updata_at,a.title,a.img,b.nickname from article as a left join user as b on a.user_id = b.id where a.is_draft !=1 order by a.updata_at desc '
+  query(sql,'',function(err,result){
+    if(err){
+      res.send(reqData(500,err))
       return;
     }
     res.send(reqData(200, result))

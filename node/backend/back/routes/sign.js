@@ -3,7 +3,7 @@ var router = express.Router();
 let {query} = require('../db/index')
 let reqData = require('../dataBase/response')
 
-router.get('/', function (req, res) {
+router.get('/sign', function (req, res) {
     let sqlcount = 'select COUNT(id) from longsign'
     query(sqlcount, [], function (err, result) {
         if (err) {

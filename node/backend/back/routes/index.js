@@ -5,7 +5,9 @@ let {
   query,
   transction
 } = require('../db/index')
-
+const {
+  timeStand
+} = require('../func/timeformat')
 var COS = require('cos-nodejs-sdk-v5');
 
 
@@ -39,6 +41,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/getWeather', function (req, res, next) {
   let ip = getClientIp(req)
+  console.log('ip w',ip)
   query('SELECT sig FROM gaode_sig WHERE id = 0', [], function (err, result) {
     if (err) {
       console.log('[SELECT ERROR] - ', err.message);
@@ -137,7 +140,7 @@ router.post('/bloginfo', function (req, res) {
   let sqls = [],
     sqlParams = [];
 
-  let sql1 = 'SELECT COUNT(id) as count FROM article',
+  let sql1 = 'SELECT COUNT(id) as count FROM article where is_draft!=1',
     sql2 = 'select MAX(updata_at) as time from article'
   sqls.push(sql1, sql2)
   sqlParams.push([], [])
@@ -175,10 +178,66 @@ router.get('/aside/info', function (req, res) {
           }
         }
       }
-      res.send(reqData(200, result))
+      //
+      query('select distinct category from article where is_draft=0', '', function (err3, result3) {
+        if (err3) {
+          res.send(reqData(500, err3))
+          return;
+        }
+
+        let cateChild = result3.map((item) => {
+          let obj = {
+            is_outweb: 0,
+            path: '/category/' + item.category,
+            is_show: 1,
+            title: item.category
+          }
+          return obj
+        })
+        // console.log('分类数据', result, result3)
+        for (var k = 0; k < result.length; k++) {
+          if (result[k].path == '/category') {
+            result[k].children = cateChild
+          }
+        }
+        res.send(reqData(200, result))
+      })
+
     })
   })
 })
+router.post('/ipcommit', function (req, res) {
 
+  var ip = req.headers['x-forwarded-for'] ||
+    req.ip ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.connection.socket.remoteAddress || '';
+  if (ip.split(',').length > 0) {
+    ip = ip.split(',')[0]
+  }
+  ip = ip.substr(ip.lastIndexOf(':') + 1, ip.length);
+  console.log('ip地址为:', ip,req)
+  // ip = ip=='127.0.0.1'?'114.247.50.2':ip
+  getAdcode(ip, '96adcca306a38f736d8e1e74d9544ee8').then((result) => {
+    let city = result.data.city
+    query('select ip from iplist where ip=?', [ip], function (err, result) {
+      if (err) {
+        return;
+      }
+      console.log('ip查询', result)
+      if (result.length > 0) {
+        query('update iplist set times = times + 1,city=? where ip = ? ', [city,ip], function () {})
+      } else {
+        let time = new Date().getTime()
+        query('INSERT INTO iplist(ip,updata_at,times,city) VALUES(?,?,?,?)', [ip, time, 1,city], function (err) {
+          res.send(reqData(200, ip))
+        })
+      }
+    })
+  })
+
+
+})
 
 module.exports = router;
