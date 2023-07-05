@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="small-scroll-bar" lang="">
+<html class="small-scroll-bar" lang="zh-cn">
 
 <head>
   <meta charset="utf-8">
@@ -8,11 +8,13 @@
   <link rel="icon" href="<%= BASE_URL %>logo.ico">
   <title>sprinkle</title>
   <link rel="stylesheet" href="<%= BASE_URL %>static/loading.css" />
-  <link rel="stylesheet" href="//at.alicdn.com/t/c/font_3382461_klg35lou3xd.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/c/font_3382461_cjinl8yz0w5.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/libs/APlayer/APlayer.min.css">
   <script src="https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/libs/APlayer/APlayer.min.js"></script>
   <script src="https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/libs/meting/Meting.min.js"></script>
+  <script defer type="text/JavaScript" src="https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/libs/clicklove.js"></script>
+  <script  type="text/JavaScript" src="https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/libs/valine.js"></script>
 </head>
 
 <body>
@@ -21,7 +23,7 @@
       Please enable it to continue.</strong>
   </noscript>
   <!-- <meting-js server="tencent" type="playlist" id="1574204418"> </meting-js> -->
-  <div id="app">
+  <div id="app" class="app">
     <!-- <div class="first-loading-wrp">
       <div class="loading-wrp">
         <i class="splash__item" style="--i: .1s"></i>
@@ -37,6 +39,7 @@
     </div> -->
   </div>
   <!-- built files will be auto injected -->
+  <canvas id="snowcavas"  style="position:fixed; top: 0; left: 0; z-index: 1; pointer-events: none;"></canvas>
 </body>
 
 </html>

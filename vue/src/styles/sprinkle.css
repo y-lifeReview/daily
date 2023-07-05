@@ -1,0 +1,407 @@
+
+/*  */
+/* 小于等于400px */
+@media (max-width:400px) {
+    .main_container {
+        width: 100%;
+    }
+    .app-header {
+        width: 100%;
+    }
+    .main_container .main_content .article_content .article_box {
+        width: 100%;
+    }
+    .app-header .header-left{
+        display: none !important;
+    }
+    #aplayer .aplayer {
+        box-shadow: 0 0 0 #fff !important;
+        margin: 0 !important;
+        background-color: rgba(255, 255, 255, 0) !important;
+    }
+    .app-header {
+        justify-content: space-between;
+    }
+    .app-aside {
+        display: none;
+    }
+    .app-aside-xs {
+        left: -220px;
+        display: block !important;
+    }
+    .main_container .main_content {
+        margin-left: 0 !important;
+    }
+    .article_option {
+        display: none !important;
+    }
+    .article_list{
+        padding: 20px 10px !important;
+    }
+    .article_list .article_top{
+        height: 130px !important;
+    }
+    .article_list .article_top .article_top_mask{
+        padding: 10px !important;
+    }
+    .article_list .article_item,.article_list .article_item .article_img{
+        height: 110px !important;
+    }
+    .article_list .article_item .article_info{
+        padding: 15px 13px 10px!important;
+    }
+    .article_list .article_item .article_info .article_title{
+        font-size: 17px !important;
+        margin-bottom: 5px !important;
+    }
+    .article_list .article_item .article_info .line{
+        display: none !important;
+    }
+    .article_list .article_item .article_info .article_des{
+        height: 30px !important;
+        white-space: nowrap !important;
+        margin-bottom: 5px !important;
+        -webkit-line-clamp: 1 !important;
+        display: block !important;
+    }
+    .article_list .article_item .article_info .other_info li{
+        padding: 0 10px 0 0 !important;
+    }
+    .img_box .img_cover {
+        width: 45% !important;
+        margin: 5px !important;
+    }
+    .img_box{
+        padding: 0 !important;
+    }
+    #article_md{
+        padding: 15px !important;
+    }
+    .markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body dl, .markdown-body table, .markdown-body pre, .markdown-body details{
+        font-size: 12px !important;
+    }
+    .article_list .card_content{
+        padding: 5px 10px !important;
+    }
+    .v[data-class=v]{
+        font-size: 12px !important;
+    }
+    .v[data-class=v] .vcards .vcard .vcontent{
+        padding-top: 0 !important;
+    }
+}
+/* 大于等于401~小于等于576 */
+@media (min-width:401px ) and (max-width:576px){
+    .main_container {
+        width: 100%;
+    }
+    .app-header {
+        width: 100%;
+    }
+    .main_container .main_content .article_content .article_box {
+        width: 100%;
+    }
+    .app-header .header-left{
+        display: none !important;
+    }
+    #aplayer .aplayer {
+        box-shadow: 0 0 0 #fff !important;
+        margin: 0 !important;
+        background-color: rgba(255, 255, 255, 0) !important;
+    }
+    .app-header {
+        justify-content: space-between;
+    }
+    .app-aside {
+        display: none;
+    }
+    .app-aside-xs {
+        left: -220px;
+        display: block !important;
+    }
+    .main_container .main_content {
+        margin-left: 0 !important;
+    }
+    .article_option {
+        display: none !important;
+    }
+
+    .article_list{
+        padding: 20px 10px !important;
+    }
+    .article_list .article_top{
+        height: 130px !important;
+    }
+    .article_list .article_top .article_top_mask{
+        padding: 10px !important;
+    }
+    .article_list .article_item,.article_list .article_item .article_img{
+        height: 110px !important;
+    }
+    .article_list .article_item .article_info{
+        padding: 15px 13px 10px!important;
+    }
+    .article_list .article_item .article_info .article_title{
+        font-size: 17px !important;
+        margin-bottom: 5px !important;
+    }
+    .article_list .article_item .article_info .line{
+        display: none !important;
+    }
+    .article_list .article_item .article_info .article_des{
+        height: 30px !important;
+        white-space: nowrap !important;
+        margin-bottom: 5px !important;
+        -webkit-line-clamp: 1 !important;
+        display: block !important;
+    }
+    .article_list .article_item .article_info .other_info li{
+        padding: 0 10px 0 0 !important;
+    }
+    .img_box .img_cover {
+        width: 45% !important;
+    }
+    .img_box{
+        padding: 0 !important;
+    }
+    #article_md{
+        padding: 15px !important;
+    }
+    .markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body dl, .markdown-body table, .markdown-body pre, .markdown-body details{
+        font-size: 12px !important;
+    }
+    .article_list .card_content{
+        padding: 5px 10px !important;
+    }
+    .v[data-class=v]{
+        font-size: 12px !important;
+    }
+    .v[data-class=v] .vcards .vcard .vcontent{
+        padding-top: 0 !important;
+    }
+
+}
+/* 大于等于577~小于等于768 */
+@media (min-width:577px ) and (max-width:768px){
+    .main_container {
+        width: 100%;
+    }
+    .app-header {
+        justify-content: space-between;
+    }
+    .article_option {
+        display: none !important;
+    }
+    .app-header {
+        width: 100%;
+    }
+    .main_container .main_content .article_content .article_box {
+        width: 100%;
+    }
+    #aplayer .aplayer {
+        box-shadow: 0 0 0 #fff !important;
+        margin: 0 !important;
+        background-color: rgba(255, 255, 255, 0) !important;
+    }
+    .app-header .menu-btn {
+        display: none !important;
+    }
+
+    .app-aside {
+        width: 200px !important;
+    }
+
+    .main_container .main_content {
+        margin-left: 200px !important;
+    }
+
+    /* .header-right {
+        width: 550px;
+    }
+
+    .main_container .main_content .article_content .article_box {
+        width: 550px;
+    } */
+
+    .article_list .article_top {
+        height: 180px !important;
+    }
+
+    .img_box .img_cover {
+        width: 45% !important;
+    }
+    .article_list .article_item,.article_list .article_item .article_img{
+        height: 160px !important;
+    }
+    .article_list .article_item .article_info{
+        padding: 15px 30px !important;
+    }
+    .article_list .article_item .article_info .line{
+        margin: 8px 0 !important;
+    }
+    /* .article_list .article_img {
+        min-height: 185px !important;
+    } */
+    #article_md{
+        padding: 15px !important;
+    }
+    .markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body dl, .markdown-body table, .markdown-body pre, .markdown-body details{
+        font-size: 12px !important;
+    }
+    .article_list .card_content{
+        padding: 5px 10px !important;
+    }
+    .v[data-class=v]{
+        font-size: 12px !important;
+    }
+    .v[data-class=v] .vcards .vcard .vcontent{
+        padding-top: 0 !important;
+    }
+}
+/* 大于等于769~小于等于992*/
+@media (min-width:769px ) and (max-width:992px){
+    .main_container {
+        width: 750px;
+    }
+
+    .app-header {
+        width: 750px;
+    }
+    .app-header {
+        justify-content: space-between;
+    }
+    .app-aside {
+        width: 220px !important;
+    }
+    .article_option {
+        display: none !important;
+    }
+    .main_container .main_content {
+        margin-left: 220px !important;
+    }
+
+    /* .header-right {
+        width: 750px;
+    } */
+
+    .main_container .main_content .article_content .article_box {
+        width: 510px;
+    }
+
+    .article_list .article_top {
+        height: 180px !important;
+    }
+
+    .img_box .img_cover {
+        width: 45% !important;
+    }
+
+    .article_list .article_img {
+        height: 160px !important;
+    }
+    .app-header .menu-btn {
+        display: none !important;
+    }
+    .article_list .article_item{
+        height: 160px !important;
+    }
+    .article_list .article_item .article_info{
+        padding: 15px 30px !important;
+    }
+    .article_list .article_item .article_info .line{
+        margin: 8px 0 !important;
+    }
+    #article_md{
+        padding: 15px !important;
+    }
+}
+/* 大于等于993~小于等于1200 */
+@media (min-width:993px ) and (max-width:1200px){
+    .main_container {
+        width: 950px;
+    }
+    .app-header {
+        justify-content: space-between;
+    }
+    .app-header {
+        width: 950px;
+    }
+    .app-header .menu-btn {
+        display: none !important;
+    }
+    .app-aside {
+        width: 220px !important;
+    }
+    .main_container .main_content .article_content .article_box {
+        width: 490px;
+    }
+    .img_box .img_cover{
+        margin: 5px !important;
+    }
+}
+/* 大于等于1201~小于等于1700 */
+@media (min-width:1201px ) and (max-width:1700px){
+    .main_container {
+        width: 1170px;
+    }
+    .app-header {
+        justify-content: space-between;
+    }
+    .app-header {
+        width: 1170px;
+    }
+    .app-header .menu-btn {
+        display: none !important;
+    }
+    .app-aside {
+        width: 220px !important;
+    }
+    .main_container .main_content .article_content .article_box {
+        width: 710px;
+    }
+    /* .img_box .img_cover{
+        margin: 5px !important;
+    } */
+}
+/* 大于等于1701 */
+@media (min-width:1701px ) and (max-width:2047px){
+    .main_container {
+        width: 1450px;
+    }
+    .app-header {
+        justify-content: space-between;
+    }
+    .app-header {
+        width: 1450px;
+    }
+    .app-header .menu-btn {
+        display: none !important;
+    }
+    .app-aside {
+        width: 220px !important;
+    }
+    .main_container .main_content .article_content .article_box {
+        width: 990px;
+    }
+}
+/*  */
+@media (min-width:2048px ) {
+    .main_container {
+        width: 1620px;
+    }
+    .app-header {
+        justify-content: space-between;
+    }
+    .app-header {
+        width: 1620px;
+    }
+    .app-header .menu-btn {
+        display: none !important;
+    }
+    .app-aside {
+        width: 220px !important;
+    }
+    .main_container .main_content .article_content .article_box {
+        width: 1160px;
+    }
+}

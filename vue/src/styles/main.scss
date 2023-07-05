@@ -1,7 +1,8 @@
 $hoverColor:rgba(0, 0, 0, .05);
+$sun-bgcolor:#EFEFEF;
 html {
     height: 100%;
-    background-color: #EFEFEF;
+    background-color: $sun-bgcolor;
 }
 
 body {
@@ -12,7 +13,10 @@ body {
     margin: 0;
     /* overflow: hidden; */
 }
-
+#snowcavas{
+    width: 100%;
+    height:100%;
+}
 #app {
     height: 100%;
 
@@ -49,7 +53,7 @@ a {
 .nav-ul li i {
     opacity: .9;
     color: #777;
-    font-size: 20px;
+    font-size: 22px;
     margin-right: 15px;
 }
 

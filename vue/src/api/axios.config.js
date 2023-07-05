@@ -1,6 +1,7 @@
 import Axios from "axios";
 
-const baseIp = 'http://127.0.0.1:3000';
+// const baseIp = 'http://127.0.0.1:3000/v1';
+const baseIp = 'https://www.c-sandm.top/v1/';
 
 export const CONTENT_TYPE = "Content-Type";
 export const APPLICATION_JSON = "application/json; charset=UTF-8";

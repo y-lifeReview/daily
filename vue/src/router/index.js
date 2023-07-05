@@ -9,6 +9,10 @@ import Index from '@/view/home/home-view.vue'
 import List from '@/components/articleList/articleList.vue'
 import detail from '@/components/detail/articleDetail.vue'
 import images from '@/components/images/appImages.vue'
+import imageDetail from '@/components/images/imgDetail.vue'
+import category from '@/components/category/category.vue'
+import timeLine from '@/components/timeLine/timeLine.vue'
+import contact from '@/components/contact/contact.vue'
 export const routes = [{
     path: '/login',
     name: 'Login',
@@ -28,6 +32,7 @@ export const routes = [{
         {
             path: 'detail/:id',
             component: detail,
+            name:'detail',
             meta: {
                 keepAlive: false
             }
@@ -37,15 +42,40 @@ export const routes = [{
             component: images,
             meta: {
                 keepAlive: false
-            }
+            },
         },
         {
-            path: 'about',
-            component: detail,
+            path: 'imgs',
+            name:'imageDetail',
+            component: imageDetail,
             meta: {
                 keepAlive: false
             }
-        }
+        },
+        {
+            path: 'archives',
+            name:'archives',
+            component: timeLine,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
+            path: 'contact',
+            name:'contact',
+            component: contact,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
+            path: 'category/:cate',
+            component: category,
+            meta: {
+                keepAlive: false
+            },
+        },
+        
     ]
 }]
 
@@ -64,10 +94,14 @@ const router = createRouter({
         };
     }
 })
-// router.afterEach((to, from) => {
-//     // console.log('路由守卫',to,from)
-//     //控制左侧导航栏选中
-//     let path = to.path||'/'
-//     store.commit('changeNowRouter',path)
-//   })
+router.afterEach((to, from) => {
+    // console.log('路由守卫',to,from)  
+    //控制左侧导航栏选中
+    let path = to.path || '/'
+    if (!path.includes('/detail/')) {
+        // console.log('清空目录')
+        store.commit('updateDir', [])
+    }
+    // store.commit('changeNowRouter',path)
+})
 export default router

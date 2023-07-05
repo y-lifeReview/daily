@@ -1,5 +1,5 @@
 <template>
-  <articleHead :info="{ title: '相册' }" :isArticle="false" />
+  <articleHead :info="{ title: imgsTitle }" :isArticle="false" />
   <div class="img_box">
     <el-skeleton
       :rows="4"
@@ -7,25 +7,27 @@
       :loading="imgloading"
       animated
     >
-      <div
-        @click="goImgDetail(item.id, item.title)"
-        v-for="(item, index) in imgList"
-        :key="index"
-        class="img_cover"
-      >
-        <el-image class="image" fit="cover" :src="item.src">
-          <template #placeholder>
+      <div v-for="(item, index) in imgList" :key="item.id" class="img_cover">
+        <el-image
+          lazy
+          :alt="item.title"
+          :title="item.title"
+          class="image"
+          fit="cover"
+          :src="item.src"
+          :preview-src-list="urls"
+          :initial-index="index"
+          ><template #placeholder>
             <div class="image-slot">Loading<span class="dot">...</span></div>
-          </template>
-        </el-image>
-        <div class="img_title">{{ item.title }}</div>
+          </template></el-image
+        >
       </div>
     </el-skeleton>
   </div>
 </template>
 <script>
 import { useGet } from "@/hooks/index";
-import { urlForGetImgCategory } from "@/api/url";
+import { urlForGetImgs } from "@/api/url";
 import articleHead from "@/components/articleHead/articleHead.vue";
 const get = useGet();
 export default {
@@ -36,33 +38,32 @@ export default {
     return {
       imgloading: true,
       imgList: [],
+      imgsTitle: "",
+      urls: [],
     };
   },
   mounted() {
-    this.getImgCategory();
+    let id = this.$route.query && this.$route.query.id;
+    this.imgsTitle = this.$route.query && this.$route.query.title;
+    this.getImgs(id);
   },
   methods: {
-    getImgCategory() {
+    getImgs(id) {
       get({
-        url: urlForGetImgCategory,
+        url: urlForGetImgs + "?id=" + id,
       })
         .then((res) => {
           this.imgList = res.data;
+          this.urls = res.data.map((item) => {
+            return item.src;
+          });
+          //   console.log('this.urls',res.data,this.urls)
           this.imgloading = false;
         })
         .catch((err) => {
           this.imgList = [];
           this.imgloading = false;
         });
-    },
-    goImgDetail(id, title) {
-      this.$router.push({
-        name: "imageDetail",
-        query: {
-          id,
-          title,
-        },
-      });
     },
   },
 };
@@ -77,6 +78,7 @@ export default {
   flex-wrap: wrap;
   flex-direction: row;
   align-content: flex-start;
+  // justify-content: space-between;
   .img_cover {
     width: 30%;
     height: 132px;
@@ -89,7 +91,7 @@ export default {
     overflow: hidden;
     cursor: pointer;
     .image {
-      height: 100px;
+      height: 100%;
       .image-slot {
         display: flex;
         justify-content: center;
@@ -103,47 +105,6 @@ export default {
       .dot {
         animation: dot 2s infinite steps(3, start);
         overflow: hidden;
-      }
-      &:before {
-        color: #fff;
-        font-family: iconfont;
-        content: "\e6ff";
-        display: block;
-        font-size: 18px;
-        height: 30px;
-        left: calc(50% - 18px);
-        top: calc(50% - 18px);
-        line-height: 35px;
-        position: absolute;
-        text-align: center;
-        transform: scale(0);
-        opacity: 0;
-        transition: 0.25s;
-        width: 30px;
-        z-index: 1;
-      }
-      &:hover:before {
-        transform: scale(2);
-        opacity: 1;
-        transition: 0.25s;
-      }
-      &:after {
-        background: rgba(0, 0, 0, 0.5) none repeat scroll 0 0;
-        content: "";
-        display: block;
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-        opacity: 0;
-        transition: 0.25s;
-        border-top-left-radius: 6px;
-        border-top-right-radius: 6px;
-      }
-      &:hover:after {
-        opacity: 1;
-        transition: 0.25s;
       }
     }
     .img_title {

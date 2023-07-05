@@ -1,37 +1,13 @@
 <template>
-  <header class="box-header">
-    <h1 class="">sprinkle</h1>
-      <small>{{ longsign }}</small>
-  </header>
-
+  <articleHead :info="{ title }" :isArticle="false" />
   <div class="article_list">
-    <el-skeleton :loading="toploading" animated>
-      <div
-        v-if="articleTop"
-        
-        :style="'background-image: url(' + articleTop.img + ');'"
-        class="article_item article_top "
-      >
-        <router-link
-          class="article_top_a"
-          :to="{ path: '/detail/' + articleTop.id  }"
-        >
-          <div class="article_top_mask">
-            <h3>
-              <span class="article_top_icon">置顶</span>{{ articleTop.title }}
-            </h3>
-            <div class="article_top_des">{{ articleTop.summary }}</div>
-          </div>
-        </router-link>
-      </div>
-    </el-skeleton>
-    <el-skeleton :loading="listloading" :count="7" animated>
+    <el-skeleton :loading="listloading" :count="8" animated>
       <template v-for="item in articleList" :key="item">
-        <div  class="article_item wow  fadeIn">
+        <div class="article_item wow animate__fadeIn">
           <img :src="item.img" class="article_img" alt="" />
           <div class="article_info">
             <h2 class="article_title">
-              <router-link :to="{ path: '/detail/' + item.id  }">
+              <router-link :to="{ path: '/detail/' + item.id }">
                 {{ item.title }}
               </router-link>
             </h2>
@@ -74,72 +50,51 @@
     </el-pagination>
   </div>
 </template>
-
 <script>
-// let timer = null;
-import { usePost, useGet } from "@/hooks/index";
-import {
-  urlForGetArticleList,
-  urlForGetArticleTop,
-  urlForGetLongSign,
-} from "@/api/url";
+import { urlForGetActCate } from "@/api/url";
+import { usePost } from "@/hooks/index";
+import articleHead from "@/components/articleHead/articleHead.vue";
 import { timeformatstande } from "@/hooks/timeformat";
-const post = usePost(),
-  get = useGet();
+const post = usePost();
 export default {
-  name: "articleList",
+  components: {
+    articleHead,
+  },
   data() {
     return {
-      articleTop: {},
+      // cate:''
       articleList: [],
-      longsign: "",
-      toploading: true,
       listloading: true,
       articleTotal: 0,
+      title:''
     };
   },
-
   mounted() {
-    this.getArticleTop();
-    this.getArticleList();
-    // let _this = this;
-    // timer = setInterval(() => {
-    //   _this.getSign();
-    // }, 15000);
+    // console.log("分类");
+    let cate = this.$route.params.cate;
+    this.title = '分类 '+cate+' 下的文章'
+    this.getActCategory(cate);
   },
-  unmounted() {
-    // clearInterval(timer);
+  watch: {
+    $route(to, from) {
+      if (this.$route.params.cate) {
+        this.title = '分类 '+this.$route.params.cate+' 下的文章'
+        this.getActCategory(this.$route.params.cate);
+      }
+    },
   },
   methods: {
-    // 置顶文章
-    getArticleTop: function () {
+    getActCategory(cate, page = 1) {
       let _this = this;
       post({
-        url: urlForGetArticleTop,
-        data: {},
-      })
-        .then((res) => {
-          // console.log(res);
-          let list = res.data[0];
-          _this.articleTop = list;
-          _this.toploading = false;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    //文章列表
-    getArticleList: function (page = 1) {
-      let _this = this;
-      post({
-        url: urlForGetArticleList,
+        url: urlForGetActCate,
         data: {
+          cate,
           page,
         },
-        isProgress:true
+        isProgress: true,
       })
         .then((res) => {
-          // console.log(res);
           let list = res.data || [];
           list.map((item) => {
             item.mode = item.width > item.height ? "hov" : "ver";
@@ -149,58 +104,21 @@ export default {
           _this.articleList = list;
           _this.listloading = false;
           _this.articleTotal = res.total;
-          _this.getSign();
           window.scrollTo({
             top: 0,
             behavior: "smooth",
           });
-          // console.log(this)
-          // _this.$refs.scrollbarRef.setScrollTop(0)
         })
-        .catch((err) => {
-          console.log(err);
-          _this.getSign();
-        });
-    },
-    //签名获取
-    getSign: function () {
-      get({
-        url: urlForGetLongSign,
-        data: "",
-        method: "GET",
-        beforeRequest: () => {},
-        afterRequest: () => {},
-      }).then((res) => {
-        // console.log("res", res);
-        if (res.code === 200) {
-          // console.log(res)
-          this.longsign = res.data[0].content;
-        } else {
-          this.longsign = "欲买桂花同载酒，只可惜故人...";
-          return;
-        }
-      });
+        .catch((err) => {});
     },
     currentChange: function (e) {
-      this.getArticleList(e);
+      this.getActCategory(this.$route.params.cate,e);
     },
   },
 };
 </script>
+
 <style lang="scss" scoped>
-.box-header {
-  background-color: #f9f9f9;
-  padding: 20px;
-  h1 {
-    font-weight: 300;
-    color: #000;
-    margin: 0 !important;
-  }
-  small {
-    letter-spacing: 2px;
-    color: #a0a0a0;
-  }
-}
 .article_list {
   width: 100%;
   // min-height: 1000px;
@@ -246,7 +164,7 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
         word-wrap: break-word;
-        white-space: normal ;
+        white-space: normal !important;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         color: #a0a0a0;
@@ -269,7 +187,7 @@ export default {
         color: #a0a0a0;
         li {
           display: inline-block;
-          padding: 0 10px 0 0px;
+          padding: 0 5px;
           .icon_sapn {
             margin-right: 5px;
           }

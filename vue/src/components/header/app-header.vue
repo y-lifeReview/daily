@@ -1,5 +1,10 @@
 <template>
   <header class="app-header" id="progress_content">
+    <div @click="menuContrl" class="menu-btn">
+      <div class="btn-item"></div>
+      <div class="btn-item"></div>
+      <div class="btn-item"></div>
+    </div>
     <div class="header-left">
       <div
         class="weather-box "
@@ -21,6 +26,7 @@
     <div class="header-right">
       <aPlayer></aPlayer>
     </div>
+    
   </header>
 </template>
 
@@ -43,6 +49,19 @@ export default {
       
     };
   },
+  methods:{
+    menuContrl(){
+      let cls = document.getElementsByClassName('app-aside-xs')[0].style.left
+      console.log(cls)
+      if(cls!='0px'){
+        document.getElementsByClassName('app-aside-xs')[0].style.left = '0px'
+        document.getElementsByClassName('aside-bg')[0].style.display = 'block'
+      }else{
+        document.getElementsByClassName('app-aside-xs')[0].style.left = '-220px'
+        document.getElementsByClassName('aside-bg')[0].style.display = 'none'
+      }
+    }
+  }
 
  
 };
@@ -52,12 +71,12 @@ export default {
 .app-header {
   position: fixed;
   top: 0;
-  width: 100%;
+  // width: 100%;
   min-height: 50px;
-  max-width: 1170px;
+  // max-width: 1170px;
   box-shadow: 0 1px 4px 1px rgb(0 0 0 / 5%);
   background-color: #f9f9f9;
-  z-index: 3;
+  z-index: 4;
   display: flex;
   .header-left {
     width: 220px;
@@ -86,8 +105,23 @@ export default {
       }
     }
   }
-  .header-right{
-    width:950px
+  // .header-right{
+  //   // width:950px
+  // }
+  .menu-btn{
+    width: 50px;
+    height: 50px;
+    padding: 19px 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    .btn-item{
+      width: 16px;
+      height: 1.5px;
+      background-color: #777;
+      border-radius: 2px;
+    }
   }
 }
 </style>

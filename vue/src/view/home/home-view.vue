@@ -8,9 +8,10 @@
     ></Header>
     <Aside></Aside>
     <div class="main_content">
-      <div class="article_content">
+      <!-- <el-scrollbar ref="scrollbarRef" @scroll="scroll"> -->
+      <div id="article_content" class="article_content">
         <div class="article_box">
-          <router-view  v-slot="{ Component }">
+          <router-view v-slot="{ Component }">
             <keep-alive include="articleList">
               <component :is="Component" />
             </keep-alive>
@@ -59,7 +60,7 @@
               <ul>
                 <el-skeleton :loading="hotloading" animated :count="2">
                   <template v-for="item in hotList" :key="item.id">
-                    <router-link :to="{ path: '/detail/' + item.id + '/' }">
+                    <router-link :to="{ path: '/detail/' + item.id }">
                       <li>
                         <a class="hot_icon">
                           <img
@@ -86,53 +87,120 @@
               </ul>
             </div>
           </div>
-          <!-- 博客信息 -->
-          <div class="ri_atc_li blog_info">
-            <h5>博客信息</h5>
-            <ul>
-              <el-skeleton :loading="infoloading" animated :count="2">
-                <li>
-                  <i class="iconfont icon-suggest"></i>
-                  <span>文章数目</span>
-                  <div class="blog_info_view badge">{{ blogInfo.count }}</div>
-                </li>
-                <li>
-                  <i class="iconfont icon-comments"></i>
-                  <span>评论数目</span>
-                  <div class="blog_info_view badge">257</div>
-                </li>
-                <li>
-                  <i class="iconfont icon-calendar"></i>
-                  <span>运行天数</span>
-                  <div class="blog_info_view badge">{{ blogInfo.day }}</div>
-                </li>
-                <li>
-                  <i class="iconfont icon-history"></i>
-                  <span>最后活跃</span>
-                  <div class="blog_info_view badge">{{ blogInfo.time }}</div>
-                </li>
-              </el-skeleton>
+          <!-- 文章目录 -->
+          <div v-if="dirtree.length" class="ri_atc_li dir_info">
+            <h5>目录</h5>
+            <ul class="ulcontent" v-for="item in dirtree" :key="item.id">
+              <li
+                :class="dirId == item.domId ? 'dirAct' : ''"
+                @click="dirScroll(item.domId)"
+              >
+                <span>{{ item.title }}</span>
+              </li>
+              <ul v-if="item.children">
+                <ul
+                  class="sec_size"
+                  v-for="citem in item.children"
+                  :key="citem.id"
+                >
+                  <li
+                    :class="dirId == citem.domId ? 'dirAct' : ''"
+                    @click="dirScroll(citem.domId)"
+                  >
+                    <span>{{ citem.title }}</span>
+                  </li>
+                  <ul class="thr_size" v-if="citem.children">
+                    <li
+                      :class="dirId == sitem.domId ? 'dirAct' : ''"
+                      v-for="sitem in citem.children"
+                      :key="sitem.id"
+                      @click="dirScroll(sitem.domId)"
+                    >
+                      <span>{{ sitem.title }}</span>
+                    </li>
+                  </ul>
+                </ul>
+              </ul>
             </ul>
           </div>
-          <!-- 标签 -->
-          <div class="ri_atc_li blog_info">
-            <h5>标签云</h5>
-            <div>
-              <el-skeleton :loading="tagloading" animated :count="2">
-                <a
-                  v-for="item in tagList"
-                  :key="item.category"
-                  class="badge tags"
-                  >{{ item.category }}</a
-                >
-              </el-skeleton>
+          <template v-else>
+            <!-- 博客信息 -->
+            <div class="ri_atc_li blog_info">
+              <h5>博客信息</h5>
+              <ul>
+                <el-skeleton :loading="infoloading" animated :count="2">
+                  <li>
+                    <i class="iconfont icon-suggest"></i>
+                    <span>文章数目</span>
+                    <div class="blog_info_view badge">
+                      {{ blogInfo.count }}
+                    </div>
+                  </li>
+                  <li>
+                    <i class="iconfont icon-comments"></i>
+                    <span>评论数目</span>
+                    <div class="blog_info_view badge">257</div>
+                  </li>
+                  <li>
+                    <i class="iconfont icon-calendar"></i>
+                    <span>运行天数</span>
+                    <div class="blog_info_view badge">{{ blogInfo.day }}</div>
+                  </li>
+                  <li>
+                    <i class="iconfont icon-history"></i>
+                    <span>最后活跃</span>
+                    <div class="blog_info_view badge">
+                      {{ blogInfo.time }}
+                    </div>
+                  </li>
+                </el-skeleton>
+              </ul>
             </div>
-          </div>
+            <!-- 标签 -->
+            <div class="ri_atc_li blog_info">
+              <h5>标签云</h5>
+              <div>
+                <el-skeleton :loading="tagloading" animated :count="2">
+                  <!-- <router-link :to="{ path: '/detail/' + item.id }">
+                    {{ item.title }}
+                  </router-link> -->
+                  <router-link
+                    :to="{ path: '/category/' + item.category }"
+                    v-for="item in tagList"
+                    :key="item.category"
+                    class="badge tags"
+                    >{{ item.category }}</router-link
+                  >
+                </el-skeleton>
+              </div>
+            </div>
+          </template>
         </div>
-        <div class="clearfix"></div>
+        <!-- <div class="clearfix"></div> -->
       </div>
+      <!-- </el-scrollbar> -->
     </div>
   </div>
+  <el-backtop :bottom="100" :right="0">
+    <div
+      style="
+        z-index: 99;
+        width: 45px;
+        height: 45px;
+        background-color: #f9f9f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top-left-radius: 50%;
+        border-bottom-left-radius: 50%;
+        box-shadow: -3px 0 2px 0 rgba(0, 0, 0, 0.02);
+        color: #58666e !important;
+      "
+    >
+      <i style="font-size: 32px" class="iconfont icon-fanhuidingbu"></i>
+    </div>
+  </el-backtop>
+  <!-- <div class="back_top"></div> -->
 </template>
 <script>
 import Header from "@/components/header/app-header.vue";
@@ -233,9 +301,35 @@ export default {
           console.log(err);
         });
     },
+    dirScroll: function (id) {
+      let parent = document.getElementById("article_content");
+
+      this.$store.commit("updataIsDirClick", true);
+      this.$store.commit("updataDirId", id);
+      let target = document.getElementById(id);
+      // console.log(this)
+      // this.$refs.scrollbarRef.setScrollTop(target.offsetTop - parent.offsetTop)
+      window.scrollTo({
+        left: 0,
+        top: target.offsetTop - parent.offsetTop,
+        behavior: "smooth",
+      });
+    },
+    // scroll:function(e){
+
+    //   //判断是否在详情页
+    //   if(!this.$route.path.includes('/detail')){
+    //     return;
+    //   }
+    //   // console.log(document.getElementsByClassName('dir_info')[0].offsetParent.scrollTop)
+    //   // console.log('滚动',e.scrollTop)
+    //   //是-根据滚动的距离推算所对应的目录
+
+    // }
   },
   mounted() {
     console.log("加载");
+
     let date = new Date();
     this.city = getLStorage("city") || "成都市";
     this.temperature = getLStorage("temperature") || "25";
@@ -251,40 +345,50 @@ export default {
     this.getTags();
     this.getBlogInfo();
   },
+  computed: {
+    dirtree() {
+      return this.$store.state.dirTreeList;
+    },
+    dirId() {
+      return this.$store.state.dirId;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .main_container {
-  width: 1170px;
-  // height: 100%;
+  // width: 1170px;
+  height: 100%;
   margin: auto;
-  padding-top: 50px;
-  min-height: 100%;
+  // padding-top: 50px;
+  // min-height: 100%;
   box-shadow: 0 0 4px 3px rgb(0 0 0 / 5%);
   .main_content {
     width: auto;
-    // height: 100%;
+    height: 100%;
     // min-height: 100%;
     margin-left: 220px;
     position: relative;
-
+    padding-top: 50px;
     .article_content {
       width: auto;
-      // min-height: 100%;
+      display: flex;
+      min-height: 100%;
       position: relative;
-      height: fit-content;
+      // overflow: scroll;
+      // height: fit-content;
       background-color: #f9f9f9;
       .article_box {
-        width: 710px;
-        height: 100%;
-        float: left;
+        // width: 710px;
+        // height: fit-content;
+        // float: left;
         // padding-right: 240px;
         background-color: #f0f3f4;
       }
       .article_option {
         width: 240px;
-        float: right;
+        // float: right;
         // height: 100%;
         // position: absolute;
         // right: 0;
@@ -295,7 +399,7 @@ export default {
           position: relative;
           padding: 0;
           margin: 0;
-          box-shadow: 4px 0 5px rgb(0 0 0 / 5%), 0 0 0 rgb(0 0 0 / 5%);
+          box-shadow: 3px 0 5px rgb(0 0 0 / 5%), 0 0 0 rgb(0 0 0 / 5%);
           li {
             flex: 1;
             display: flex;
@@ -402,14 +506,14 @@ export default {
                 float: right;
               }
             }
-            li:first-child {
-              border-top-left-radius: 4px;
-              border-top-right-radius: 4px;
-            }
-            li:last-child {
-              border-bottom-right-radius: 4px;
-              border-bottom-left-radius: 4px;
-            }
+          }
+          li:first-child {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+          }
+          li:last-child {
+            border-bottom-right-radius: 4px;
+            border-bottom-left-radius: 4px;
           }
           .badge {
             font-size: 12px;
@@ -428,11 +532,66 @@ export default {
             margin: 0 4px 8px 0;
           }
         }
+        .dir_info {
+          position: sticky;
+          top: 10px;
+          opacity: 0.8;
+          color: #777;
+
+          ul.ulcontent {
+            background: #fff;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
+            li {
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+              display: block;
+              background-color: #fff;
+              padding: 5px;
+              margin: 2px 10px;
+              i {
+                float: left;
+                margin-right: 5px;
+              }
+              .blog_info_view {
+                float: right;
+              }
+            }
+            li.dirAct {
+              background-color: rgba(0, 0, 0, 0.05);
+            }
+            .sec_size {
+              font-size: 13px;
+              text-indent: 16px;
+            }
+            .thr_size {
+              font-size: 12px;
+              text-indent: 28px;
+            }
+          }
+
+          ul li:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+          }
+        }
+        .dir_info > :nth-child(2) {
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          padding-top: 8px;
+        }
+        .dir_info > :last-child {
+          border-bottom-right-radius: 4px;
+          border-bottom-left-radius: 4px;
+          padding-bottom: 8px;
+        }
       }
-      .clearfix {
-        clear: both;
-      }
+      // .clearfix {
+      //   clear: both;
+      // }
     }
   }
+}
+.back_top {
 }
 </style>

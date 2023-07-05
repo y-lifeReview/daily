@@ -68,7 +68,7 @@
                     </a>
                     <router-link
                       v-else
-                      :to="itemchild.path"
+                      :to="{path:itemchild.path}"
                       exact-active-class="router-target"
                     >
                       <span>{{ itemchild.title }}</span>
@@ -98,20 +98,142 @@
       <div class="nav-footer">
         <div>
           <!-- <a class="foot-item" href="" -->
-          <router-link class="foot-item" to="/login">
+          <a class="foot-item" target="_blank" :href="'https://www.c-sandm.top/back'">
             <i class="aside-foot-icon iconfont icon-set"></i>
             <small>管理</small>
-          </router-link>
+          </a>
           <!-- </a> -->
         </div>
         <div>
-          <a class="foot-item" href=""
+          <a class="foot-item" href="/detail/20"
             ><i class="aside-foot-icon iconfont icon-dongtai"></i>
             <small>文章</small></a
           >
         </div>
         <div>
-          <a class="foot-item" href=""
+          <a class="foot-item" href="/contact"
+            ><i class="aside-foot-icon iconfont icon-comments"></i>
+            <small>评论</small></a
+          >
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!--  -->
+  <aside class="app-aside-xs" @click="hidemenu">
+    <div class="aside-bg" @click="hidemenu"></div>
+    <div class="aside-box scroll-hide">
+      <div class="avatar-box">
+        <a href="/about">
+          <img
+            class="aside-avatar"
+            src="https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/upload/blog-avatar.png"
+            alt=""
+          />
+        </a>
+        <div class="aside-sign">
+          <span class="aside-name">
+            <strong class="name-text">明天下小雨</strong>
+          </span>
+          <vuetyped
+            :strings="['山雾漫漫，别迷了路']"
+            :loop="true"
+            :smart-backspace="true"
+            :typeSpeed="150"
+            :backSpeed="50"
+          >
+            <div class="typing sign-text" />
+          </vuetyped>
+          <!-- <span class="sign-text"></span> -->
+        </div>
+      </div>
+      <nav class="nav-box">
+        <ul class="nav-ul">
+          <div class="nav-line"></div>
+          <li class="text-guide">
+            <span>导航</span>
+          </li>
+          <el-skeleton
+            :rows="8"
+            style="width: 90%; margin: auto"
+            :loading="asideloading"
+            animated
+          >
+            <li v-for="(item, index) in asideList" :key="item.title">
+              <!-- 有二级导航 -->
+              <template v-if="item.children">
+                <div class="second-box" @click.stop="asideExtend(index)">
+                  <i :class="['iconfont', 'icon-' + item.icon_string]"></i>
+                  <span>{{ item.title }}</span>
+                  <i
+                    :class="[
+                      'iconfont',
+                      asideExIndex === index
+                        ? 'icon-arrow-down'
+                        : 'icon-arrow-right',
+                      'right-icon',
+                    ]"
+                  ></i>
+                </div>
+                <!-- 二级子项 -->
+                <ul
+                  v-show="asideExIndex === index"
+                  class="animate__animated slideInLeft ul-second nav-ul"
+                >
+                  <li v-for="itemchild in item.children" :key="itemchild.title">
+                    <a
+                      v-if="itemchild.is_outweb"
+                      target="_blank"
+                      :href="itemchild.path"
+                    >
+                      <span>{{ itemchild.title }}</span>
+                    </a>
+                    <router-link
+                      v-else
+                      :to="{path:itemchild.path}"
+                      exact-active-class="router-target"
+                    >
+                      <span>{{ itemchild.title }}</span>
+                    </router-link>
+                  </li>
+                </ul>
+              </template>
+              <!-- 无二级导航 -->
+              <template v-else>
+                <a v-if="item.is_outweb" target="_blank" :href="item.path">
+                  <i :class="['iconfont', 'icon-' + item.icon_string]"></i>
+                  <span>{{ item.title }}</span>
+                </a>
+                <router-link
+                  v-else
+                  :to="item.path"
+                  exact-active-class="router-target"
+                >
+                  <i :class="['iconfont', 'icon-' + item.icon_string]"></i>
+                  <span>{{ item.title }}</span>
+                </router-link>
+              </template>
+            </li>
+          </el-skeleton>
+        </ul>
+      </nav>
+      <div class="nav-footer">
+        <div>
+          <!-- <a class="foot-item" href="" -->
+          <a class="foot-item" target="_blank" :href="'https://www.c-sandm.top/back'">
+            <i class="aside-foot-icon iconfont icon-set"></i>
+            <small>管理</small>
+          </a>
+          <!-- </a> -->
+        </div>
+        <div>
+          <a class="foot-item" href="/detail/20"
+            ><i class="aside-foot-icon iconfont icon-dongtai"></i>
+            <small>文章</small></a
+          >
+        </div>
+        <div>
+          <a class="foot-item" href="/contact"
             ><i class="aside-foot-icon iconfont icon-comments"></i>
             <small>评论</small></a
           >
@@ -160,16 +282,26 @@ export default {
       }
       this.asideExIndex = index;
     },
+    hidemenu(){
+      document.getElementsByClassName('app-aside-xs')[0].style.left='-220px'
+      document.getElementsByClassName('aside-bg')[0].style.display = 'none'
+    }
   },
 };
 </script>
 <style lang="scss" scoped>
-.app-aside {
+.app-aside,.app-aside-xs {
   width: 220px;
-  float: left;
+  // float: left;
   background-color: #f9f9f9;
   height: 100%;
   position: fixed;
+  top: 0;
+  z-index: 3;
+  // left: 0;
+  height: 100%;
+  padding-top: 50px;
+  transition: all .4s ease;
   .aside-box {
     width: 100%;
     display: flex;
@@ -272,7 +404,7 @@ export default {
     }
     .nav-footer {
       position: absolute;
-      bottom: 50px;
+      bottom: 0px;
       padding: 5px;
       width: 100%;
       height: 50px;
@@ -292,4 +424,40 @@ export default {
     }
   }
 }
+.aside-bg{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  // z-index: 3;
+}
+.app-aside-xs{
+  display: none;
+}
+// .menu-show{
+//   animation: menuanishow .4s ease ;
+//   animation-fill-mode: both;
+// }
+
+// @keyframes menuanishow {
+//   from {
+//     left: -220px;
+//   }
+//   to {
+//     left: 0px;
+//   }
+// }
+// .menu-hide{
+//   animation: menuanihide .4s ease ;
+//   animation-fill-mode: both;
+// }
+// @keyframes menuanishow {
+//   from {
+//     left: 0;
+//   }
+//   to {
+//     left: -220px;
+//   }
+// }
 </style>
