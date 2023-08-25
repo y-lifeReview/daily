@@ -9,9 +9,10 @@ const resType = {
     },
     
 }
-const response = function (code, data) {
+const response = function (code, data,other={}) {
     let obj = resType[code]
     if (data) obj.data = data;
+    if (other) obj.info = other;
     return obj
 }
 module.exports = response;

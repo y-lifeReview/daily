@@ -1,4 +1,5 @@
 var express = require('express');
+var os = require('os')
 let {
     query,
     transction
@@ -29,16 +30,16 @@ router.get('/back/articleList', function (req, res) {
     } = req.query
     sort = sort === '-id' ? 0 : 1
     let countsql = 'select count(id) from article'
-    let sql = 'select a.*,b.nickname as author from article as a left join user as b on a.user_id = b.id where a.id<=? order by a.id desc limit ?'
+    let sql = 'select a.*,b.nickname as author from article as a left join user as b on a.user_id = b.id  order by a.id desc limit ?,?'
     if (sort) {
-        sql = 'select a.*,b.nickname as author from article as a left join user as b on a.user_id = b.id where a.id<=? order by a.id limit ?'
+        sql = 'select a.*,b.nickname as author from article as a left join user as b on a.user_id = b.id  order by a.id limit ?,?'
     }
     query(countsql, [], function (err, result) {
         if (err) {
             res.send(reqData(500, err));
             return;
         }
-        query(sql, [result[0]['count(id)'] - (page - 1) * limit, limit - 0], function (err2, result2) {
+        query(sql, [(page - 1) * limit, limit - 0], function (err2, result2) {
             if (err2) {
                 res.send(reqData(500, err2));
                 return;
@@ -166,7 +167,7 @@ router.post('/back/user/login', function (req, res, next) {
                             // console.log('token', token)
                             let update_at = (new Date().getTime() / 1000).toFixed(0) - 0
                             let addSql2 = 'UPDATE user SET token=? ,update_at = ? where nickname=?';
-                            let addSqlParams2 = [token, update_at,req.body.username];
+                            let addSqlParams2 = [token, update_at, req.body.username];
                             query(addSql2, addSqlParams2, function (err, result) {
                                 if (err) {
                                     res.send(reqData(500, err));
@@ -555,7 +556,10 @@ router.post('/back/aside/change', function (req, res) {
 router.post('/back/addImageCate', function (req, res) {
     let {
         title,
-        imgs
+        imgs,
+        ispassword,
+        ques,
+        anwser
     } = req.body;
     //title重复检查
     let sqlTitleCheck = 'select title from img_category where img_category.title = ? '
@@ -566,8 +570,8 @@ router.post('/back/addImageCate', function (req, res) {
             return;
         }
         if (result.length < 1) {
-            let sqlInsertCate = 'insert into img_category (title) values(?)';
-            query(sqlInsertCate, [title], function (err1, data1) {
+            let sqlInsertCate = 'insert into img_category (title,ispassword,ques,anwser) values(?,?,?,?)';
+            query(sqlInsertCate, [title,ispassword,ques,anwser], function (err1, data1) {
                 if (err1) {
                     res.send(reqData(500, err1));
                     return;
@@ -612,10 +616,16 @@ router.get('/back/getImageDetail', function (req, res) {
             res.send(reqData(500, err));
             return;
         }
-        res.send(reqData(200, result))
+        query('select * from img_category where id = ?',[id],function(err1,result1){
+            if (err1) {
+                res.send(reqData(500, err1));
+                return;
+            }
+            res.send(reqData(200, result,result1[0]))
+        })
+        
     })
 })
-
 //删除相册图片
 router.post('/back/delImage', function (req, res) {
     let {
@@ -641,7 +651,6 @@ router.post('/back/delImage', function (req, res) {
 
     })
 })
-
 //新增相册图片
 router.post('/back/addImage', function (req, res) {
     let {
@@ -657,6 +666,179 @@ router.post('/back/addImage', function (req, res) {
         }
         res.send(reqData(200, '上传成功'))
     })
+})
+
+
+//视频合集新增
+router.post('/back/addVideoCate', function (req, res) {
+    let {
+        title,
+        isPassword,
+        ques,
+        anwser,
+        urls
+    } = req.body;
+    //title重复检查
+    let sqlTitleCheck = 'select title from video_category where video_category.title = ? '
+
+    query(sqlTitleCheck, [title], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        if (result.length < 1) {
+            let sqlInsertCate = 'insert into video_category (title,ispassword,ques,anwser) values(?,?,?,?)';
+            query(sqlInsertCate, [title, isPassword, ques, anwser], function (err1, data1) {
+                if (err1) {
+                    res.send(reqData(500, err1));
+                    return;
+                }
+                // console.log('data1', data1)
+                let time = timeStand(new Date())
+                let values = []
+                urls.forEach(item => {
+                    let tagIndex = item.lastIndexOf('.')
+                    values.push([item.replace('http://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/video/', ''), data1.insertId, item, time, item.substring(0, tagIndex) + '_sprinkle_0.jpg'])
+                });
+                query('insert into videos (title,box_id,url,create_at,mask_img) values ?', [values], function (err2, data2) {
+                    if (err2) {
+                        res.send(reqData(500, err2));
+                        return;
+                    }
+                    res.send(reqData(200, '新增成功'))
+                })
+            })
+        } else {
+            res.send(reqData(500, '合集名称重复'));
+            return;
+        }
+        // res.send(reqData(200, result))
+    })
+})
+//查看所有合集
+router.get('/back/getVideoCate', function (req, res) {
+    query('select a.id,a.title,a.ispassword,a.ques,b.create_at,b.mask_img from video_category as a left join videos as b  on a.id = b.box_id where b.id in (select max(c.id) from videos as c left join video_category as d on c.box_id = d.id group by d.id)  order by a.id  ', '', function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, result))
+    })
+})
+//查看合集内视频
+router.get('/back/getVideoDetail', function (req, res) {
+    let {
+        id
+    } = req.query
+    query('select * from video_category where id = ?', [id], function (err1, result1) {
+        if (err1) {
+            res.send(reqData(500, err1));
+            return;
+        }
+        query('select * from videos where box_id = ? ', [id], function (err, result) {
+            if (err) {
+                res.send(reqData(500, err));
+                return;
+            }
+            console.log(result1)
+            
+            res.send(reqData(200, result,result1[0]))
+        })
+    })
+
+})
+//新增视频
+router.post('/back/addVideo', function (req, res) {
+    let {
+        id,
+        src
+    } = req.body
+    let time = timeStand(new Date())
+    let tagIndex = src.lastIndexOf('.')
+    let title = src.replace('http://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/', '')
+    query('insert into videos (title,box_id,url,create_at,mask_img) values(?,?,?,?,?)', [title, id, src, time,src.substring(0, tagIndex) + '_sprinkle_0.jpg'], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, '上传成功'))
+    })
+})
+//删除视频
+router.post('/back/delVideo', function (req, res) {
+    let {
+        id,
+        islast
+    } = req.body
+    query('delete from videos where id=?', [id], function (err, result) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        if (islast) {
+            query('delete from video_category where id =?', [islast], function (err2, result) {
+                if (err2) {
+                    res.send(reqData(500, err));
+                    return;
+                }
+                res.send(reqData(200, '删除成功'))
+            })
+        } else {
+            res.send(reqData(200, '删除成功'))
+        }
+
+    })
+})
+
+
+//动态发布
+router.post('/back/dynamic/pub', function (req, res) {
+    let str = req.body.text
+    let imgs = req.body.imgs
+    let time = timeStand(new Date())
+    // console.log(str,req.headers['user-agent'],os.type())
+    var u = req.headers['user-agent'];
+    if (!!u.match(/compatible/i) || u.match(/windows/i)) {
+        u = 'Windows';
+    } else if (!!u.match(/Macintosh/i) || u.match(/MacIntel/i)) {
+        u = 'MacOS';
+    } else if (!!u.match(/iphone/i) || u.match(/Ipad/i)) {
+        u = 'IPhone';
+    } else if (!!u.match(/Android/i)) {
+        u = 'Android';
+    } else {
+        u = '未知设备';
+    }
+    if (imgs.length === 0) {
+        query('INSERT INTO dynamic (content,created_at,is_del,type,user_id) VALUES(?,?,?,?,?)', [str, time, 0, u, 6], function (err, result) {
+            if (err) {
+                res.send(reqData(500, err))
+                return;
+            }
+            res.send(reqData(200, '发布成功'))
+        })
+    } else {
+        let splInsertDy = 'INSERT INTO dynamic (content,created_at,is_del,type,user_id) VALUES(?,?,?,?,?)',
+            sqlInsertImgs = 'insert into dynamic_imgs (url,dy_id) values ?';
+        query(splInsertDy, [str, time, 0, u, 6], function (err1, data1) {
+            if (err1) {
+                res.send(reqData(500, err1));
+                return;
+            }
+            let values = []
+            imgs.forEach(item => {
+                values.push([item, data1.insertId])
+            });
+            query(sqlInsertImgs, [values], function (err2, data2) {
+                if (err2) {
+                    res.send(reqData(500, err2));
+                    return;
+                }
+                res.send(reqData(200, '发布成功'))
+            })
+        })
+    }
+
 })
 
 //统计数据
@@ -698,28 +880,7 @@ router.get('/back/cateInfo', function (req, res) {
         res.send(reqData(200, data))
     })
 })
-// 最近访问
-// router.get('/back/ipLast', function (req, res) {
-//     query('select * from iplist order by id desc limit 10', function (err, data) {
-//         if (err) {
-//             res.send(reqData(500, err));
-//             return;
-//         }
-//         new Promise((resolve, reject) => {
-//             data.forEach((item) => {
-                 
-//             })
-           
-//         }).then((redata)=>{
-//             res.send(reqData(200, redata))
-//         }).catch((rejerr)=>{
-//             res.send(reqData(500, rejerr));
-//         })
 
-        
-        
-//     })
-// })
 
 
 module.exports = router;

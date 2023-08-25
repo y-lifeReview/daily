@@ -42,6 +42,7 @@
       layout="prev, pager, next"
       :page-size="6"
       :pager-count="5"
+    
       :total="articleTotal"
       @prev-click="currentChange"
       @next-click="currentChange"
@@ -57,6 +58,7 @@ import articleHead from "@/components/articleHead/articleHead.vue";
 import { timeformatstande } from "@/hooks/timeformat";
 const post = usePost();
 export default {
+  name: "category",
   components: {
     articleHead,
   },
@@ -66,21 +68,25 @@ export default {
       articleList: [],
       listloading: true,
       articleTotal: 0,
-      title:''
+      title: "",
     };
   },
   mounted() {
     // console.log("分类");
     let cate = this.$route.params.cate;
-    this.title = '分类 '+cate+' 下的文章'
+    this.title = "分类 " + cate + " 下的文章";
     this.getActCategory(cate);
   },
   watch: {
     $route(to, from) {
+      // console.log(to,from)
       if (this.$route.params.cate) {
-        this.title = '分类 '+this.$route.params.cate+' 下的文章'
+        this.title = "分类 " + this.$route.params.cate + " 下的文章";
         this.getActCategory(this.$route.params.cate);
       }
+      // if (this.$route.params.cate) {
+      //   // if()
+      // }
     },
   },
   methods: {
@@ -112,7 +118,7 @@ export default {
         .catch((err) => {});
     },
     currentChange: function (e) {
-      this.getActCategory(this.$route.params.cate,e);
+      this.getActCategory(this.$route.params.cate, e);
     },
   },
 };

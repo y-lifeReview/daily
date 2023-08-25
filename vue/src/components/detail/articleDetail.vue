@@ -210,7 +210,9 @@ export default {
       articlecheckpasswprd(id, awser)
         .then((result) => {
           if (!result.data[0]) {
-            window.alert("密码错误");
+            _this.$message.warning({
+              message: "密码错误",
+            });
             return;
           } else {
             this.showPropt = false;
@@ -250,6 +252,9 @@ export default {
           }
         })
         .catch(() => {
+          _this.$message.error({
+              message: "网络错误",
+            });
           return;
         });
     },
@@ -401,13 +406,14 @@ export default {
 .article_list {
   width: 100%;
   padding: 20px;
+  padding-bottom:40px;
   display: flex;
   flex-direction: column;
   background-color: #f1f3f4;
   .card_content {
     display: flex;
     flex-direction: column;
-    padding: 10px 20px 5px 20px;
+    padding: 10px 20px 20px 20px;
     background-color: #fff;
     margin-top: 20px;
     border-radius: 6px;

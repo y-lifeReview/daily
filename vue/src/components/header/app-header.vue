@@ -1,5 +1,6 @@
 <template>
-  <header class="app-header" id="progress_content">
+  <div class="progress_box" id="progress_content"></div>
+  <header class="app-header">
     <div @click="menuContrl" class="menu-btn">
       <div class="btn-item"></div>
       <div class="btn-item"></div>
@@ -68,6 +69,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.progress_box{
+  position: fixed;
+  top: 0;
+  // left: 0;
+  // width: 100%;
+  height: 2px;
+  z-index: 1000;
+}
 .app-header {
   position: fixed;
   top: 0;

@@ -9,10 +9,13 @@ import Index from '@/view/home/home-view.vue'
 import List from '@/components/articleList/articleList.vue'
 import detail from '@/components/detail/articleDetail.vue'
 import images from '@/components/images/appImages.vue'
+import videos from '@/components/videos/videos.vue'
 import imageDetail from '@/components/images/imgDetail.vue'
+import videoDetail from '@/components/videos/videoDetail.vue'
 import category from '@/components/category/category.vue'
 import timeLine from '@/components/timeLine/timeLine.vue'
 import contact from '@/components/contact/contact.vue'
+import life from '@/components/lifeNote/lifeNote.vue'
 export const routes = [{
     path: '/login',
     name: 'Login',
@@ -53,6 +56,21 @@ export const routes = [{
             }
         },
         {
+            path: 'videos',
+            component: videos,
+            meta: {
+                keepAlive: false
+            },
+        },
+        {
+            path: 'video',
+            name:'videoDetail',
+            component: videoDetail,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
             path: 'archives',
             name:'archives',
             component: timeLine,
@@ -72,7 +90,14 @@ export const routes = [{
             path: 'category/:cate',
             component: category,
             meta: {
-                keepAlive: false
+                keepAlive: true
+            },
+        },
+        {
+            path: 'life',
+            component: life,
+            meta: {
+                keepAlive: true
             },
         },
         

@@ -1,5 +1,5 @@
 <template>
-  <div class="main_container">
+  <div class="main_container" >
     <Header
       :city="city"
       :temperature="temperature"
@@ -7,15 +7,23 @@
       :weatherBg="weatherBg"
     ></Header>
     <Aside></Aside>
-    <div class="main_content">
+    <div class="main_content" >
       <!-- <el-scrollbar ref="scrollbarRef" @scroll="scroll"> -->
       <div id="article_content" class="article_content">
         <div class="article_box">
           <router-view v-slot="{ Component }">
-            <keep-alive include="articleList">
+            <keep-alive include="articleList,archives,life,images">
               <component :is="Component" />
             </keep-alive>
           </router-view>
+          <footer class="app-footer">
+            <div class="footer-box">
+              <a class="beian" href="https://beian.miit.gov.cn/" target="_blank"
+                >蜀ICP备2022030856号-1</a
+              >
+              <span>sprinkle</span>
+            </div>
+          </footer>
         </div>
         <div class="article_option">
           <div class="right_nav">
@@ -384,7 +392,32 @@ export default {
         // height: fit-content;
         // float: left;
         // padding-right: 240px;
+        padding-bottom: 20px;
+        position: relative;
         background-color: #f0f3f4;
+        .app-footer {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          // height: 60px;
+          .footer-box {
+            background-color: #f9f9f9;
+            -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin: 10px;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 13px;
+            color: #777;
+            .beian {
+              float: right;
+            }
+            .beian:hover {
+              color: #333;
+            }
+          }
+        }
       }
       .article_option {
         width: 240px;
@@ -591,7 +624,5 @@ export default {
       // }
     }
   }
-}
-.back_top {
 }
 </style>

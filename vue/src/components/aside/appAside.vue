@@ -121,7 +121,7 @@
   </aside>
   <!--  -->
   <aside class="app-aside-xs" @click="hidemenu">
-    <div class="aside-bg" @click="hidemenu"></div>
+    <div class="aside-bg" @click="hidemenu" @touchmove="(e)=>{e.preventDefault();}"></div>
     <div class="aside-box scroll-hide">
       <div class="avatar-box">
         <a href="/about">
@@ -430,6 +430,7 @@ export default {
   position: fixed;
   left: 0;
   top: 0;
+  display: none;
   // z-index: 3;
 }
 .app-aside-xs{

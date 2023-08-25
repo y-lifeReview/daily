@@ -1,5 +1,5 @@
 <template>
-  <articleHead :info="{ title: '相册' }" :isArticle="false" />
+  <articleHead :info="{ title: '视频集' }" :isArticle="false" />
   <div class="img_box">
     <el-skeleton
       :rows="4"
@@ -8,22 +8,20 @@
       animated
     >
       <div
-        
         v-for="(item, index) in imgList"
         :key="index"
+        @click="goVideoDetail(item.id, index)"
         class="img_cover"
-        @click="goImgDetail(item.id, index)"
       >
         <template v-if="item.ispassword">
           <div class="clock-image"></div>
           <div class="img_title">此内容受密码保护</div>
         </template>
-
         <template v-else>
           <el-image
             class="image"
             fit="cover"
-            :src="item.src + '?imageMogr2/format/webp'"
+            :src="item.mask_img + '?imageMogr2/format/webp'"
           >
             <template #placeholder>
               <div class="image-slot">Loading<span class="dot">...</span></div>
@@ -37,7 +35,7 @@
 </template>
 <script>
 import { useGet } from "@/hooks/index";
-import { urlForGetImgCategory } from "@/api/url";
+import { urlForGetVideoCategory } from "@/api/url";
 import articleHead from "@/components/articleHead/articleHead.vue";
 const get = useGet();
 export default {
@@ -57,7 +55,7 @@ export default {
   methods: {
     getImgCategory() {
       get({
-        url: urlForGetImgCategory,
+        url: urlForGetVideoCategory,
       })
         .then((res) => {
           this.imgList = res.data;
@@ -68,13 +66,13 @@ export default {
           this.imgloading = false;
         });
     },
-    goImgDetail(id, index) {
-      console.log(index)
+    goVideoDetail(id, index) {
+        // console.log(this.imgList[index].ispassword)
       let title = this.imgList[index].ispassword
         ? "此内容受密码保护"
         : this.imgList[index].title;
       this.$router.push({
-        name: "imageDetail",
+        name: "videoDetail",
         query: {
           id,
           title,

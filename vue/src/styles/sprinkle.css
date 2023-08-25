@@ -5,7 +5,7 @@
     .main_container {
         width: 100%;
     }
-    .app-header {
+    .app-header,.progress_box {
         width: 100%;
     }
     .main_container .main_content .article_content .article_box {
@@ -36,7 +36,10 @@
         display: none !important;
     }
     .article_list{
-        padding: 20px 10px !important;
+        padding: 20px 10px 40px !important;
+    }
+    .linebox{
+        padding: 30px 12px 20px 20px !important;
     }
     .article_list .article_top{
         height: 130px !important;
@@ -72,7 +75,8 @@
         margin: 5px !important;
     }
     .img_box{
-        padding: 0 !important;
+        justify-content: space-between;
+        padding: 0 0 40px 0 !important;
     }
     #article_md{
         padding: 15px !important;
@@ -89,13 +93,20 @@
     .v[data-class=v] .vcards .vcard .vcontent{
         padding-top: 0 !important;
     }
+
+    .linebox .dynamic-box .content-box .text-box .img-box .image-item{
+        height: 100px !important;
+    }
 }
 /* 大于等于401~小于等于576 */
 @media (min-width:401px ) and (max-width:576px){
+    .linebox .dynamic-box .content-box .text-box .img-box .image-item{
+        height: 100px !important;
+    }
     .main_container {
         width: 100%;
     }
-    .app-header {
+    .app-header ,.progress_box{
         width: 100%;
     }
     .main_container .main_content .article_content .article_box {
@@ -127,7 +138,10 @@
     }
 
     .article_list{
-        padding: 20px 10px !important;
+        padding: 20px 10px 40px !important;
+    }
+    .linebox{
+        padding: 30px 12px 20px 20px !important;
     }
     .article_list .article_top{
         height: 130px !important;
@@ -162,7 +176,8 @@
         width: 45% !important;
     }
     .img_box{
-        padding: 0 !important;
+        justify-content: space-between;
+        padding: 0 0 40px 0 !important;
     }
     #article_md{
         padding: 15px !important;
@@ -183,6 +198,9 @@
 }
 /* 大于等于577~小于等于768 */
 @media (min-width:577px ) and (max-width:768px){
+    .linebox .dynamic-box .content-box .text-box .img-box .image-item{
+        height: 100px !important;
+    }
     .main_container {
         width: 100%;
     }
@@ -192,7 +210,7 @@
     .article_option {
         display: none !important;
     }
-    .app-header {
+    .app-header ,.progress_box{
         width: 100%;
     }
     .main_container .main_content .article_content .article_box {
@@ -263,8 +281,10 @@
     .main_container {
         width: 750px;
     }
-
-    .app-header {
+    .linebox .dynamic-box .content-box .text-box .img-box .image-item{
+        height: 100px !important;
+    }
+    .app-header,.progress_box {
         width: 750px;
     }
     .app-header {
@@ -320,10 +340,13 @@
     .main_container {
         width: 950px;
     }
+    .linebox .dynamic-box .content-box .text-box .img-box .image-item{
+        height: 100px !important;
+    }
     .app-header {
         justify-content: space-between;
     }
-    .app-header {
+    .app-header,.progress_box {
         width: 950px;
     }
     .app-header .menu-btn {
@@ -341,13 +364,14 @@
 }
 /* 大于等于1201~小于等于1700 */
 @media (min-width:1201px ) and (max-width:1700px){
+    
     .main_container {
         width: 1170px;
     }
     .app-header {
         justify-content: space-between;
     }
-    .app-header {
+    .app-header ,.progress_box{
         width: 1170px;
     }
     .app-header .menu-btn {
@@ -365,13 +389,16 @@
 }
 /* 大于等于1701 */
 @media (min-width:1701px ) and (max-width:2047px){
+    .linebox .dynamic-box .content-box .text-box .img-box .image-item{
+        height: 200px !important;
+    }
     .main_container {
         width: 1450px;
     }
     .app-header {
         justify-content: space-between;
     }
-    .app-header {
+    .app-header ,.progress_box{
         width: 1450px;
     }
     .app-header .menu-btn {
@@ -386,13 +413,16 @@
 }
 /*  */
 @media (min-width:2048px ) {
+    .linebox .dynamic-box .content-box .text-box .img-box .image-item{
+        height: 200px !important;
+    }
     .main_container {
         width: 1620px;
     }
     .app-header {
         justify-content: space-between;
     }
-    .app-header {
+    .app-header ,.progress_box{
         width: 1620px;
     }
     .app-header .menu-btn {

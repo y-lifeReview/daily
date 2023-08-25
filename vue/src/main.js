@@ -38,4 +38,8 @@ import './mock/article/index'
 const app = createApp(App);
 app.use(store).use(router).use(vuetyped).use(ElementPlus)
 // app.config.compilerOptions.isCustomElement = tag => tag === 'meting-js'
+// app.config.errorHandler = (err, instance, info) => {
+//     // 向追踪服务报告错误
+//     console.log('错误监控',err,instance,info)
+//   }
 app.mount('#app')

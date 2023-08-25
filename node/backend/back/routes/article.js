@@ -95,9 +95,6 @@ router.post('/article/list', function (req, res) {
   let getsql = 'select a.id,a.category,a.updata_at,a.article_view,a.title,a.summary,a.user_id,a.img,nickname from (select * from article where is_draft!=1 and isorder!=1) as a left join user as c on a.user_id = c.id order by a.id desc limit  ?,6'
 
   // total-page*6
-  
-  
-
   query(totalsql, [], function (err, result) {
     // console.log('list 1')
     if (err) {
@@ -105,7 +102,7 @@ router.post('/article/list', function (req, res) {
       res.send(reqData(500, err));
       return;
     }
-    query(getsql, [(options[0]-1) * 6], function (err2, result2) {
+    query(getsql, [(options[0] - 1) * 6], function (err2, result2) {
       // console.log('分页',result[0]['COUNT(id)'],options[0],result[0]['COUNT(id)'] - options[0] * 6)
       // result[0]['COUNT(id)'] - (options[0] - 1) * 6
       if (err2) {
@@ -137,7 +134,7 @@ router.post('/article/category', function (req, res) {
       res.send(reqData(500, err));
       return;
     }
-    query(getsql, [cate,(page - 1) * 6], function (err2, result2) {
+    query(getsql, [cate, (page - 1) * 6], function (err2, result2) {
       // console.log('list 2')
       if (err2) {
         console.log('[SELECT ERROR] - ', err2.message);
@@ -175,14 +172,49 @@ router.get('/article/tags', function (req, res) {
 })
 
 //文章归档数据
-router.post('/article/archives',function(req,res){
-  let sql = 'select a.id,a.updata_at,a.title,a.img,b.nickname from article as a left join user as b on a.user_id = b.id where a.is_draft !=1 order by a.updata_at desc '
-  query(sql,'',function(err,result){
-    if(err){
-      res.send(reqData(500,err))
+router.post('/article/archives', function (req, res) {
+  let page = req.body.page
+  let totalsql = 'SELECT COUNT(id) FROM article where is_draft!=1 and isorder!=1'
+  let sql = 'select a.id,a.updata_at,a.title,a.img,b.nickname from article as a left join user as b on a.user_id = b.id where a.is_draft !=1 order by a.updata_at desc limit ?,15'
+  query(totalsql, [], function (err, result) {
+    // console.log('list 1')
+    if (err) {
+      // console.log('err1', err)
+      res.send(reqData(500, err));
       return;
     }
-    res.send(reqData(200, result))
+    query(sql, [(page - 1) * 15], function (err, result2) {
+      if (err) {
+        res.send(reqData(500, err))
+        return;
+      }
+      let data = reqData(200, result2)
+      data.page = page
+      data.total = result[0]['COUNT(id)']
+      res.send(data)
+    })
+  })
+
+})
+//动态获取
+router.post('/dynamic', function (req, res) {
+  let page = req.body.page
+  let totalsql = 'SELECT COUNT(id) FROM dynamic where is_del!=1'
+  query(totalsql, [], function (err, result) {
+    if (err) {
+      res.send(reqData(500, err));
+      return;
+    }
+    query('select a.*,b.nickname,b.avatar,GROUP_CONCAT(c.url) as imgs from dynamic as a left join user as b on a.user_id = b.id left join dynamic_imgs as c on FIND_IN_SET(c.dy_id,a.id) where a.is_del!=1 group by a.id order by a.created_at desc limit ?,15 ', [(page - 1) * 15], function (err, result2) {
+      if (err) {
+        res.send(reqData(500, err))
+        return;
+      }
+      let data = reqData(200, result2)
+      data.page = page
+      data.total = result[0]['COUNT(id)']
+      res.send(data)
+    })
   })
 })
 

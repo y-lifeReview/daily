@@ -1,9 +1,9 @@
 let mysql = require('mysql')
 let pool = mysql.createPool({
-  host: '',
+  host: 'gz-cynosdbmysql-grp-pd4ndjr1.sql.tencentcdb.com',
   user: 'root',
   password: '',
-  port: '',
+  port: '27251',
   database: 'test',
   multipleStatements: true,
   connectionLimit:50,
