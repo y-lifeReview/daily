@@ -20,10 +20,16 @@ export const routes = [{
     path: '/login',
     name: 'Login',
     component: Login,
+    meta:{
+        title:'登录'
+    }
 }, {
     path: '/',
     name: 'Index',
     component: Index,
+    meta:{
+        title:'首页'
+    },
     children: [{
             path: '',
             name: 'list',
@@ -37,14 +43,16 @@ export const routes = [{
             component: detail,
             name:'detail',
             meta: {
-                keepAlive: false
+                keepAlive: false,
+                title:'详情'
             }
         },
         {
             path: 'images',
             component: images,
             meta: {
-                keepAlive: false
+                keepAlive: false,
+                title:'相册'
             },
         },
         {
@@ -52,14 +60,16 @@ export const routes = [{
             name:'imageDetail',
             component: imageDetail,
             meta: {
-                keepAlive: false
+                keepAlive: false,
+                title:'相册详情'
             }
         },
         {
             path: 'videos',
             component: videos,
             meta: {
-                keepAlive: false
+                keepAlive: false,
+                title:'视频'
             },
         },
         {
@@ -67,7 +77,8 @@ export const routes = [{
             name:'videoDetail',
             component: videoDetail,
             meta: {
-                keepAlive: false
+                keepAlive: false,
+                title:'视频详情'
             }
         },
         {
@@ -75,7 +86,8 @@ export const routes = [{
             name:'archives',
             component: timeLine,
             meta: {
-                keepAlive: false
+                keepAlive: false,
+                title:'归档'
             }
         },
         {
@@ -83,21 +95,24 @@ export const routes = [{
             name:'contact',
             component: contact,
             meta: {
-                keepAlive: false
+                keepAlive: false,
+                title:'留言板'
             }
         },
         {
             path: 'category/:cate',
             component: category,
             meta: {
-                keepAlive: true
+                keepAlive: true,
+                title:'分类'
             },
         },
         {
             path: 'life',
             component: life,
             meta: {
-                keepAlive: true
+                keepAlive: true,
+                title:'动态'
             },
         },
         

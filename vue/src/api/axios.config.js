@@ -1,7 +1,7 @@
 import Axios from "axios";
 
-// const baseIp = 'http://127.0.0.1:3000/v1';
-const baseIp = 'https://www.c-sandm.top/v1/';
+
+const baseIp = process.env.VUE_APP_BASE_API;
 
 export const CONTENT_TYPE = "Content-Type";
 export const APPLICATION_JSON = "application/json; charset=UTF-8";
@@ -36,9 +36,10 @@ service.interceptors.response.use(
         if (process.env.NODE_ENV === "development") {
             console.log(error);
         }
+        console.log('请求错误',error)
         return Promise.reject({
             code: 500,
-            msg: "服务器异常，请稍后重试…"
+            msg: error.message
         });
     }
 );

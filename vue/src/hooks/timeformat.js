@@ -15,7 +15,7 @@ const timeformat = function (timestr) {
     let second1 = new Date(timestr).getTime().toString().substring(0,10)-0
     let second2 = new Date().getTime().toString().substring(0,10)-0;
     let time = (second2- second1)
-    console.log('time:',second2,second1,time)
+    // console.log('time:',second2,second1,time)
     // let y = date.getFullYear();
     // let m = date.getMonth() + 1;
     // let d = date.getDate();

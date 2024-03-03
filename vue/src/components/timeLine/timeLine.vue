@@ -115,12 +115,12 @@ export default {
 }
 }
 
-::v-deep .el-timeline-item__content {
+:deep .el-timeline-item__content {
   //   width: 50%;
   position: relative;
   cursor: pointer;
 }
-::v-deep .el-timeline-item__content::after {
+:deep .el-timeline-item__content::after {
   //   width: 50%;
   content: "";
   position: absolute;

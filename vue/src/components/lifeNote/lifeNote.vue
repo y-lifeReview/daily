@@ -13,7 +13,15 @@
               <span>{{ item.nickname }}</span>
               <span class="timetemp">{{ item.timestamp }}</span>
             </div>
-            <div class="text">{{ item.content }}</div>
+            <el-input
+              class="text"
+              v-model="item.content"
+              autosize
+              readonly
+              resize="none"
+              type="textarea"
+              input-style="border: none;box-shadow: none;letter-spacing:2px;font-size:14px;cursor: default"
+            />
             <div v-if="item.imgs.length" class="img-box">
               <template
                 v-for="(item_child, index_child) in item.imgs"
@@ -180,9 +188,13 @@ export default {
           border-right-color: #fff;
         }
         .text {
-          padding: 15px;
-          word-wrap: break-word;
-          letter-spacing: 2px;
+          padding: 11px 0 11px 6px;
+          word-wrap: break-word;          
+          color: #777;
+          font-family: Source Sans Pro, Hiragino Sans GB, Microsoft Yahei,
+            SimSun, Helvetica, Arial, Sans-serif, monospace;
+          font-size: 14px;
+          
         }
         .type-box {
           padding: 10px 15px;
@@ -198,10 +210,11 @@ export default {
         .img-box {
           display: flex;
           margin: 10px;
-          justify-content: start;
-          align-items: start;
+          margin-top: 0;
+          justify-content: flex-start;
+          align-items: flex-start;
           flex-wrap: wrap;
-         
+
           .image-item {
             width: 33.3%;
             padding: 5px;
@@ -213,7 +226,7 @@ export default {
     }
   }
 }
-::v-deep .el-image__inner {
+:deep .el-image__inner {
   //   width: 50%;
   border-radius: 5px;
 }

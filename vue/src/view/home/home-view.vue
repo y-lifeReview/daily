@@ -251,6 +251,7 @@ export default {
       }).then((res) => {
         // console.log("res", res);
         if (res.code === 200) {
+          if(!res.data.lives[0]) return;
           let data = res.data.lives[0];
           if (data.city) {
             setLStorage("city", data.city);
@@ -336,8 +337,11 @@ export default {
     // }
   },
   mounted() {
-    console.log("加载");
-
+    //
+    // abc()
+    // new Promise((resolve,reject)=>{
+    //   abc()
+    // })
     let date = new Date();
     this.city = getLStorage("city") || "成都市";
     this.temperature = getLStorage("temperature") || "25";

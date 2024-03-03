@@ -1,3 +1,5 @@
+const UploadSourceMapPlugin = require('./plugin/uploadSourceMapPlugin') 
+// const fs  = require('fs')
 const {
   defineConfig
 } = require('@vue/cli-service')
@@ -11,6 +13,13 @@ module.exports = defineConfig({
       args[0].terserOptions.compress.drop_console = true
       return args
     })
-  }
+  },
+  configureWebpack:{
+      devtool:'source-map',
+      plugins:[
+        new UploadSourceMapPlugin({uploadUrl:process.env.VUE_APP_BASE_API+'sourcemap/upload',apikey:'ycc'})
+      ]
+  },
+  productionSourceMap:true
 
 })

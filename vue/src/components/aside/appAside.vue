@@ -11,7 +11,7 @@
         </a>
         <div class="aside-sign">
           <span class="aside-name">
-            <strong class="name-text">明天下小雨</strong>
+            <strong class="name-text">与期望失约</strong>
           </span>
           <vuetyped
             :strings="['山雾漫漫，别迷了路']"
@@ -313,6 +313,7 @@ export default {
       padding: 15px;
       margin-top: 10px;
       display: flex;
+      height: fit-content;
       flex-direction: column;
       justify-content: center;
       align-items: center;
