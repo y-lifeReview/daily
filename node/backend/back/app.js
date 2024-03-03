@@ -5,14 +5,19 @@ var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 const history = require('connect-history-api-fallback')
 const logger = require('./logger')
+// const requestIp = require('request-ip');
 //ip限制
+// app.use(requestIp.mw());
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
-	windowMs: 60 * 60 * 1000, // 1个小时内
-	max: 300, // 限制最多5次
+	windowMs: 10 * 60 * 1000, // 1个小时内
+	max: 200, // 限制最多5次
 	message: '刷新太快啦！歇会儿吧', //提示消息
 	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: true, // Disable the `X-RateLimit-*` headers
+	// keyGenerator: (req, res) => {
+	// 	return req.clientIp // IP address from requestIp.mw(), as opposed to req.ip
+	// }
 });
 // let {
 // 	query,
@@ -27,14 +32,17 @@ var articleRouter = require('./routes/article');
 var sign = require('./routes/sign');
 var back = require('./routes/backend');
 var images = require('./routes/images');
+var report = require('./routes/report');
 // var musicRouter = require('./routes/music');
 const cors = require('cors')
 
 var app = express();
+app.set("trust proxy",1)
 //vue路由history模式
 // app.use(history())
 
 app.use(cors())
+
 //设置跨域访问
 app.all("*", function (req, res, next) {
 
@@ -50,7 +58,7 @@ app.all("*", function (req, res, next) {
 	// else
 	next();
 });
-app.use(limiter);
+
 // 
 
 
@@ -68,6 +76,11 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// app.use(function(err,req,res,next){
+// 	console.log()
+// })
+app.use('/v1', report);
+app.use(limiter);
 app.use('/v1', indexRouter);
 app.use('/v1', usersRouter);
 // app.use('/v1', poemRouter);

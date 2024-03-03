@@ -571,7 +571,7 @@ router.post('/back/addImageCate', function (req, res) {
         }
         if (result.length < 1) {
             let sqlInsertCate = 'insert into img_category (title,ispassword,ques,anwser) values(?,?,?,?)';
-            query(sqlInsertCate, [title,ispassword,ques,anwser], function (err1, data1) {
+            query(sqlInsertCate, [title, ispassword, ques, anwser], function (err1, data1) {
                 if (err1) {
                     res.send(reqData(500, err1));
                     return;
@@ -580,7 +580,7 @@ router.post('/back/addImageCate', function (req, res) {
                 let time = timeStand(new Date())
                 let values = []
                 imgs.forEach(item => {
-                    values.push([item.replace('http://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/', ''), data1.insertId, item, time])
+                    values.push([item.replace('https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/', ''), data1.insertId, item, time])
                 });
                 query('insert into images (title,box_id,src,create_at) values ?', [values], function (err2, data2) {
                     if (err2) {
@@ -616,14 +616,14 @@ router.get('/back/getImageDetail', function (req, res) {
             res.send(reqData(500, err));
             return;
         }
-        query('select * from img_category where id = ?',[id],function(err1,result1){
+        query('select * from img_category where id = ?', [id], function (err1, result1) {
             if (err1) {
                 res.send(reqData(500, err1));
                 return;
             }
-            res.send(reqData(200, result,result1[0]))
+            res.send(reqData(200, result, result1[0]))
         })
-        
+
     })
 })
 //删除相册图片
@@ -658,7 +658,7 @@ router.post('/back/addImage', function (req, res) {
         src
     } = req.body
     let time = timeStand(new Date())
-    let title = src.replace('http://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/', '')
+    let title = src.replace('https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/', '')
     query('insert into images (title,box_id,src,create_at) values(?,?,?,?)', [title, id, src, time], function (err, result) {
         if (err) {
             res.send(reqData(500, err));
@@ -698,7 +698,7 @@ router.post('/back/addVideoCate', function (req, res) {
                 let values = []
                 urls.forEach(item => {
                     let tagIndex = item.lastIndexOf('.')
-                    values.push([item.replace('http://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/video/', ''), data1.insertId, item, time, item.substring(0, tagIndex) + '_sprinkle_0.jpg'])
+                    values.push([item.replace('https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/video/', ''), data1.insertId, item, time, item.substring(0, tagIndex) + '_sprinkle_0.jpg'])
                 });
                 query('insert into videos (title,box_id,url,create_at,mask_img) values ?', [values], function (err2, data2) {
                     if (err2) {
@@ -741,8 +741,8 @@ router.get('/back/getVideoDetail', function (req, res) {
                 return;
             }
             console.log(result1)
-            
-            res.send(reqData(200, result,result1[0]))
+
+            res.send(reqData(200, result, result1[0]))
         })
     })
 
@@ -755,8 +755,8 @@ router.post('/back/addVideo', function (req, res) {
     } = req.body
     let time = timeStand(new Date())
     let tagIndex = src.lastIndexOf('.')
-    let title = src.replace('http://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/', '')
-    query('insert into videos (title,box_id,url,create_at,mask_img) values(?,?,?,?,?)', [title, id, src, time,src.substring(0, tagIndex) + '_sprinkle_0.jpg'], function (err, result) {
+    let title = src.replace('https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/image/', '')
+    query('insert into videos (title,box_id,url,create_at,mask_img) values(?,?,?,?,?)', [title, id, src, time, src.substring(0, tagIndex) + '_sprinkle_0.jpg'], function (err, result) {
         if (err) {
             res.send(reqData(500, err));
             return;
@@ -880,7 +880,135 @@ router.get('/back/cateInfo', function (req, res) {
         res.send(reqData(200, data))
     })
 })
+//本周访问人数图表数据
+router.get('/back/weekViewData', function (req, res) {
+    let sql = `SELECT
+	t1.*,
+	ifnull( t2.num, 0 ) num 
+FROM
+	(
+	SELECT
+		DATE_FORMAT( date_column, '%Y-%m-%d' ) AS days 
+	FROM
+		(
+		SELECT
+			CURDATE() - INTERVAL WEEKDAY(
+			CURDATE()) DAY + INTERVAL 0 DAY AS date_column UNION ALL
+		SELECT
+			CURDATE() - INTERVAL WEEKDAY(
+			CURDATE()) DAY + INTERVAL 1 DAY AS date_column UNION ALL
+		SELECT
+			CURDATE() - INTERVAL WEEKDAY(
+			CURDATE()) DAY + INTERVAL 2 DAY AS date_column UNION ALL
+		SELECT
+			CURDATE() - INTERVAL WEEKDAY(
+			CURDATE()) DAY + INTERVAL 3 DAY AS date_column UNION ALL
+		SELECT
+			CURDATE() - INTERVAL WEEKDAY(
+			CURDATE()) DAY + INTERVAL 4 DAY AS date_column UNION ALL
+		SELECT
+			CURDATE() - INTERVAL WEEKDAY(
+			CURDATE()) DAY + INTERVAL 5 DAY AS date_column UNION ALL
+		SELECT
+			CURDATE() - INTERVAL WEEKDAY(
+			CURDATE()) DAY + INTERVAL 6 DAY AS date_column 
+		) a 
+	) t1
+	LEFT JOIN (
+	SELECT
+		DATE_FORMAT( FROM_UNIXTIME(LEFT(updata_at, 10)), '%Y-%m-%d' ) days,
+		count(*) num 
+	FROM
+		iplist 
+	WHERE
+		DATE_FORMAT( FROM_UNIXTIME(LEFT(updata_at, 10)), '%Y-%m' ) = DATE_FORMAT( NOW(), '%Y-%m' ) 
+GROUP BY
+	DATE_FORMAT( FROM_UNIXTIME(LEFT(updata_at, 10)), '%Y-%m-%d' )) t2 ON t1.days = t2.days ORDER BY days`
+    query(sql, function (err, data) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, data))
+    })
+})
+//本周报错
+router.get('/back/weekErrData', function (req, res) {
+    let sql = `SELECT t1.*,ifnull(t2.num,0) num FROM (SELECT DATE_FORMAT(date_column, '%Y-%m-%d') AS days FROM (SELECT CURDATE() - INTERVAL WEEKDAY(CURDATE()) DAY + INTERVAL 0 DAY AS date_column UNION ALL SELECT CURDATE() - INTERVAL WEEKDAY(CURDATE()) DAY + INTERVAL 1 DAY AS date_column UNION ALL SELECT CURDATE() - INTERVAL WEEKDAY(CURDATE()) DAY + INTERVAL 2 DAY AS date_column UNION ALL SELECT CURDATE() - INTERVAL WEEKDAY(CURDATE()) DAY + INTERVAL 3 DAY AS date_column UNION ALL SELECT CURDATE() - INTERVAL WEEKDAY(CURDATE()) DAY + INTERVAL 4 DAY AS date_column UNION ALL SELECT CURDATE() - INTERVAL WEEKDAY(CURDATE()) DAY + INTERVAL 5 DAY AS date_column UNION ALL SELECT CURDATE() - INTERVAL WEEKDAY(CURDATE()) DAY + INTERVAL 6 DAY AS date_column)  a) t1 left join (select DATE_FORMAT(err_time,'%Y-%m-%d') days,count(*) num FROM error_info where DATE_FORMAT(err_time,'%Y-%m') = DATE_FORMAT(NOW(),'%Y-%m') group by DATE_FORMAT(err_time,'%Y-%m-%d')) t2 on t1.days = t2.days ORDER BY days`
+    query(sql, function (err, data) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        // console.log('数据',data)
+        res.send(reqData(200, data))
+    })
+})
+//本日各时段报错
+router.get('/back/dayErrData', function (req, res) {
+    let sql = `SELECT
+	t1.hours days,
+	ifnull( t2.num, 0 ) num 
+FROM
+	hour_temp t1
+	LEFT JOIN (
+	SELECT
+		DATE_FORMAT(err_time, "%H:00" ) days,
+		count(*) num 
+	FROM
+		error_info 
+	WHERE
+		DATE_FORMAT( err_time, '%Y-%m-%d' ) = DATE_FORMAT( NOW(), '%Y-%m-%d' ) 
+GROUP BY
+	DATE_FORMAT( err_time, "%H:00" )) t2 ON t1.hours = t2.days
+	order by days`
+    query(sql, function (err, data) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        // console.log('数据',data)
+        res.send(reqData(200, data))
+    })
+})
+//本日各时段访问人数
+router.get('/back/dayViewData', function (req, res) {
+    let sql = `SELECT
+	t1.hours days,
+	ifnull( t2.num, 0 ) num 
+FROM
+	hour_temp t1
+	LEFT JOIN (
+	SELECT
+		DATE_FORMAT( FROM_UNIXTIME(LEFT(updata_at, 10)), "%H:00" ) days,
+		count(*) num 
+	FROM
+		iplist 
+	WHERE
+		DATE_FORMAT( FROM_UNIXTIME(LEFT(updata_at, 10)), '%Y-%m-%d' ) = DATE_FORMAT( NOW(), '%Y-%m-%d' ) 
+GROUP BY
+	DATE_FORMAT( FROM_UNIXTIME(LEFT(updata_at, 10)), "%H:00" )) t2 ON t1.hours = t2.days
+	order by days`
+    query(sql, function (err, data) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        // console.log('数据',data)
+        res.send(reqData(200, data))
+    })
+})
 
+//访问ip位置分布数据
+router.get('/back/viewHotData', function (req, res) {
+    query('select province name ,COUNT(*) AS value from iplist where province is not NULL GROUP BY province', function (err, data) {
+        if (err) {
+            res.send(reqData(500, err));
+            return;
+        }
+        res.send(reqData(200, data))
+    })
+})
 
 
 module.exports = router;

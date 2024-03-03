@@ -1,5 +1,6 @@
 var express = require('express');
 const fs = require("fs");
+const path = require("path");
 const http = require('http')
 let {
   query,
@@ -26,7 +27,7 @@ const getClientIp = require('../func/getIp')
 
 let reqData = require('../dataBase/response')
 var router = express.Router();
-var multer = require('multer')
+var multer = require('multer');
 var upload = multer({
   dest: './tmp/'
 })
@@ -41,7 +42,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/getWeather', function (req, res, next) {
   let ip = getClientIp(req)
-  console.log('ip w',ip)
+  console.log('ip w', ip)
   query('SELECT sig FROM gaode_sig WHERE id = 0', [], function (err, result) {
     if (err) {
       console.log('[SELECT ERROR] - ', err.message);
@@ -124,7 +125,7 @@ router.post('/img/upload', upload.single('file'), function (req, res) {
             } else {
               fs.unlinkSync(localFile);
               // console.log('img',data)
-              var url = 'http://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/' + data.Key;
+              var url = 'https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/' + data.Key;
               res.send(reqData(200, {
                 url
               }));
@@ -193,7 +194,7 @@ router.post('/video/upload', upload.single('file'), function (req, res) {
             } else {
               fs.unlinkSync(localFile);
               // console.log('img',data)
-              var url = 'http://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/' + data.Key;
+              var url = 'https://sprinkle-1300857039.cos.ap-chengdu.myqcloud.com/' + data.Key;
               res.send(reqData(200, {
                 url
               }));
@@ -277,7 +278,6 @@ router.get('/aside/info', function (req, res) {
   })
 })
 router.post('/ipcommit', function (req, res) {
-
   var ip = req.headers['x-forwarded-for'] ||
     req.ip ||
     req.connection.remoteAddress ||
@@ -288,21 +288,22 @@ router.post('/ipcommit', function (req, res) {
   }
   ip = ip.substr(ip.lastIndexOf(':') + 1, ip.length);
   console.log('ip地址为:', ip)
-  ip = ip=='127.0.0.1'?'114.247.50.2':ip
+  ip = ip == '127.0.0.1' ? '114.247.50.2' : ip
   getAdcode(ip, '96adcca306a38f736d8e1e74d9544ee8').then((result) => {
-    let city = result.data.city
+    let city = result.data.city,province = result.data.province.substring(0,result.data.province.length-1)
+    //province
     query('select ip from iplist where ip=?', [ip], function (err, result) {
       if (err) {
         return;
       }
       console.log('ip查询', result)
       if (result.length > 0) {
-        query('update iplist set times = times + 1,city=? where ip = ? ', [city,ip], function () {
+        query('update iplist set times = times + 1,updata_at=?,city=?,province=? where ip = ? ', [new Date().getTime(),city,province, ip], function () {
           res.send(reqData(200, 'ok'))
         })
       } else {
         let time = new Date().getTime()
-        query('INSERT INTO iplist(ip,updata_at,times,city) VALUES(?,?,?,?)', [ip, time, 1,city], function (err) {
+        query('INSERT INTO iplist(ip,updata_at,times,city,province) VALUES(?,?,?,?,?)', [ip, time, 1, city,province], function (err) {
           res.send(reqData(200, ip))
         })
       }
@@ -310,6 +311,26 @@ router.post('/ipcommit', function (req, res) {
   })
 
 
+})
+
+
+//sourcemap文件上传
+router.post('/sourcemap/upload', function (req, res) {
+  console.log('sourcemap文件上传', req.query)
+  const filename = req.query.name;
+  const dir = path.join(path.resolve(), 'sourcemap')
+  console.log('文件路径:', filename, dir)
+  //判断是否已存在该目录，没有则创建新的
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir)
+  }
+  //
+  const target = path.join(dir, filename)
+  const writeStream = fs.createWriteStream(target)
+  req.pipe(writeStream)
+  writeStream.on('finish', function () {
+    res.send('写入成功')
+  })
 })
 
 module.exports = router;

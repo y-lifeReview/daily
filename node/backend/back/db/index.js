@@ -1,10 +1,10 @@
 let mysql = require('mysql')
 let pool = mysql.createPool({
-  host: 'gz-cynosdbmysql-grp-pd4ndjr1.sql.tencentcdb.com',
-  user: 'root',
+  host: '',
+  user: '',
   password: '',
-  port: '27251',
-  database: 'test',
+  port: '',
+  database: '',
   multipleStatements: true,
   connectionLimit:50,
 });
@@ -17,7 +17,7 @@ let query = function (sql, data, callback) {
     } else {
       conn.query(sql, data, function (qerr, vals, fields) {
         //释放连接
-        console.log('释放连接',data)
+        // console.log('释放连接',data)
         conn.release();
         //事件驱动回调
         callback(qerr, vals, fields);
